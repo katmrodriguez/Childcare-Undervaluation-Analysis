@@ -55,19 +55,12 @@ The code below is a global setting for the survey package in R. It controls what
 
 **Helper Functions for Summaries**
 
-The survey-summary helpers used throughout this notebook are defined once in
-`R/functions.R` (sourced in the Setup chunk above) so that a single copy is
-maintained:
+The survey-summary helpers used throughout this notebook are defined once in `R/functions.R` (sourced in the Setup chunk above) so that a single copy is maintained:
 
-- `get_mean_se_multi(formula, design, group_name, period)` — runs `svymean()`
-  on one or more variables and returns a tidy data frame of means and SEs
-  tagged with a group and period label.
-- `get_comp_row(design, group_label, period_label)` — sex + race/ethnicity
-  composition for one design ("nh" = non-Hispanic).
-- `get_df_value(design, group_name, period, wage)` — mean childcare hours plus
-  the implied daily and annual dollar valuation at a given hourly wage.
-- `get_sex_comp(design, role_label)` — sex composition (share + SE) for one
-  design, labeled by role.
+- `get_mean_se_multi(formula, design, group_name, period)` — runs `svymean()` on one or more variables and returns a tidy data frame of means and SEs tagged with a group and period label.
+- `get_comp_row(design, group_label, period_label)` — sex + race/ethnicity composition for one design ("nh" = non-Hispanic).
+- `get_df_value(design, group_name, period, wage)` — mean childcare hours plus the implied daily and annual dollar valuation at a given hourly wage.
+- `get_sex_comp(design, role_label)` — sex composition (share + SE) for one design, labeled by role.
 
 # Load and Tidy Data
 
@@ -1060,10 +1053,7 @@ df_value
 
 **Save primary-caregiver hours for the CPS notebook**
 
-The CPS notebook (`02_paid_childcare_cps.qmd`) needs the mean daily childcare
-hours of primary caregivers to compute the implied annual value of unpaid care.
-Rather than copying the number by hand, we write it to `data/processed/` here
-and read it back there, so the two notebooks can never drift out of sync.
+The CPS notebook (`02_paid_childcare_cps.qmd`) needs the mean daily childcare hours of primary caregivers to compute the implied annual value of unpaid care. Rather than copying the number by hand, we write it to `data/processed/` here and read it back there, so the two notebooks can never drift out of sync.
 
 ```{r}
 atus_primary_hours <- df_value |>
