@@ -6,9 +6,9 @@ and Bureau of Labor Statistics (BLS) wage data.
 
 The project asks two questions:
 
-1. **Unpaid childcare** — What is the economic value of unpaid childcare, and
+1. **Unpaid childcare**: What is the economic value of unpaid childcare, and
    how does it vary by gender, race/ethnicity, and family income?
-2. **Paid childcare** — How do wages and demographics in paid childcare
+2. **Paid childcare**: How do wages and demographics in paid childcare
    occupations compare to similar jobs, and what do they reveal about gender
    and racial gaps in the care economy?
 
