@@ -47,13 +47,13 @@ IPUMS account.
 
 ## Reproducing the analysis
 
-1. **Open the project** by double-clicking `childcare-undervaluation.Rproj`
+1. **Open the project** by double-clicking `Childcare-Undervaluation-Analysis.Rproj`
    (this sets the working directory to the project root so `here()` resolves
    paths correctly).
 2. **Add the data** to `data/raw/` as described in `data/raw/README.md`.
 3. **Restore packages** (if using `renv`, see below), or install the packages
    listed in `R/setup.R`.
-4. **Render the notebooks in order** — the CPS notebook depends on a value
+4. **Render the notebooks in order**: the CPS notebook depends on a value
    written by the ATUS notebook:
 
    ```r
