@@ -1,2 +1,98 @@
-# Childcare-Undervaluation-Analysis
-An analysis of wage disparities and time-use gaps in the care economy, using the American Time Use Survey (ATUS), the Current Population Survey (CPS ASEC), and Bureau of Labor Statistics (BLS) wage data.
+# Invisible Labor, Visible Inequalities: The Undervaluation of Childcare
+
+An analysis of wage disparities and time-use gaps in the care economy, using
+the American Time Use Survey (ATUS), the Current Population Survey (CPS ASEC),
+and Bureau of Labor Statistics (BLS) wage data.
+
+The project asks two questions:
+
+1. **Unpaid childcare** — What is the economic value of unpaid childcare, and
+   how does it vary by gender, race/ethnicity, and family income?
+2. **Paid childcare** — How do wages and demographics in paid childcare
+   occupations compare to similar jobs, and what do they reveal about gender
+   and racial gaps in the care economy?
+
+The full write-up is in [`report/`](report/).
+
+## Repository structure
+
+```
+childcare-undervaluation/
+├── README.md
+├── LICENSE
+├── .gitignore
+├── childcare-undervaluation.Rproj
+├── R/
+│   ├── setup.R          # packages, survey options, BLS wage constants
+│   └── functions.R      # survey-weighted summary helpers
+├── analysis/
+│   ├── 01_unpaid_childcare_atus.qmd   # ATUS: unpaid childcare (run first)
+│   └── 02_paid_childcare_cps.qmd      # CPS:  paid childcare (run second)
+├── data/
+│   ├── raw/             # IPUMS extracts (not tracked — see data/raw/README.md)
+│   └── processed/       # intermediate artifacts (not tracked)
+├── outputs/
+│   ├── figures/
+│   └── tables/
+└── report/
+    └── Rodriguez_Katherine_Childcare_Policy_Report.pdf
+```
+
+## Data
+
+The two IPUMS extracts are **not included** in this repository — IPUMS data
+cannot be redistributed. See [`data/raw/README.md`](data/raw/README.md) for the
+exact samples, variables, and filenames needed to recreate them from your own
+IPUMS account.
+
+## Reproducing the analysis
+
+1. **Open the project** by double-clicking `childcare-undervaluation.Rproj`
+   (this sets the working directory to the project root so `here()` resolves
+   paths correctly).
+2. **Add the data** to `data/raw/` as described in `data/raw/README.md`.
+3. **Restore packages** (if using `renv`, see below), or install the packages
+   listed in `R/setup.R`.
+4. **Render the notebooks in order** — the CPS notebook depends on a value
+   written by the ATUS notebook:
+
+   ```r
+   quarto::quarto_render("analysis/01_unpaid_childcare_atus.qmd")
+   quarto::quarto_render("analysis/02_paid_childcare_cps.qmd")
+   ```
+
+   Notebook 01 writes `data/processed/atus_primary_hours.rds` (the mean daily
+   childcare hours of primary caregivers). Notebook 02 reads that file to
+   compute the implied annual value of unpaid care, so **01 must run first.**
+
+## Dependencies
+
+Loaded in `R/setup.R`: `here`, `readr`, `tidyverse`, `survey`, `knitr`,
+`kableExtra`, `scales`. Rendering requires [Quarto](https://quarto.org/).
+
+### Optional: reproducible package versions with `renv`
+
+To pin exact package versions for others, run once in the project:
+
+```r
+install.packages("renv")
+renv::init()      # creates renv.lock capturing your installed versions
+```
+
+Commit the resulting `renv.lock`. Collaborators then run `renv::restore()` to
+install the same versions. (`renv.lock` is not included here because it must be
+generated from a real install.)
+
+## Method note
+
+Estimates are survey-weighted using IPUMS successive-difference replicate
+weights (`svrepdesign`, `mse = TRUE`). Primary caregivers are adults in
+households with a child under five who provided at least six hours of childcare
+on their diary day. Unpaid care is valued at the 2024 BLS mean hourly wage for
+childcare workers ($15.93); the wage constants live in `R/setup.R`.
+
+## License
+
+Code is released under the MIT License (see `LICENSE`). The underlying IPUMS and
+BLS data are subject to their respective providers' terms and are not covered by
+this license.

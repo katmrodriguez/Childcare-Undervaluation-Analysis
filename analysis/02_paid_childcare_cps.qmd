@@ -1,0 +1,782 @@
+---
+title: "CPS - IPMUS: Paid Childcare Workers"
+author: "Katherine Rodriguez"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    number-sections: true
+    theme: cosmo
+editor: visual
+---
+
+## Table of Contents
+
+0.  Introduction/background research
+1.  Setup
+2.  Load and prepare data
+3.  Build survey designs
+4.  Descriptive results (paid care)
+5.  Dollar valuation
+6.  Paid childcare (BLS/CPS)
+7.  Plots / tables
+8.  Concluding thoughts
+
+## Introduction
+
+Childcare is an undervalued service in both unpaid (household labor) and paid work (childcare workforce). Both are closely connected, families supply time, while the childcare industry supplies services. The objective of this project is to estimate the dollar value of unpaid childcare and measure it against market pay for childcare workers, demonstrating that childcare is undervalued both within households and the childcare industry.
+
+**Research Question 2 (comparative)** Among paid childcare workers, how do wages compare to similar occupations (Preschool teachers, Home and Health Aides)? What is the gender composition and race/ethnicity profile of unpaid and paid childcare work?
+
+## Setup
+
+Load necessary libraries.
+
+```{r, message=FALSE, warning=FALSE}
+# Packages, survey options, and BLS wage constants live in R/setup.R.
+source(here::here("R", "setup.R"))
+```
+
+**Survey Defaults**
+
+Survey variance options (`survey.lonely.psu`, `scipen`) are set once in
+`R/setup.R`, sourced above.
+
+## Load and Prepare Data
+
+The data is loaded into the program to prepare for analyses.
+
+```{r}
+# R automatically decompresses .gz files
+# CPS raw extract downloaded from IPUMS-CPS. Place the file at
+# data/raw/cps_ipums.csv.gz (see data/raw/README.md for how to recreate
+# the extract).
+cps_raw <- read_csv(here::here("data", "raw", "cps_ipums.csv.gz"))
+dim(cps_raw)
+```
+
+**Keep ASEC-only observations/Clean Variables**
+
+```{r}
+cps <- cps_raw |>
+  filter(
+    YEAR == 2023,
+    ASECFLAG == 1
+    ) |>
+  
+  #Key variables as numeric
+  mutate(
+    AGE       = as.numeric(AGE),
+    SEX       = as.numeric(SEX),
+    RACE      = as.numeric(RACE),
+    HISPAN    = as.numeric(HISPAN),
+    EMPSTAT   = as.numeric(EMPSTAT),
+    OCC       = as.numeric(OCC),
+    ASECWT    = as.numeric(ASECWT),
+    INCWAGE   = as.numeric(INCWAGE),
+    UHRSWORKT = as.numeric(UHRSWORKT),
+
+    #Convert replicate weights to numeric
+    across(matches("^REPWTP[0-9]+$"), as.numeric),
+    
+    #Clean INCWAGE Variable
+    INCWAGE = ifelse(INCWAGE %in% c(99999999, 99999998), NA_real_, INCWAGE)
+  ) |>
+    
+    #Trim dataset to relevant variables
+    select(
+      YEAR, ASECWT, ASECFLAG, matches("^REPWTP[0-9]+$"),
+      AGE, SEX, RACE, HISPAN, EDUC,
+      EMPSTAT, OCC, INCWAGE, UHRSWORKT,
+  )
+
+dim(cps)
+summary(cps$INCWAGE)
+```
+
+**Save an .rds Version for Faster Reloads**
+
+```{r}
+saveRDS(cps, here::here("data", "processed", "cps_2023_childcare.rds"))
+```
+
+```{r}
+cps <- readRDS(here::here("data", "processed", "cps_2023_childcare.rds"))
+head(cps)
+```
+
+**Recode Sex, Race/Ethnicity and Occupations**
+
+```{r}
+#Clean race up a bit
+cps <- cps |>
+  mutate(
+    RACE = ifelse(RACE == 999, NA_integer_, RACE)
+  )
+
+
+cps <- cps |>
+  mutate(
+    #Recode sex category
+    sex_category = case_when(
+      SEX == 1 ~ "Male",
+      SEX == 2 ~ "Female",
+      TRUE     ~ NA_character_
+    ),
+    female = (sex_category == "Female"),
+    male   = (sex_category == "Male"),
+    
+    #Recode race/ethnicity
+    hispanic_any = case_when(
+      HISPAN == 0 | HISPAN == 100 ~ 0L,
+      HISPAN > 0 & HISPAN < 900   ~ 1L,
+      TRUE                        ~ NA_integer_
+    ),
+    white_nh  = ifelse(hispanic_any == 0L & RACE == 100, 1L, 0L),
+    black_nh  = ifelse(hispanic_any == 0L & RACE == 200, 1L, 0L),
+    native_nh = ifelse(hispanic_any == 0L & RACE == 300, 1L, 0L),
+    asian_nh  = ifelse(
+    hispanic_any == 0L & RACE %in% c(650, 651, 652), 1L, 0L 
+    ),
+    other_nh = ifelse(
+      hispanic_any == 0L &
+        RACE %in% c(
+          700,     #other single rae, n.e.c.
+          801:820, #2-3 race combos (with various combos)
+          830      #4-5 race combos
+        ),
+      1L, 0L
+    ),
+    
+    #Collapsed race/ethnicity category
+    race_cat = case_when(
+      hispanic_any == 1L          ~ "Hispanic",
+      white_nh     == 1L          ~ "White",
+      black_nh     == 1L          ~ "Black",
+      asian_nh     == 1L          ~ "Asian",
+      native_nh    == 1L          ~ "Native American",
+      other_nh     == 1L          ~ "Other/Multiracial",
+      TRUE                         ~ NA_character_
+    ),
+    
+    #Recode occupation groups
+    childcare_worker  = (OCC == 4600),
+    pre_kinder_teach  = (OCC == 2300),
+    #home_health_aide  = (OCC %in% c(3601,3602)), #not needed for this project, but could be added back in if we want to expand to other care occupations
+    
+    #Collapsed occupation category
+    occ_group = case_when(
+      childcare_worker  ~ "Childcare Workers",
+      pre_kinder_teach  ~ "Preschool/ K Teachers",
+      #home_health_aide  ~ "Home Health & Personal Care Aides", removing home health aides for this project to focus on childcare occupations, but could be added back in if we want to expand to other care occupations
+      TRUE              ~ "Other"
+    ),
+    
+    #Factor sex category
+    sex_category = factor(
+     sex_category, levels = c("Female", "Male")  
+    ),
+    
+    #Factor race_cat
+    race_cat = factor(
+     race_cat,
+     levels = c(
+       "White",
+       "Black",
+       "Hispanic",
+       "Asian",
+       "Native American",
+       "Other/Multiracial"
+    )
+  ),
+    #Factor occupation group
+    occ_group = factor(
+      occ_group,
+      levels = c(
+        "Childcare Workers",
+        "Preschool/ K Teachers",
+        #"Home Health & Personal Care Aides", removing for now
+        "Other"
+    )
+  )
+)
+
+#Check recode
+table(cps$sex_category, useNA = "ifany")
+
+```
+
+**Filter to Workers Aged 16 and Older with Positive Wages**
+
+```{r}
+#Define emplyed workers with positive wages
+cps_workers <- cps |>
+  mutate(
+    employed    = EMPSTAT %in% c(10,12),
+    wage_annual = ifelse(INCWAGE > 0, INCWAGE, NA_real_)
+  ) |>
+  
+  #Filter to age > 16
+  filter(
+    AGE >= 16,
+    employed,
+    !is.na(wage_annual)
+  )
+
+cps_workers <- cps_workers |>
+  mutate(
+    full_time = UHRSWORKT >= 35
+  )
+cps_workers
+```
+
+## Build Survey Designs
+
+```{r}
+design_cps <- svrepdesign(
+  data             = cps_workers,
+  weights          = ~ASECWT,
+  repweights       = "REPWTP[0-9]+$",
+  type             = "successive-difference",
+  combined.weights = TRUE,
+  mse              = TRUE
+)
+
+design_cps <- update(
+  design_cps,
+  full_time = cps_workers$full_time
+)
+
+# Mean wages by occupation & race, full-time only
+svyby(
+  ~wage_annual,
+  ~occ_group + race_cat,
+  subset(design_cps, full_time),
+  svymean,
+  na.rm = TRUE
+)
+```
+
+## Descriptive Results
+
+**Composition of Sex Category in Each Occupation**
+
+```{r}
+sex_comp <- svyby(
+  ~sex_category,
+  ~occ_group, 
+  design_cps,
+  svymean,
+  na.rm = TRUE
+)
+sex_comp
+```
+
+**Race/Ethnicity Composition by Occupation**
+
+```{r}
+race_comp <- svyby(
+  ~race_cat,
+  ~occ_group, 
+  design_cps,
+  svymean,
+  na.rm = TRUE
+)
+race_comp
+
+#Proportion of full_time workers by occupation and race
+svyby(
+  ~full_time,
+  ~occ_group + ~race_cat,
+  design_cps,
+  svymean,
+  na.rm = TRUE
+)
+```
+
+**Mean Wages by Occupation**
+
+```{r}
+mean_wage_occ <- svyby(
+  ~wage_annual,
+  ~occ_group,
+  design_cps,
+  svymean,
+  na.rm = TRUE
+)
+mean_wage_occ
+```
+
+**Mean Wage by Occupation and Sex**
+
+```{r}
+mean_wage_sex <- svyby(
+  ~wage_annual,
+  ~occ_group + sex_category,
+  design_cps,
+  svymean,
+  na.rm = TRUE
+)
+mean_wage_sex
+```
+
+**Occupation Mean Wages by Race/Ethnicity**
+
+```{r}
+mean_wage_r <- svyby(
+  ~wage_annual,
+  ~occ_group + race_cat,
+  design_cps,
+  svymean,
+  na.rm = TRUE
+)
+mean_wage_r
+```
+
+## Regression
+
+Preliminary
+
+```{r}
+
+cps_reg <- svyglm(
+  wage_annual ~ occ_group + sex_category + race_cat + full_time + AGE,
+  design = design_cps
+)
+
+summary(cps_reg)
+
+```
+
+**Add Sex x Occupation Interaction**
+
+```{r}
+cps_reg_int <- svyglm(
+  wage_annual ~ occ_group * sex_category + race_cat + full_time + AGE,
+  design = design_cps
+) 
+
+summary(cps_reg_int)
+
+# Check the levels used in the model/design
+levels(design_cps$variables$occ_group)
+levels(design_cps$variables$sex_category)
+levels(design_cps$variables$race_cat)
+class(design_cps$variables$full_time)
+
+```
+
+**Predicted Wages for Each Group**
+
+```{r, eval=FALSE}
+newdat <- expand.grid(
+  occ_group    = c("Childcare Workers", "Preschool/ K Teachers", "Other"),
+  sex_category = c("Female", "Male"),
+  race_cat     = "White",          # fix race to simplify story
+  full_time    = TRUE,             # full-time workers
+  AGE          = 30                # pick a representative age
+)
+
+preds <- predict(
+  cps_reg_int,
+  newdata = newdat,
+  se.fit  = TRUE
+)
+
+pred_df <- newdat |>
+  mutate(
+    wage_pred = as.numeric(preds$fit),
+    wage_se   = as.numeric(preds$se.fit),
+    wage_lo   = wage_pred - 1.96 * wage_se,
+    wage_hi   = wage_pred + 1.96 * wage_se
+  )
+
+pred_df
+
+#Plot
+ggplot(pred_df, aes(x = occ_group, y = wage_pred,
+                    fill = sex_category)) +
+  geom_col(position = position_dodge(width = 0.6)) +
+  geom_errorbar(aes(ymin = wage_lo, ymax = wage_hi),
+                position = position_dodge(width = 0.6),
+                width = 0.2) +
+  labs(
+    x = "Occupation group",
+    y = "Predicted annual wage (US$)",
+    fill = "Sex",
+    title = "Predicted annual wages by occupation and sex\n(White, age 35, full-time, CPS 2023)"
+  ) +
+  scale_y_continuous(labels = scales::dollar_format())
+
+
+```
+
+## Summary Table
+
+**Key Statistics by Occupation**
+
+```{r}
+## 1. Mean wage by occupation ----
+wage_occ <- svyby(
+  ~ wage_annual,
+  ~ occ_group,
+  design_cps,
+  svymean,
+  na.rm = TRUE
+) |>
+  as.data.frame() |>
+  rename(
+    mean_wage = wage_annual,
+    se_wage   = se
+  )
+
+## 2. Sex composition by occupation ----
+# (Using the structure you showed earlier:
+#  columns I(sex_category)Female, I(sex_category)Male, se1, se2)
+
+sex_occ <- svyby(
+  ~ sex_category,
+  ~ occ_group,
+  design_cps,
+  svymean,
+  na.rm = TRUE
+) |>
+  as.data.frame() |>
+  mutate(
+    pct_female = sex_categoryFemale * 100,
+    pct_male   = sex_categoryMale   * 100
+  ) |>
+  select(occ_group, pct_female, pct_male)
+
+## 3. Full-time share by occupation ----
+ft_occ <- svyby(
+  ~ full_time,
+  ~ occ_group,
+  design_cps,
+  svymean,
+  na.rm = TRUE
+) |>
+  as.data.frame() |>
+  mutate(
+    pct_fulltime = full_timeTRUE * 100
+  ) |>
+  select(occ_group, pct_fulltime)
+
+## 4. Join everything into one CPS summary table ----
+cps_table <- wage_occ |>
+  select(occ_group, mean_wage, se_wage) |>
+  left_join(sex_occ, by = "occ_group") |>
+  left_join(ft_occ, by = "occ_group")
+
+cps_table
+```
+
+**Put Table into Kable Format**
+
+```{r}
+cps_table_display <- cps_table |>
+  mutate(
+    # pretty formatting
+    mean_wage_fmt = sprintf("$%s", format(round(mean_wage, 0), big.mark = ",")),
+    se_wage_fmt   = sprintf("$%s", format(round(se_wage,   0), big.mark = ",")),
+    pct_female_fmt   = sprintf("%.1f%%", pct_female),
+    pct_male_fmt     = sprintf("%.1f%%", pct_male),
+    pct_fulltime_fmt = sprintf("%.1f%%", pct_fulltime)
+  ) |>
+  select(
+    `Occupation group` = occ_group,
+    `Mean annual wage` = mean_wage_fmt,
+    `SE (wage)`        = se_wage_fmt,
+    `% female`         = pct_female_fmt,
+    `% male`           = pct_male_fmt,
+    `% full-time`      = pct_fulltime_fmt
+  )
+
+kable(
+  cps_table_display,
+  caption = "Summary of paid care and other occupations, CPS ASEC 2023",
+  align   = c("l", "r", "r", "r", "r", "r")
+) |>
+  kable_styling(full_width = FALSE)
+```
+
+## Visualizations
+
+**Mean Wages by Occupation Plot**
+
+```{r}
+mean_wage_occ <- svyby(
+  ~wage_annual,
+  ~occ_group,
+  design_cps,
+  svymean,
+  na.rm = TRUE
+)|> 
+ data.frame()|>
+
+ mutate(
+    mean_wage = wage_annual,
+    se_wage   = se
+  )
+mean_wage_occ
+ggplot(mean_wage_occ, aes(x = occ_group, y = mean_wage)) +
+  geom_col(fill = "#6C4B9E") +
+  #coord_flip() +
+  geom_errorbar(aes(ymin = mean_wage - 1.96 * se_wage, 
+                    ymax = mean_wage + 1.96 * se_wage),
+                width = 0.2) +
+  labs(
+    x = "Occupation Group",
+    y = "Mean Annual Wage (USD)",
+    title = "Mean Annual Wages by Occupation Group",
+    ) + 
+   theme_minimal() +
+   theme(axis.text.x = element_text(angle = 20, hjust = 1), 
+   plot.title   =  element_text(hjust = 0.5),    
+   panel.border = element_rect(color = "black", fill = NA, linewidth =1))
+```
+
+**Sex Composition by Occupation Plot**
+
+```{r}
+sex_comp_long <- sex_comp |>
+  tibble::as_tibble() |>
+  tidyr::pivot_longer(
+    cols = c(sex_categoryFemale, sex_categoryMale),
+    names_to = "sex",
+    values_to = "share"
+  ) |>
+  mutate(
+    sex = ifelse(grepl("Female", sex), "Female", "Male"),
+    share_pct = share * 100
+  )
+
+ggplot(sex_comp_long, aes(x = occ_group, y = share_pct, fill = sex)) +
+  geom_col(position = "dodge") +
+  coord_flip() +
+  scale_fill_manual(values = c("Female" = "#2C3E50", "Male" = "#1ABC9C")) +
+  geom_text(
+    aes(label = paste0(round(share_pct, 1), "%")),
+    position = position_dodge(width = 0.7),
+    hjust = -0.2,
+    fontface = "bold",
+    color = "grey30",
+    size = 3.2
+  ) +
+  labs(
+    x = NULL,
+    y = "Share of workers",
+    fill = NULL
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "bottom"
+  )
+```
+
+**Race/Ethnicity Composition by Occupation**
+
+```{r}
+race_comp_long <- race_comp |>
+  mutate(
+    pct_white     =  race_catWhite    * 100,
+    pct_black     =  race_catBlack    * 100,
+    pct_hispanic  =  race_catHispanic * 100,
+    pct_asian     =  race_catAsian    * 100,
+    pct_native    = `race_catNative American`   * 100,
+    pct_other     = `race_catOther/Multiracial` * 100
+  ) |>
+  select(occ_group, starts_with("pct_")) |>
+  pivot_longer(
+    cols      = starts_with("pct_"),
+    names_to  = "race",
+    values_to = "pct"
+  )
+
+ggplot(race_comp_long, aes(x = occ_group, y = pct, fill = race))+
+  geom_col(position = "fill") +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  labs(
+    x = "Occupation Group",
+    y = "Composition",
+    title = "Racial/Ethnicity Composition of Childcare and Care Occupation"
+  )+
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 20, hjust = 1),
+   plot.title   =  element_text(hjust = 0.5),    
+   panel.border = element_rect(color = "black", fill = NA, linewidth =1)) 
+
+```
+
+**Mean Wages by Occupation and Sex**
+
+```{r}
+mean_wage_sex <- svyby(
+  ~wage_annual,
+  ~occ_group + sex_category,
+  design_cps,
+  svymean,
+  na.rm = TRUE
+)|>
+  mutate(
+    mean_wage = wage_annual,
+    se_wage   = se
+  )
+mean_wage_sex
+ggplot(mean_wage_sex, aes(x = occ_group, y = mean_wage, fill = sex_category)) +
+  geom_col(position = "dodge") +
+  geom_errorbar(aes(ymin = mean_wage - 1.96 * se_wage, 
+                    ymax = mean_wage + 1.96 * se_wage),
+                position = position_dodge(width = 0.9),
+                width = 0.2) +
+  scale_fill_manual(values = c("Female" = "#6C4B9E", "Male" = "grey40")) +
+  labs(
+    x = "Occupation Group",
+    y = "Mean Annual Wage (USD)",
+    title = "Gender Wage Differences by Occuptation"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 20, hjust = 1),
+  plot.title   =  element_text(hjust = 0.5),    
+  panel.border = element_rect(color = "black", fill = NA, linewidth =1))
+```
+
+## Dollar Valuation of Unpaid Childcare
+
+**Implied Annual Value of Unpaid Care**
+
+```{r}
+#Mean childcare rate (defined once in R/setup.R)
+childcare_rate <- BLS_WAGE_CHILDCARE_WORKER
+
+#Average hours per day of childcare for primary caregivers.
+#This value is produced by 01_unpaid_childcare_atus.qmd, which writes it to
+#data/processed/atus_primary_hours.rds. Run that notebook first. Reading the
+#saved artifact (instead of copying the number by hand) keeps the two
+#notebooks in sync.
+atus_primary_hours <- readRDS(
+  here::here("data", "processed", "atus_primary_hours.rds")
+)
+
+mean_cc_hrs_post <- atus_primary_hours$mean_cc_hrs
+se_cc_hrs_post   <- atus_primary_hours$se_cc_hrs
+as.numeric(mean_cc_hrs_post)
+
+unique(mean_wage_occ$occ_group)
+
+#Implied annual value of unpaid childcare
+unpaid_val_annual <- mean_cc_hrs_post * childcare_rate * 365
+unpaid_val_annual
+
+childcare_annual  <- mean_wage_occ$mean_wage[mean_wage_occ$occ_group == "Childcare Workers"]
+prek_annual       <- mean_wage_occ$mean_wage[mean_wage_occ$occ_group == "Preschool/ K Teachers"]
+homehealth_annual <- mean_wage_occ$mean_wage[mean_wage_occ$occ_group == "Other"] 
+
+
+unique(mean_wage_occ$occ_group)
+valuation_df <- tibble(
+  group = c(
+    "Unpaid Primary Caregiver (implied)",
+    "Childcare Workers (paid)",
+    "Preschool/ K Teachers (paid)",
+    "Other (paid)"
+  ),
+
+  annual_value = c(
+    unpaid_val_annual,
+    childcare_annual,
+    prek_annual,
+    homehealth_annual
+  )
+)
+
+valuation_df <- valuation_df |>
+  mutate(
+    annual_value_k = annual_value / 1000
+  )
+
+valuation_df
+
+# Color palette: unpaid highlighted, paid uniform
+val_colors <- c(
+  "Unpaid Primary Caregiver (implied)" = "#6C4B9E",   # highlight purple
+  "Childcare Workers (paid)"           = "#8FB3D9",   # uniform blue
+  "Preschool/ K Teachers (paid)"       = "#8FB3D9",   # uniform blue
+  "Other (paid)"                       = "#8FB3D9"    # uniform blue
+) 
+
+
+#Bar Plot
+ggplot(valuation_df, aes(x = group, y = annual_value_k))+ 
+  geom_col(col = "grey40") +
+  geom_text(
+    aes(label = paste0("$", round(annual_value_k, 1), "k")),
+    position = position_dodge(width = 0.7),
+    hjust = 1.2,
+    fontface = "bold",
+    color = "white",
+    size = 3.2
+  ) +
+  scale_fill_manual(values = val_colors) +
+  labs(
+    x = NULL,
+    y = "Annual Value (in thousands USD)"
+    #subtitle = "Unpaid Value Based on Atus Hours (2021-2024) \n x Childcare Worker Hourly Wage"
+  ) +
+  coord_flip() +
+  theme_minimal() +
+  theme(
+  plot.title   =  element_text(hjust = 0.5))
+```
+
+```{r}
+mean_wage_occ$occ_group
+```
+
+**Implied Annual Value of Unpaid Care B**
+
+```{r}
+
+# Color palette: unpaid highlighted, paid uniform
+val_colors <- c(
+  "Unpaid Primary Caregiver (implied)" = "#1ABC9C",   # teal
+  "Childcare Workers (paid)"           = "#2C3E50",   # uniform blue
+  "Preschool/ K Teachers (paid)"       = "#2C3E50",   # uniform blue
+  "Other (paid)"                       = "#2C3E50"    # uniform blue
+)
+
+# Ensure ordering
+valuation_df$group <- factor(
+  valuation_df$group,
+  levels = c(
+    "Unpaid Primary Caregiver (implied)",
+    "Childcare Workers (paid)",
+    "Preschool/ K Teachers (paid)",
+    "Other (paid)"
+  )
+)
+
+# Plot
+ggplot(valuation_df, aes(x = group, y = annual_value_k, fill = group)) +
+  geom_col(color = "grey40") +
+  geom_text(
+    aes(label = paste0("$", round(annual_value_k, 1), "k")),
+    hjust = 1.2,
+    fontface = "bold",
+    color = "white",
+    size = 3.2
+  ) +
+  scale_fill_manual(values = val_colors) +
+  labs(
+    x = NULL,
+    y = "Annual Value (in thousands USD)"
+  ) +
+  coord_flip() +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title   = element_text(hjust = 0.5),
+    legend.position = "none"
+  )
+
+
+```

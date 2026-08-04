@@ -1,0 +1,1834 @@
+---
+title: "WIL Draft"
+author: "Katherine Rodriguez"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    number-sections: true
+    theme: cosmo
+editor: visual
+---
+
+# Table of Contents
+
+0.  Introduction/background research
+1.  Setup
+2.  Load and tidy data
+3.  Build survey designs
+4.  Descriptive results (unpaid care)
+5.  Dollar valuation
+6.  Plots / tables
+7.  Concluding thoughts
+
+# Introduction
+
+Childcare is an undervalued service in both unpaid (household labor) and paid work (childcare workforce). Both are closely connected, families supply time, while the childcare industry supplies services. The objective of this project is to estimate the dollar value of unpaid childcare and measure it against market pay for childcare workers, demonstrating that childcare is undervalued both within households and the childcare industry.
+
+**Research Question 1** What is the dollar value of unpaid childcare in families and what is the gender composition and socioeconomic background of unpaid/paid childcare work?
+
+## Setup
+
+Load necessary libraries.
+
+```{r, message=FALSE, warning=FALSE}
+# Packages, survey options, and BLS wage constants live in R/setup.R;
+# survey-summary helper functions live in R/functions.R. Sourcing them
+# keeps this notebook consistent with the CPS notebook.
+source(here::here("R", "setup.R"))
+source(here::here("R", "functions.R"))
+```
+
+**Survey Defaults**
+
+The code below is a global setting for the survey package in R. It controls what to do when a stratum has only one primary sampling unit (PSU) - dubbed "lonely PSU". In complex surveys, variance estimation usually relies on having at least two PSUs per stratum to estimate variability. When there's only one PSU in a stratum, standard formulas break down, so the package has to choose a strategy. For my project thus far, this option is not necessary since I am using replicate-weight designs and survey.lonely.psu matters for Taylor linearization designs (svydesign), not replicate - weight ones. The variance comes from my replicates. Nonetheless, it is included as of now in case I decide to create a svydesign object. If I end up building a CPS design using svydesign, then having this option is useful.
+
+"survey.lonely.psu" can be set to several values, but the common ones are:
+
+- "fail": throw an error when a lonely PSU is found.
+
+- "remove": drop lonely PSUs (you lose that data).
+
+- "certainty": treat lonely PSUs as certainty strata (variance contribution = 0 from that stratum).
+
+- "adjust": apply a small adjustment (essentially scaling up the variance from other strata to compensate).
+
+**Helper Functions for Summaries**
+
+The survey-summary helpers used throughout this notebook are defined once in
+`R/functions.R` (sourced in the Setup chunk above) so that a single copy is
+maintained:
+
+- `get_mean_se_multi(formula, design, group_name, period)` — runs `svymean()`
+  on one or more variables and returns a tidy data frame of means and SEs
+  tagged with a group and period label.
+- `get_comp_row(design, group_label, period_label)` — sex + race/ethnicity
+  composition for one design ("nh" = non-Hispanic).
+- `get_df_value(design, group_name, period, wage)` — mean childcare hours plus
+  the implied daily and annual dollar valuation at a given hourly wage.
+- `get_sex_comp(design, role_label)` — sex composition (share + SE) for one
+  design, labeled by role.
+
+# Load and Tidy Data
+
+The data is loaded into the program to prepare for analyses.
+
+```{r}
+# R automatically decompresses .gz files
+# ATUS raw extract downloaded from IPUMS-ATUS. Place the file at
+# data/raw/atus_ipums.csv.gz (see data/raw/README.md for how to recreate
+# the extract). here() resolves paths from the project root, so this works
+# on any machine without editing.
+atus <- read_csv(here::here("data", "raw", "atus_ipums.csv.gz"))
+
+# Peek at the first few rows
+head(atus)
+```
+
+Determining if replicate weights are within the data set that was downloaded.
+
+```{r, include=FALSE, echo=TRUE}
+# 1. Do replicate weight columns actually exist?
+grep("^RWT06_", names(atus), value = TRUE)
+grep("^RWT20_", names(atus), value = TRUE)
+
+# 2. How many NAs in your main weights?
+colSums(is.na(atus[, c("WT06", "WT20")]))
+
+# 3. Are any RWT06 / RWT20 columns non-numeric?
+sapply(atus[, grep("^RWT06_", names(atus))], class)
+sapply(atus[, grep("^RWT20_", names(atus))], class)
+
+grep("^RWT", names(atus), value = TRUE)
+
+```
+
+**Coerce Weights to Numeric**
+
+```{r}
+atus <- atus %>%
+  mutate(
+    # main weights
+    WT06 = suppressWarnings(as.numeric(WT06)),
+    WT20 = suppressWarnings(as.numeric(WT20)),
+    # replicate weights: keep as numeric; don't touch NAs yet
+    across(matches("^RWT06_\\d+$"), ~ suppressWarnings(as.numeric(.))),
+    across(matches("^RWT20_\\d+$"), ~ suppressWarnings(as.numeric(.)))
+  )
+```
+
+**Tidy Variables**
+
+Variables were generated to aid in analysis:
+
+- Periods: 2018-2019, 2020, 2021-2024
+
+- Households with children
+
+- Households with children under 5
+
+- Work status for the day
+
+- Childcare hours (primary + secondary)
+
+- Sex for female/male
+
+- Race identifiers
+
+```{r}
+atus <- atus |>
+  mutate(
+    period = case_when(
+      YEAR %in% 2018:2019 ~ "2018-2019",
+      YEAR == 2020        ~ "2020",
+      YEAR >= 2021        ~ "2021-2024",
+      TRUE ~ NA_character_
+    ),
+    period = factor(period, levels = c("2018-2019", "2021-2024"))
+  )
+```
+
+```{r}
+atus <- atus |>
+  mutate(
+     # Kids in household
+    has_kids = HH_NUMKIDS > 0, #Has kids in household
+    
+    # Youngest child in household, under 5, likely not in school yet
+    youngest_under5 = 
+      !is.na(AGEYCHILD) & AGEYCHILD < 5, #Youngest child under 5
+    
+    # Work status
+    work_today = ACT_WORK > 0, #Did some paid work today
+    not_work_today = ACT_WORK == 0, #No work today
+    
+    # Childcare (primary + secondary) in hours (cc = childcare)
+    cc_primary_hr = ACT_CAREHH / 60, 
+    cc_secondary_hr = SCC_HH / 60, 
+    cc_total_hr = (ACT_CAREHH + SCC_HH) / 60,
+    any_childcare = cc_total_hr > 0,
+    
+    # SEX
+    female = (SEX == 2),
+    male   = (SEX == 1),
+    
+    #Treat NIU as NA for race
+    race_code = ifelse(RACE == 9999, NA, RACE),
+    
+    #Hispanic (any origin)
+    hispanic_any = !(HISPAN %in% c(100, 9999)),
+    
+    #Non-hispanic Race/ethnicity
+    white_nh  = !hispanic_any & race_code == 100, #white only
+    black_nh  = !hispanic_any & race_code == 110, #black only 
+    native_nh = !hispanic_any & race_code == 120, #native only
+    asian_nh  = !hispanic_any & race_code %in% c(130, 131, 132), #asian/PI only
+    
+    #All other non-hispanic combos (multiracial/other)
+    other_nh  = !hispanic_any & !is.na(race_code) &
+                !(race_code %in% c(100,110,120,130,131,132))
+    
+)
+```
+
+**Create Race/Ethnicity Category Variable for Summaries**
+
+```{r}
+atus <- atus |>
+  mutate(
+    race_cat = case_when(
+      hispanic_any ~ "Hispanic",
+      white_nh     ~ "White",
+      black_nh     ~ "Black",
+      native_nh    ~ "Native American",
+      asian_nh     ~ "Asian/Pacific Islander",
+      other_nh     ~ "Other/Multiracial",
+      TRUE         ~ NA_character_ #for safety / NIU
+    ),
+    race_cat = factor(
+      race_cat,
+      levels = c(
+        "White",
+        "Black",
+        "Native American",
+        "Asian/Pacific Islander",
+        "Other/Multiracial",
+        "Hispanic"
+      )
+    )
+  )
+
+#Factor race_cat
+atus <- atus |>
+  mutate(
+    race_cat = factor(race_cat)
+  )
+
+```
+
+**Create SEX Category Variable for Summaries**
+
+```{r}
+atus <- atus |>
+  mutate(
+    sex_category = case_when(
+      female ~ "Female",
+      male   ~ "Male",
+      TRUE   ~ NA_character_ #for safety 
+      )
+    )
+```
+
+**Create SEX-RACE Category Variable for Summaries**
+
+```{r}
+atus <- atus |>
+  mutate(sex_race = interaction(sex_category, race_cat, drop = TRUE))
+```
+
+**Create Family Income Variable**
+
+- Low income: less than \$40,000
+
+- Middle income: \$40,000 - \$99,999
+
+- High income: \$100,000 and above
+
+Family income is reported in ATUS as categorical ranges. We classify family income into three groups as stated above. These cutpoints are selected so that "low" falls clearly below the national median, "middle" spans roughly the \$40-100k range around the median, and "high" reflects households with at least \$100,000 in annual family income.
+
+To note, external sources (e.g., FRED) sometimes define "high income" at somewhat higher thresholds (e.g., \$120-130k+), but the coarseness of the ATUS income bins does not allow finer distinctions. Our "high income" category should therefore be interpreted as a higher-income group within the ATUS sample rather than a strict economic classification.
+
+```{r}
+
+atus <- atus |>
+  mutate(
+    # Step 1: Strip IPUMS labels and convert to plain numbers
+    FAMINCOME_num = as.numeric(FAMINCOME),
+    # Step 2: Create categorical variable based on ranges
+    faminc_cat = case_when(
+     FAMINCOME %in% 1:10   ~ "Low (<$40k)",
+     FAMINCOME %in% 11:14  ~ "Middle ($40k-$99,999)",
+     FAMINCOME %in% 15:16  ~ "High (>=$100k)",
+     FAMINCOME %in% c(996,997,998) ~ "Missing/Refused", #Refused / DK / Blank 
+     is.na(FAMINCOME)              ~ "Missing/Refused",
+     TRUE                          ~ "Missing/Refused"
+  ),
+  faminc_cat = factor(
+  faminc_cat,
+  levels = c(
+             "Low (<$40k)", 
+             "Middle ($40k-$99,999)", 
+             "High (>=$100k)", 
+             "Missing/Refused")
+  )
+)
+```
+
+## Notes
+
+**Important notes about weights in ATUS:**
+
+- Weights such as WT06 and WT20, is a probability weight saying how many people in the population this respondent represents. Each row has a person weight called WT06 or WT20. ATUS is a sample, not everyone in the USA is in it.
+
+- When you compute a mean, R multiplies each person by their weight, then normalizes, so you get a population estimate, not just a simple average of the sample.
+
+- Thus, weights = \~WT06 is your base weight.
+
+**Important notes about replicate weights in ATUS:**
+
+- repweights = "RWT06\_\[1-9\]+": this argument identifies the replicate weight columns.
+
+- IPMUS ATUS gives 160 replicate weight variables for each main weight (RWT06_1 to RWT06_160 for WT06, and RWT20_1 to RWT20_160 for WT20).
+
+- Instead of listing all 160 by hand, we give a regular expression ("RWT06\_\[1-9\]+") that matches all those column names.
+
+- The survey doc says repweights can be a regex string: it will automatically grab all columns whose names match it.
+
+- Each replicate column is a slightly different set of weights constructed by BLS. Running the statistic on each replicate and then looking at how much the estimates vary is what gives the standard error.
+
+**type = "successive-difference"**
+
+This specifies the replication method used to create the replicate weights. The successive difference replication method is recommended by IPUMS for ATUS data. It accounts for the survey's complex design, including stratification and clustering, to provide accurate variance estimates.
+
+**mse = TRUE**
+
+This states: "When you compute the variance, treat it as a mean squared error around the full-sample estimate, not the mean of the replicates themselves."
+
+Technically:
+
+- With mse = TRUE, variance is based on squared deviations of each replicate estimate from the full-sample estimate (($\hat{\theta}_r - \hat{\theta}$)$^2$).
+
+- With mse = FALSE, it's based on deviations around the mean of the replicate estimates (slighty different center).
+
+For ACS/SDR and IPUMS-style replicates, the docs strongly recommend mse = TRUE.
+
+So this choice is about getting the right standard error definition for this particular design.
+
+## Summary of code explanations
+
+In my childcare project, the design object encodes:
+
+- Which rows are in the sample (ATUS extract).
+
+- How much each row "counts" in the population (via WT06 or WT20).
+
+- How to compute uncertainty using SDR replicate weights (RWT06\_\* or RWT20\_\*) with the correct scaling.
+
+Once design_wt06 is defined, any call like:
+
+svymean(\~ACT_CAREHH, design_wt06)
+
+uses all of that information (weights + replicate structure) to give you:
+
+- the weighted mean of ACT_CAREHH (minutes of childcare), and
+
+- a standard error that respects the complex survey design, as recommended in the ATUS user guide.
+
+# Build Survey Designs
+
+**Split Data into WT06 and WT20**
+
+```{r}
+
+#Create year-specific subsets with non-missing main weights
+#years that use WT06 (all but 2020)
+atus_wt06 <- atus |>
+  filter(!is.na(WT06), YEAR != 2020)
+
+#Drop any remaining NA replicate weights (paranoid but safe)
+rwt06_cols <- grep("^RWT06_\\d+$", names(atus_wt06), value = TRUE)
+
+atus_wt06 <- atus_wt06 |>
+  filter(if_all(all_of(rwt06_cols), ~ !is.na(.)))
+```
+
+**Build Replicate-Weight Designs**
+
+```{r}
+
+# Recommended by IPUMS: use successive difference
+
+# (RWT06 with WT06)
+design_wt06 <- svrepdesign(
+  data       = atus_wt06,
+  weights    = ~WT06,
+  repweights = "RWT06_[0-9]+",  # regex to match all RWT06_1...RWT06_160
+  type       = "successive-difference",
+  combined.weights = TRUE,
+  mse        = TRUE
+)
+
+#Main pooled design: all years except 2020 (2018-2019, 2021-2024)
+design_main <- subset(
+  design_wt06,
+  YEAR >= 2018 & YEAR <= 2024
+)
+
+table(design_main$variables$YEAR)
+```
+
+## Primary Caregivers
+
+I want to filter my data that looks at primary caregivers of children that are not in primary and secondary school nor other child care options. I explore this because I want to see how many primary caregivers are providing care to children that are not in school or other care options.
+
+### Methods include:
+
+- Filtering for children under the age of 5. On average, most children attend kindergarten at the age of 5 or 6.
+
+- In addition to the above step, I will filter parents/guardians that received no paid work.
+
+- Finally, I will filter for employees caregivers and those that and/or do housework, cooking, etc, while still being the sole caregiver.
+
+In summary we have essentially four groups:
+
+1.  Primary caregivers: all households with at least one child under 5 and caregiving \>= 6 hours
+
+2.  Employed primary caregivers: primary caregiver and worked today
+
+3.  Unemployed primary caregivers: primary caregiver and not worked today
+
+4.  Children under 5 with no paid work and/or are employed caregivers or do housework, cooking, etc.
+
+**Caregiver Flags Added to Designs**
+
+```{r}
+add_childcare_flags <- function(design) {
+  update(
+    design,
+    
+    #Under 5 households
+    under5_hh = youngest_under5 & has_kids,
+    
+    #Primary caregiver
+    primary_caregiver = under5_hh & (cc_total_hr >= 6),
+    
+    #Employed caregiver
+    employed_caregiver = primary_caregiver & work_today,
+    
+    #Unemployed primary caregiver
+    unemploy_primary_caregiver = primary_caregiver & not_work_today,
+    
+    #Multitasking caregiver: provides childcare while doing other tasks
+    #& secondary childcare
+    multitask_caregiver = primary_caregiver & (cc_secondary_hr > 0),
+    
+    #Multitasking & employed caregiver
+    multitask_caregiver_employed = multitask_caregiver & work_today,
+    
+    #Sex - Race Interaction
+    sex_race = interaction(sex_category, race_cat, drop = TRUE)
+  )
+}
+
+#Add above to each design
+design_main <- add_childcare_flags(design_main)
+```
+
+**Subset designs to particular groups**
+
+Baseline caregivers: any adult that is considered to give some level of childcare.
+
+```{r}
+#Among caregivers only
+design_caregivers <- subset(design_main, cc_total_hr > 0) #(all years except 2020)
+```
+
+### Restricted to those with particular caregiving flags.
+
+```{r}
+#All under 5 years old children households
+design_under5 <- subset(design_main, under5_hh)
+
+#Primary caregivers 
+design_primary <- subset(design_main, primary_caregiver)
+
+#Employed primary caregivers 
+design_primary_employed <- subset(design_main, employed_caregiver)
+
+#Unemployed primary caregivers
+design_unempcaregiver <- subset(design_main, unemploy_primary_caregiver)
+
+#Multitasking and providing childcare
+design_multitask <- subset(design_main, multitask_caregiver)
+
+#Multitask plus worked plus childcare
+design_work_multitask <- subset(design_main, multitask_caregiver & work_today)
+
+# Employed primary caregivers (primary + worked today)
+design_main_empcaregiver <- subset(design_main, under5_hh & primary_caregiver
+                                   & work_today)
+## or: & employed_caregiver if that's your combined flag
+```
+
+# Descriptive Analysis
+
+## Race/Ethnicity Composition of Caregiver Roles
+
+```{r}
+# Race Proportions of full ATUS Sample
+svymean(~factor(race_cat), design_main)
+
+# Race Probability of being in an Under-5 Household
+svyby(~under5_hh, ~race_cat, design_main, svymean)
+
+# Race Probability of being a Primary Caregiver
+svyby(~primary_caregiver, ~race_cat, design_under5, svymean)
+
+
+##OR
+design_all <- design_main   # full adult sample, 2020 excluded
+
+#Race composition in full sample
+race_full_est <- svymean(~factor(race_cat), design_all, na.rm = TRUE)
+
+race_full <- tibble::tibble(
+  race_cat = trimws(gsub("factor\\(race_cat\\)", "", names(coef(race_full_est)))),
+  pct_full = as.numeric(coef(race_full_est)) * 100,
+  se_full  = as.numeric(SE(race_full_est))   * 100
+)
+
+# Within each race: % in under-5 household
+under5_by_race_est <- svyby(
+  ~I(under5_hh),
+  ~race_cat,
+  design_all,
+  svymean,
+  na.rm.by = TRUE
+) |> as.data.frame()
+
+under5_by_race <- under5_by_race_est |>
+  dplyr::transmute(
+    race_cat   = as.character(race_cat),
+    pct_under5 = `I(under5_hh)TRUE` * 100,
+    se_under5  = se2 * 100
+  )
+under5_by_race
+# Within under-5 households of each race: % who are primary caregivers
+primary_by_race_est <- svyby(
+  ~I(primary_caregiver),
+  ~race_cat,
+  subset(design_all, under5_hh),
+  svymean,
+  na.rm.by = TRUE
+) |> as.data.frame()
+
+primary_by_race <- primary_by_race_est |>
+  dplyr::transmute(
+    race_cat = as.character(race_cat),
+    pct_primary_given_under5 = `I(primary_caregiver)TRUE` * 100,
+    se_primary_given_under5  = se2 * 100
+  )
+
+# Merge into one pipeline table + compute implied "drop-offs"
+race_pipeline <- race_full |>
+  dplyr::left_join(under5_by_race, by = "race_cat") |>
+  dplyr::left_join(primary_by_race, by = "race_cat") |>
+  dplyr::mutate(
+    # % of ALL adults of that race who are primary caregivers
+    pct_primary_of_race = pct_under5 * pct_primary_given_under5 / 100,
+
+    # Optional: how much of the TOTAL sample are under5 + primary, by race
+    pct_total_under5_race  = pct_full * pct_under5 / 100,
+    pct_total_primary_race = pct_full * pct_primary_of_race / 100
+  ) |>
+  dplyr::arrange(dplyr::desc(pct_full))
+
+# Display (rounding for readability)
+race_pipeline |>
+  dplyr::mutate(dplyr::across(where(is.numeric), ~round(.x, 1))) |>
+  dplyr::select(
+    race_cat,
+    pct_full,
+    pct_under5,
+    pct_primary_given_under5,
+    pct_primary_of_race
+  ) |>
+  knitr::kable(
+    col.names = c("Race/ethnicity",
+                  "% of full sample",
+                  "% in under-5 households (within race)",
+                  "% primary caregiver (within under-5, race)",
+                  "% primary caregiver (within race)")
+  )
+```
+
+**Composition of Caregivers**
+
+```{r}
+#Distribution of race among caregivers with children under 5
+svymean(~factor(race_cat), design_under5, na.rm = TRUE)
+
+#Distribution of sex among caregivers with children under 5
+svymean(~factor(sex_category), design_under5, na.rm = TRUE)
+```
+
+Baseline descriptive: all adults providing childcare with children under 18
+
+```{r}
+#Weighted means
+svymean(~cc_total_hr, design_main, na.rm = TRUE) #Clean headline number
+svymean(~cc_primary_hr + cc_secondary_hr + cc_total_hr, design_main, na.rm = TRUE)
+
+#Proportion with any household childcare
+svymean(~any_childcare, design_main, na.rm = TRUE)
+
+#Among caregivers only
+svymean(~cc_total_hr,  design_caregivers, na.rm = TRUE)
+```
+
+Restricted to those with particular caregiving flags. Those parents with young kids that are not in school or other care options.
+
+```{r}
+#Proportion of households with under 5 child
+prop_un5 <- svymean(~under5_hh, design_main)
+
+#Average with under 5 childcare hours for all households
+svymean(~cc_total_hr, design_under5)
+
+#Proportion of under 5 households that provide any childcare
+svymean(~I(cc_total_hr > 0), design_under5)
+
+#Proportion of primary caregivers
+prop_prim <- svymean(~primary_caregiver, design_main)
+
+#Average childcare hours among primary caregivers
+svymean(~cc_total_hr, design_primary)
+
+#Proportion of employed caregivers
+prop_emp <- svymean(~employed_caregiver, design_main)
+
+#Average care hours for employed caregivers
+svymean(~cc_total_hr, design_primary_employed)
+
+#Proportion of unemployed caregivers
+svymean(~unemploy_primary_caregiver, design_main)
+
+#Average care hours for multitask caregivers
+svymean(~cc_total_hr, design_unempcaregiver)
+
+#Proportion of multitaskers caregivers
+#Note this group is essentially the same as primary caregiver
+svymean(~multitask_caregiver, design_main)
+
+#Average care hours for multitask caregivers
+svymean(~cc_total_hr, design_multitask)
+
+#Proportion of employed multitask caregivers
+#Note this group is essentially the same as employed primary caregiver
+svymean(~multitask_caregiver & work_today, design_main)
+
+#Average care hours for employed multitask caregivers
+svymean(~cc_total_hr, design_work_multitask)
+
+prop_un5
+prop_emp
+prop_prim
+```
+
+We can also ask among primary caregivers, what share worked today?
+
+```{r}
+svymean(~work_today, subset(design_main,  primary_caregiver))
+```
+
+## Sex Composition of Caregiver Roles
+
+**Sex Composition within Full ATUS sample, then probability of sex within caregiver groups.**
+
+```{r}
+# Sex Proportions of full ATUS Sample
+svymean(~factor(sex_category), design_main)
+
+# Sex Probability of being in an Under-5 Household
+svyby(~under5_hh, ~sex_category, design_main, svymean)
+
+# Sex Probability of being a Primary Caregiver
+svyby(~primary_caregiver, ~sex_category, design_under5, svymean)
+```
+
+```{r}
+#Proportion of female primary caregivers
+svymean(~sex_category, design_primary,  na.rm = TRUE)
+
+#Proportion of female employed caregivers
+svymean(~sex_category, design_primary_employed, na.rm = TRUE)
+
+#Proportion of female multitasker caregivers
+svymean(~sex_category, design_multitask,  na.rm = TRUE)
+
+#Proportion of female employed multitasker caregivers
+svymean(~sex_category, design_work_multitask,  na.rm = TRUE)
+```
+
+**Caregiving Hours by Sex**
+
+```{r}
+#Average childcare hours among all females
+avg_hr_under5 <- svyby(~cc_total_hr, ~sex_category, design_under5, svymean,  na.rm = TRUE)
+avg_hr_under5
+
+#Average childcare hours among female primary caregivers
+svyby(~cc_total_hr, ~sex_category, design_primary, svymean,  na.rm = TRUE)
+
+#Average childcare hours among female employed primary caregivers
+svyby(~cc_total_hr, ~sex_category, design_primary_employed, svymean, na.rm = TRUE)
+```
+
+We can also ask among female primary caregivers, what share worked today?
+
+```{r}
+#Female primary caregivers who worked today
+svymean(~work_today, subset(design_primary,  female,), na.rm = TRUE)
+
+#Male primary caregivers who worked today
+svymean(~work_today, subset(design_primary, male,), na.rm = TRUE)
+```
+
+Code below is the same question as above , but a different output format.
+
+```{r}
+emp_rate_primary_sex <- svyby(~work_today,~sex_category, design_primary, 
+                              svymean, na.rm = TRUE)|>
+  as.data.frame() |>
+  mutate(
+    pct_employed = work_todayTRUE * 100,
+    se_pct       = se2 * 100
+  )
+
+#Table
+emp_rate_primary_sex_table <- emp_rate_primary_sex |>
+  transmute(
+    `Sex`          = sex_category,
+    `Employed (%)` = sprintf("%.1f", pct_employed),
+    `SE (pp)`      = sprintf("%.1f", se_pct)
+  )
+
+kable(
+  emp_rate_primary_sex_table,
+  caption = "Employment rate among primary caregivers (under-5 households, 
+  2018-2019 & 2021–2024), by sex",
+  align = c("l", "r", "r")
+) |>
+  kable_styling(full_width = FALSE)
+```
+
+**Hours of Childcare Among Employed Primary Caregivers by Sex**
+
+```{r}
+hours_empcaregiver_sex <- svyby(
+  ~ cc_total_hr,
+  ~ sex_category,
+  design_main_empcaregiver,
+  svymean,
+  na.rm = TRUE
+) |>
+  as.data.frame() |>
+  mutate(
+    mean_hours = cc_total_hr,
+    se_hours   = se
+  )
+
+hours_empcaregiver_sex
+
+```
+
+## Race
+
+**Employment Rate of Primary Caregivers by Race/Ethnicity and Gender**
+
+```{r}
+# Employment rate of primary caregivers by race only
+emp_rate_primary_race <- svyby(~work_today, ~race_cat, design_primary, 
+                               svymean, na.rm = TRUE)|>
+  as.data.frame() |>
+  mutate(
+    pct_employed  = work_todayTRUE * 100,
+    se_pct        = se2 * 100,
+  )
+
+# Employment rate of primary caregivers by race/ethnicity and gender
+emp_rate_prim_race_sex <- svyby(~work_today, ~race_cat + ~sex_category, design_primary, 
+                               svymean, na.rm = TRUE)|>
+  as.data.frame() |>
+  mutate(
+    pct_employed  = work_todayTRUE * 100,
+    se_pct        = se2 * 100,
+  )
+
+# Table: Employment rate among primary caregivers by race only
+emp_rate_primary_race_tb <- emp_rate_primary_race |>
+  transmute(
+    `Race/ethnicity` = race_cat,
+    `Employed (%)`   = sprintf("%.1f", pct_employed),
+    `SE (pp)`        = sprintf("%.1f", se_pct)
+  )
+
+kable(
+  emp_rate_primary_race_tb,
+  caption = "Employment Rate among Primary Caregivers (2021–2024), by Race/Ethnicity",
+  align = c("l", "r", "r")
+) |>
+  kable_styling(full_width = FALSE)
+
+# Table: Employment rate of primary caregivers by Race/Gender
+emp_rate_prim_sex_race_tb <- emp_rate_prim_race_sex |>
+  transmute(
+    `Race/ethnicity` = race_cat,
+    `Sex`            = sex_category,
+    `Employed (%)`   = sprintf("%.1f", pct_employed),
+    `SE (pp)`        = sprintf("%.1f", se_pct)
+  )
+
+kable(
+  emp_rate_prim_sex_race_tb,
+  caption = "Employment Rate among Primary Caregivers (2021–2024), by Race/Ethnicity and Gender",
+  align = c("l", "r", "r")
+) |>
+  kable_styling(full_width = FALSE)
+
+```
+
+**Race/Ethnicity Composition of Caregivers**
+
+```{r}
+comp_race <- bind_rows(
+  get_comp_row(design_under5,           "Under-5 Households",  "2018-2019 & 2021-2024"),
+  get_comp_row(design_primary,          "Primary Caregivers",  "2018-2019 & 2021-2024"),
+  get_comp_row(design_primary_employed, "Employed Caregivers", "2018-2019 & 2021-2024")
+)
+comp_race
+```
+
+**Number of Hours for Race/Ethnicity**
+
+```{r}
+#Number of race/ethnicity for all caregivers
+svyby(~cc_total_hr, ~race_cat, design_under5, svymean, na.rm = TRUE)
+
+#Number of race/ethnicity primary caregivers
+svyby(~cc_total_hr, ~race_cat, design_primary, svymean)
+
+#Number of race/ethnicity primary employed caregivers
+svyby(~cc_total_hr, ~race_cat, design_primary_employed, svymean)
+```
+
+**Sex Composition within Race/Ethnicity**
+
+```{r}
+#Proportion females among under - 5 households, by race/ethnicity
+svyby(~sex_category, ~race_cat, design_under5, svymean, na.rm = TRUE)
+
+#Proportion of females among primary caregivers, by race/ethnicity
+female_race_primary <- svyby(~sex_category, ~race_cat, design_primary, svymean, na.rm = TRUE)
+female_race_primary
+
+#Proportion of females among employed caregivers, by race/ethnicity
+svyby(~sex_category, ~race_cat, design_primary_employed, svymean, na.rm = TRUE)
+```
+
+**Childcare Hours by Sex within Race/Ethnicity among Caregivers**
+
+```{r}
+#Primary caregivers
+svyby(~cc_total_hr, ~sex_race, design_primary, svymean, na.rm = TRUE)
+
+#Employed Caregivers
+svyby(~cc_total_hr, ~sex_race, design_primary_employed, svymean, na.rm = TRUE)
+```
+
+**Proportion of Females and Males within Race/Ethnicity among Caregivers**
+
+```{r}
+#Primary Caregivers
+svymean(~sex_race, subset(design_main,  primary_caregiver), na.rm = TRUE)
+
+#Employed Caregivers
+svymean(~sex_race, subset(design_main,  employed_caregiver), na.rm = TRUE)
+```
+
+**Within Each Race/Ethnicity, Sex Composition**
+
+```{r}
+#Primary Caregivers
+svyby(~female, ~race_cat, subset(design_main,  primary_caregiver), 
+      svymean, na.rm = TRUE)
+#Employed Caregivers
+svyby(~female, ~race_cat, subset(design_main,  employed_caregiver), 
+      svymean, na.rm = TRUE)
+```
+
+# Summary Table
+
+**Key Statistics by Period and Caregiver Role**
+
+```{r}
+#Design: under-5 households, 2021-2024
+des_under5 <- subset(design_main, under5_hh)
+
+#Helper to extract mean & SE for multiple variables
+atus_summary <- svymean(
+  ~cc_total_hr +
+    primary_caregiver +
+    employed_caregiver + 
+    female +
+    white_nh + black_nh + hispanic_any + asian_nh + native_nh + other_nh +
+    work_today,
+  des_under5,
+  na.rm = TRUE
+)
+
+atus_table_raw <- data.frame(
+  variable = names(coef(atus_summary)),
+  mean     = as.numeric(coef(atus_summary)),
+  se       = as.numeric(SE(atus_summary))
+) 
+
+#Keep only the "TRUE" rows for indicators, plus cc_total_hr
+atus_table <- atus_table_raw |>
+  # keep cc_total_hr OR any variable that ends in TRUE
+  dplyr::filter(
+    variable == "cc_total_hr" | grepl("TRUE$", variable)
+  ) |>
+  dplyr::mutate(
+    # nice labels for the table
+    label = dplyr::case_when(
+      variable == "cc_total_hr"                  ~ "Childcare hours per day (cc_total_hr)",
+      variable == "primary_caregiverTRUE"        ~ "Primary caregiver (share)",
+      variable == "employed_caregiverTRUE"       ~ "Employed primary caregiver (share)",
+      variable == "femaleTRUE"                   ~ "Female (share)",
+      variable == "white_nhTRUE"                 ~ "White, non-Hispanic (share)",
+      variable == "black_nhTRUE"                 ~ "Black, non-Hispanic (share)",
+      variable == "hispanic_anyTRUE"             ~ "Hispanic (any race, share)",
+      variable == "asian_nhTRUE"                 ~ "Asian/Pacific Islander, non-Hispanic (share)",
+      variable == "native_nhTRUE"                ~ "Native American, non-Hispanic",
+      variable == "other_nhTRUE"                 ~ "Other/Multiracial, non-Hispanic (share)",
+      variable == "work_todayTRUE"               ~ "Worked today (share)",
+      TRUE                                       ~ variable
+    ),
+    #Convert to % for indicators, keep hours as-is for cc_total_hr
+    mean_pct = ifelse(variable == "cc_total_hr", mean, mean * 100),
+    se_pct   = ifelse(variable == "cc_total_hr", se,   se   * 100)
+  )
+
+```
+
+```{r}
+atus_table_display <- atus_table |>
+  dplyr::mutate(
+    Estimate = dplyr::if_else(
+      variable == "cc_total_hr",
+      sprintf("%.2f", mean_pct),          # hours
+      sprintf("%.1f%%", mean_pct)         # percents
+    ),
+    SE = dplyr::if_else(
+      variable == "cc_total_hr",
+      sprintf("%.2f", se_pct),            # hours
+      sprintf("%.1f", se_pct)             # standard error in %-points
+    )
+  ) |>
+  dplyr::select(
+    Measure = label,
+    Estimate,
+    SE
+  )
+
+kable(
+  atus_table_display,
+  caption = "Summary statistics for adults in under-5 households, 
+  2018-2019 & 2021–2024",
+  align = c("l", "r", "r")
+) |>
+  kable_styling(full_width = FALSE)
+```
+
+**Table: Primary Caregiver Demographics**
+
+```{r}
+#SEX
+sex_primary <- svymean(~sex_category, design_primary, na.rm = TRUE)
+
+sex_tab <- tibble(
+  group    = "Sex",
+  category = c("Female", "Male"),
+  pct      = as.numeric(sex_primary) * 100,
+  se       = as.numeric(SE(sex_primary)) * 100
+)
+
+#RACE / ETHNICITY
+race_primary <- svymean(~factor(race_cat), design_primary, na.rm = TRUE)
+
+race_tab <- tibble(
+  group    = "Race/ethnicity",
+  category = str_trim(gsub("factor\\(race_cat\\)", "", names(coef(race_primary)))),
+  pct      = as.numeric(race_primary) * 100,
+  se       = as.numeric(SE(race_primary)) * 100
+)
+
+#FAMILY INCOME
+inc_primary <- svymean(~factor(faminc_cat), design_primary, na.rm = TRUE)
+
+inc_tab <- tibble(
+  group    = "Family income",
+  category = str_trim(gsub("factor\\(faminc_cat\\)", "", names(coef(inc_primary)))),
+  pct      = as.numeric(inc_primary) * 100,
+  se       = as.numeric(SE(inc_primary)) * 100
+)
+
+#WORK TODAY
+work_primary <- svymean(~work_today, design_primary, na.rm = TRUE)
+
+work_tab <- tibble(
+  group    = "Worked on diary day",
+  category = c("Did not work today", "Worked today"),
+  pct      = as.numeric(work_primary) * 100,
+  se       = as.numeric(SE(work_primary)) * 100
+)
+
+
+```
+
+**Combine and format tables**
+
+```{r}
+primary_demo <- bind_rows(
+  sex_tab,
+  race_tab,
+  inc_tab,
+  work_tab
+) |>
+  mutate(
+    pct = round(pct, 1),
+    se  = round(se, 1)
+  )
+
+primary_demo |>
+  kable(
+    caption = "Demographic profile of primary caregivers (adults in under-5 households)",
+    col.names = c("Group", "Category", "% of primary caregivers", "SE")
+  )|>
+  kable_styling(full_width = FALSE)
+
+```
+
+# Dollar Value of Unpaid Childcare
+
+To quantify the value of unpaid childcare, I will use the national hourly mean pay rate for childcare workers in 2024 obtained from the Bureau of Labor Statistics (BLS) from https://data.bls.gov/oesprofile/.gov.
+
+Additionally, we can compare similar roles of the childcare worker such as preschool/kindergarten teachers and home health and personal aids.
+
+- Childcare workers (Occupation code:39-9011), mean hourly wage: \$15.93
+
+- Preschool and Kindergarten teachers (Occupation code:25-2010), mean hourly wage: \$22.44
+
+- Home Health and Personal Aids (Occupation code: 31-1120), mean hourly wage: \$16.32
+
+**Dollar Valuation of Unpaid Childcare**
+
+```{r}
+#Hourly childcare rate (defined once in R/setup.R)
+childcare_rate <- BLS_WAGE_CHILDCARE_WORKER
+
+#Use wage valuation helper function to bind rows
+df_value <- bind_rows(
+  get_df_value(design_primary,           "Primary",  "2018-2019 & 2021-2024",
+               childcare_rate),
+  get_df_value(design_primary_employed,  "Employed", "2018-2019 & 2021-2024",
+               childcare_rate),
+)
+df_value
+```
+
+**Save primary-caregiver hours for the CPS notebook**
+
+The CPS notebook (`02_paid_childcare_cps.qmd`) needs the mean daily childcare
+hours of primary caregivers to compute the implied annual value of unpaid care.
+Rather than copying the number by hand, we write it to `data/processed/` here
+and read it back there, so the two notebooks can never drift out of sync.
+
+```{r}
+atus_primary_hours <- df_value |>
+  dplyr::filter(group == "Primary") |>
+  dplyr::transmute(
+    mean_cc_hrs = mean_hrs,
+    se_cc_hrs   = se_hrs
+  )
+
+saveRDS(
+  atus_primary_hours,
+  here::here("data", "processed", "atus_primary_hours.rds")
+)
+
+atus_primary_hours
+```
+
+```{r}
+# assume df_hours already constructed with columns: group, period, mean, se
+ggplot(df_value, aes(x = period, y = mean_hrs, fill = group)) +
+  geom_col(position = position_dodge()) +
+  geom_errorbar(aes(ymin = mean_hrs - 1.96*se_hrs,
+                    ymax = mean_hrs + 1.96*se_hrs),
+                width = 0.2,
+                position = position_dodge(width = 0.9)) +
+  labs(x = "Period", y = "Childcare hours per day",
+       fill = "Caregiver role") 
+```
+
+# Regression Analysis
+
+To further analyze the impact of various factors on unpaid childcare hours, I will conduct regression analyses using the survey design objects created earlier. This will allow me to control for multiple variables simultaneously and assess their individual contributions to childcare hours.
+
+Variables to be used:
+
+- Total care hours (cc_total_hr)
+
+- Sex category (Female)
+
+- Race category
+
+- Employed Caregiver
+
+- Family Income: low income (less than \$25,000), middle income (\$25,000 to \$59,000), high income (more than \$60,000).
+
+**Proportion of Family Income Categories among under-5 Households**
+
+```{r}
+svymean(~factor(faminc_cat), design_under5, na.rm = TRUE)
+```
+
+**Hours of Childcare by Income (among primary caregivers)**
+
+```{r}
+hrs_primary_inc <- svyby(
+  ~cc_total_hr,
+  ~faminc_cat,
+  design_primary,
+  svymean,
+  na.rm = TRUE
+) |> 
+  as.data.frame() |>
+  mutate(
+    mean_hrs = cc_total_hr,
+    se_hrs   = se
+  )
+
+hrs_primary_inc
+```
+
+**Income Distribution within Each Race (under-5 households)**
+
+```{r}
+race_income_comp <- svyby(
+  ~factor(faminc_cat),
+  ~race_cat,
+  design_under5,
+  svymean,
+  na.rm = TRUE
+) |> 
+  as.data.frame()
+
+race_income_comp
+names(race_income_comp)
+
+#Make a table
+race_income_comp_tb <- race_income_comp |>
+  pivot_longer(
+    starts_with("factor("),
+    names_to  = "faminc_raw",
+    values_to = "share"
+  ) |>
+  mutate(
+    #Strip the "factor(faminc_cat)" prefix from the column names
+    faminc_cat = gsub("factor\\(faminc_cat\\)", "", faminc_raw),
+    faminc_cat = trimws(faminc_cat),
+    share_pct = share * 100
+  ) |>
+  select(race_cat, faminc_cat, share_pct)
+
+race_income_comp_tb
+```
+
+**Childcare Hours by Race and Income (primary caregivers)**
+
+```{r}
+hrs_race_inc_primary <- svyby(
+  ~cc_total_hr,
+  ~race_cat + faminc_cat,
+  design_primary_employed,
+  svymean,
+  na.rm = TRUE
+) |> 
+  as.data.frame() |>
+  mutate(
+    mean_hrs = cc_total_hr,
+    se_hrs   = se
+ )
+
+hrs_race_inc_primary
+```
+
+**Share of Primary Caregivers by Race and Income**
+
+```{r}
+primary_race_inc <- svyby(
+  ~primary_caregiver,
+  ~race_cat + faminc_cat,
+  design_under5,
+  svymean,
+  na.rm = TRUE
+) |> 
+  as.data.frame() |>
+  mutate(
+    pct_primary = primary_caregiverTRUE * 100,
+    se_pct      = se2 * 100
+ )
+primary_race_inc
+primary_race_inc_tb <- primary_race_inc |>
+  select(race_cat, faminc_cat, pct_primary) |>
+  tidyr::pivot_wider(
+    names_from  = faminc_cat,
+    values_from = pct_primary
+  )
+
+primary_race_inc_tb 
+
+```
+
+```{r}
+table(design_under5$variables$primary_caregiver, useNA = "ifany")
+```
+
+```{r}
+# Restrict to primary caregivers in under-5 households
+design_primary_under5 <- subset(design_under5, primary_caregiver == TRUE)
+design_primary_under5
+
+# Race distribution among primary caregivers, by income
+race_comp_primary_inc <- svyby(
+  ~ factor(race_cat),
+  ~ faminc_cat,
+  design_primary_under5,
+  svymean,
+  na.rm = TRUE
+) |>
+  as.data.frame()
+race_comp_primary_inc
+
+
+race_comp_primary_inc_tidy <- race_comp_primary_inc |>
+  tidyr::pivot_longer(
+    starts_with("factor("),
+    names_to  = "race_raw",
+    values_to = "share"
+  ) |>
+  dplyr::mutate(
+    race_cat   = gsub("factor\\(race_cat\\)", "", race_raw),
+    race_cat   = trimws(race_cat),
+    share_pct  = share * 100
+  ) |>
+  dplyr::select(faminc_cat, race_cat, share_pct)
+
+race_comp_primary_inc_tidy
+
+income_comp_primary_race <- svyby(
+  ~ factor(faminc_cat),
+  ~ race_cat,
+  design_primary_under5,
+  svymean,
+  na.rm = TRUE
+)
+income_comp_primary_race
+```
+
+```{r}
+# Example regression model: childcare hours
+atus_reg_hours <- svyglm(
+  cc_total_hr ~ female + race_cat + employed_caregiver + faminc_cat,
+  design = design_primary,
+  na.action = na.omit
+)
+
+summary(atus_reg_hours)
+
+atus_reg_primary <- svyglm(
+  primary_caregiver ~ female + race_cat + work_today + faminc_cat,
+  design = design_primary,
+  family = quasibinomial(),
+  na.action = na.omit
+)
+
+summary(atus_reg_primary)
+
+atus_reg_income <- svyglm(
+  faminc_cat ~ female + race_cat + work_today,
+  design = design_primary,
+  family = quasibinomial(),
+  na.action = na.omit
+)
+
+summary(atus_reg_income)
+
+```
+
+```{r}
+
+# 1. Check faminc_cat in the raw atus:
+table(atus$faminc_cat, useNA = "ifany")
+
+# 2. Check faminc_cat in under-5 design: 
+svymean(~factor(faminc_cat), design_under5, na.rm = TRUE)
+
+# 3. Count NAs inside design_under5:
+sapply(
+  design_under5$variables[c("cc_total_hr", "female", "race_cat", "faminc_cat", "work_today")],
+  function(x) sum(is.na(x))
+)
+
+# 4. Refit regression:
+atus_reg_hours <- svyglm(
+  cc_total_hr ~ female + race_cat + faminc_cat + work_today,
+  design = design_under5,
+  na.action = na.omit
+)
+
+atus_reg_hours_primary <- svyglm(
+  cc_total_hr ~ female + race_cat + work_today + faminc_cat,
+  design = design_primary,
+  na.action = na.omit
+)
+summary(atus_reg_hours_primary)
+
+nobs(atus_reg_hours)
+summary(atus_reg_hours)
+
+atus_reg_hours_nowork <- svyglm(
+  cc_total_hr ~ female + race_cat + faminc_cat,
+  design = design_under5,
+  na.action = na.omit
+)
+summary(atus_reg_hours_nowork)
+
+```
+
+```{r}
+atus_reg_hours_nowork <- svyglm(
+  cc_total_hr ~ female + race_cat + faminc_cat,
+  design = design_under5,
+  na.action = na.omit
+)
+summary(atus_reg_hours_nowork)
+```
+
+# Visualizations
+
+**Share of Adults Primary Caregivers, by Sex**
+
+```{r}
+atus_prim_sex <- svyby(
+  ~primary_caregiver,
+  ~sex_category,
+  subset(design_main, under5_hh),
+  svymean,
+  na.rm = TRUE
+) |> as.data.frame()
+  
+atus_prim_sex <- atus_prim_sex |>
+  rename(
+    mean = primary_caregiverTRUE,
+    se = se2
+  )|>
+  
+  mutate(
+    pct = mean * 100,
+    se_pct = se * 100
+  )
+
+ggplot(atus_prim_sex,
+       aes(x = sex_category, y = pct))+
+  geom_col(fill = "lightblue") +
+  geom_errorbar(aes(ymin = pct - 1.96*se_pct,
+                    ymax = pct + 1.96*se_pct),
+                width = 0.2) +
+  labs(x = "Sex",
+       y = "Percentage of Primary Caregivers",
+       title = "Share of Adults Who Are Primary Caregivers 
+       (2018-2019 & 2021-2024)") +
+theme_minimal() +
+ theme(
+ plot.title = element_text(hjust = 0.5),
+ panel.border = element_rect(color = "black", fill = NA, linewidth =1)
+ )
+```
+
+**Race Composition of under-5 Households vs Primary Caregivers**
+
+```{r}
+comp_long <- comp_race |>
+  filter(period == "2018-2019 & 2021-2024",
+         group %in% c("Under-5 Households", "Primary Caregivers")) |>
+  select(group, pct_white_nh, pct_black_nh, pct_asian_nh, 
+         pct_native_nh, pct_other_nh, pct_hispanic) |>
+  pivot_longer(
+    cols = starts_with("pct_"),
+    names_to = "race",
+    values_to = "pct"
+  )
+
+ggplot(comp_long, aes(x = race, y = pct, fill = group))+
+  geom_col(position = "dodge")+
+  labs(
+    x = "Race/Ethnicity",
+    y = "Percent",
+    fill = "Group",
+    title = "Race/Ethnicity Composition: \n Under-5 Households vs Primary Caregivers (2021-2024)"
+  )+
+   theme_minimal() +
+   theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+   plot.title   =  element_text(hjust = 0.5),    
+   panel.border = element_rect(color = "black", fill = NA, linewidth =1))
+```
+
+**Within each race, who is more likely to live with children under five?**
+
+```{r}
+# Within each race: % in under-5 household
+under5_by_race_est <- svyby(
+  ~I(under5_hh),
+  ~race_cat,
+  design_all,
+  svymean,
+  na.rm.by = TRUE
+) |> as.data.frame()
+
+under5_by_race <- under5_by_race_est |>
+  dplyr::transmute(
+    race_cat   = as.character(race_cat),
+    pct_under5 = `I(under5_hh)TRUE` * 100,
+    se_under5  = se2 * 100
+  )
+
+#Prepare the dataframe for plotting
+plot_df <- under5_by_race %>%
+  rename(
+    race = race_cat,
+    pct_under5 = pct_under5
+  )
+
+#Plot
+ggplot(plot_df, aes(x = pct_under5, y = race)) +
+  geom_col(fill = "#2C3E50", width = 0.7, col = "gray40") +
+  geom_text(
+    aes(label = paste0(round(pct_under5, 1), "%")),
+    hjust = 1.2,
+    fontface = "bold",
+    color = "white",
+    size = 3.3
+  ) +
+  labs(
+    x = "Share Living in Under-Five Household",
+    y = "Race/Ethnicity",
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    axis.title = element_text(face = "bold"),
+  ) +
+  coord_cartesian(xlim = c(0, max(plot_df$pct_under5) + 10))
+
+```
+
+**Share of who becomes Primary Caregivers by Race/Ethnicity**
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+plot_df <- primary_by_race %>%
+  rename(
+    race = race_cat,
+    pct_primary = pct_primary_given_under5
+  )
+
+ggplot(plot_df, aes(x = pct_primary, y = race)) +
+  geom_col(fill = "#1ABC9C", width = 0.7, col = "gray40") +
+  geom_text(
+    aes(label = paste0(round(pct_primary, 1), "%")),
+    hjust = 1.2,
+    fontface = "bold",
+    color = "white",
+    size = 4
+  ) +
+  labs(
+    x = "Share Primary Caregiver",
+    y = "Race/Ethnicity",
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    axis.title = element_text(face = "bold"),
+    plot.caption = element_text(size = 9, color = "gray40")
+  ) +
+  coord_cartesian(xlim = c(0, max(plot_df$pct_primary) + 10))
+
+
+```
+
+**Distribution of Primary Caregivers by Gender and Race/Ethnicity**
+
+```{r}
+#female_race_primary
+
+#Convert to clean dataframe
+prop_df <- female_race_primary |>
+  as.data.frame() |>
+  rename(
+    pct_female = sex_categoryFemale,
+    pct_male = sex_categoryMale,
+    race = race_cat
+  ) |>
+  mutate(
+    pct_female = pct_female * 100,
+    pct_male   = pct_male * 100
+  ) |>
+  pivot_longer(
+    cols = c(pct_female, pct_male),
+    names_to = "gender",
+    values_to = "percent"
+  ) |>
+  mutate(
+    gender = ifelse(gender == "pct_female", "Female", "Male")
+  )
+#Plot the proportions
+ggplot(prop_df, aes(x = race, y = percent, fill = gender)) +
+  geom_col(position = "dodge", width = 0.7, col = "gray40") +
+  geom_text(
+    aes(label = paste0(round(percent, 1), "%")),
+    position = position_dodge(width = 0.7),
+    hjust = 1.2,
+    fontface = "bold",
+    color = "white",
+    size = 2.8
+  ) +
+  coord_flip() +
+  scale_fill_manual(values = c("Female" = "#2C3E50", "Male" = "#1ABC9C")) +
+  labs(
+    title = " ",
+    x = "Race/Ethnicity",
+    y = "Share of Primary Caregivers",
+   ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    axis.title = element_text(face = "bold"),
+    legend.title = element_blank()
+  )
+```
+
+**Distribution of Childcare by Hours (raw hours)**
+
+```{r}
+atus_under5 <- subset(design_main, under5_hh)
+
+atus_dat <- atus_under5$variables
+
+ggplot(atus_dat, aes(x = sex_category, y = cc_total_hr)) +
+  geom_boxplot(fill = "lightgreen") +
+  coord_cartesian(ylim = c(0, 20)) + #limit y-axis to focus on main distribution)
+  labs(
+    x = "Sex",
+    y = "Childcare hours (per day",
+    title = "Distribution of Childcare Hours by Sex \n (under-5 Households, 2021-2024)")+
+ theme_minimal() +
+ theme(
+ plot.title = element_text(hjust = 0.5),
+ panel.border = element_rect(color = "black", fill = NA, linewidth =1)
+ )
+```
+
+**Distribution of** **Childcare Hours by Sex (weighted)**
+
+```{r}
+#Convert to clean dataframe
+avg_hr_df <- avg_hr_under5 |>
+  as.data.frame() |>
+  rename(
+    childcare_hrs = cc_total_hr,
+    gender = sex_category
+  )
+
+#Weighted average childcare hours by gender
+ggplot(avg_hr_df, aes(x = gender, y = childcare_hrs, fill = gender)) +
+  geom_col(width = 0.6, col = "gray40") +
+  geom_text(
+    aes(label = round (childcare_hrs, 1)),
+    vjust = 1.5,
+    color = "white",
+    fontface = "bold",
+    size = 4
+  ) +
+  scale_fill_manual(values = c("#2C3E50", "#1ABC9C")) +
+  labs(
+    title = " ",
+    x = "Gender",
+    y = "Childcare Hours (per day)"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(face = "bold"),
+    axis.title = element_text(face = "bold")
+  )
+```
+
+**Distribution of Primary Caregivers by Sex, Worked Today, and Employed**
+
+```{r}
+sex_comp_roles <- bind_rows(
+  get_sex_comp(design_under5,           "Under-5 Households"),
+  get_sex_comp(design_primary,          "Primary Caregivers"),
+  get_sex_comp(design_primary_employed, "Employed Caregivers")
+)|>
+  mutate(
+    sex  = trimws(sex),
+    role = factor(role,
+                  levels = c("Under-5 Households", 
+                             "Primary Caregivers", 
+                             "Employed Caregivers")),
+    share_pct = share * 100,
+    se_pct    = se * 100
+  )
+#Female by role
+female_roles <- comp_race |>
+  filter(group %in% c("Under-5 Households", "Primary Caregivers", "Employed Caregivers")) |>
+  select(group, pct_female)
+  
+
+#Proportion of primary caregivers who worked today by sex
+worked_primary_sex <- svyby(
+ ~work_today,
+ ~sex_category,
+ design_primary,
+ svymean,
+ na.rm = TRUE
+)|>
+  as.data.frame() |>
+  rename(sex = sex_category,
+         share = work_todayTRUE,
+         se = se2) |>
+  
+  mutate(
+    share_pct = share * 100,
+    se_pct  = se * 100
+  )
+sex_comp_roles
+worked_primary_sex
+```
+
+**Plot of Female vs Male Roles**
+
+```{r}
+ggplot(sex_comp_roles,
+       aes(x = role, y = share_pct, fill = sex)) +
+  geom_col(position = position_dodge(width = 0.7), width = 0.6) +
+  geom_errorbar(aes(ymin = share_pct - 1.96*se_pct,
+                    ymax = share_pct + 1.96*se_pct),
+                position = position_dodge(width = 0.7),
+                width = 0.2,
+                alpha = 0.4) +
+  scale_fill_manual(values = c("Female" = "#6C4B9E", "Male" = "grey40")) +
+  
+  #Labels - % of female vs male
+  geom_text(aes(label = sprintf("%.1f%%", share_pct)),
+            position = position_dodge(width = 0.7),
+            vjust = 3.0,
+            color = "white",
+            size = 3.2) +
+  labs(
+    x     = NULL,
+    y     = "Share of Adults (%)",
+    fill  = "Sex",
+    title = "Who does unpaid care in under-5 households?"
+  )+
+  #bold axis labels
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "right",
+    axis.text.x  = element_text(angle = 0, hjust = 0.5),
+    plot.title   = element_text(hjust = 0.5),
+    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
+  )
+```
+
+**Plot of Who worked today among primary caregivers**
+
+```{r}
+ggplot(worked_primary_sex,
+       aes(x = sex, y = share_pct, fill = sex))+
+  geom_col(width = 0.6) +
+  geom_errorbar(aes(ymin = share_pct - 1.96*se_pct,
+                    ymax = share_pct + 1.96*se_pct),
+                width = 0.2,
+                alpha = 0.4) +
+  scale_fill_manual(values = c("Female" = "#6C4B9E", "Male" = "grey40")) +
+  
+  #Labels - % of female vs male
+  geom_text(aes(label = sprintf("%.1f%%", share_pct)),
+            position = position_dodge(width = 0.7),
+            vjust = 4.8,
+            color = "white",
+            size = 3.2) +
+  labs(
+    x = NULL,
+    y = "% who worked for pay on diary day",
+    fill = "Sex",
+    title = "Among primary caregivers, who is also in paid work?"
+  )+
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5),
+    axis.text.x = element_text(angle = 0, hjust = 0.5),
+    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
+    )
+    
+```
+
+**Race, Income, and Who Becomes the Primary Caregiver**
+
+```{r}
+race_plot_df <- race_comp_primary_inc_tidy |>
+  mutate(
+    faminc_cat = factor(
+      faminc_cat,
+      levels = c("Low (<$40k)", "Middle ($40k-$99,999)", "High (>$100k)")
+    ),
+    race_cat = factor(
+      race_cat,
+      levels = c("White",
+                 "Black",
+                 "Hispanic",
+                 "Asian/Pacific Islander",
+                 "Native American",
+                 "Other/Multiracial")
+    ),
+    share = share_pct / 100  # convert back to proportion for plotting
+  )
+#Custom palette – change these hex codes to your Canva colors if you want
+race_palette <- c(
+  "White"                  = "gray40",
+  "Black"                  = "gray20",
+  "Hispanic"               = "#7A3E9D",  # purple highlight
+  "Asian/Pacific Islander" = "#B6A3D6",
+  "Native American"        = "#C9C9E0",  # optional, light lavender/gray
+  "Other/Multiracial"      = "#F2F2F7"
+)
+race_plot_df
+gg_race_income <- race_plot_df |>
+  ggplot(aes(x = faminc_cat, y = share, fill = race_cat)) +
+  geom_col(width = 0.65) +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_fill_manual(values = race_palette) +
+  labs(
+    x    = "Family income",
+    y    = "",
+    fill = "Race/ethnicity"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.position = "bottom",
+    legend.title = element_text(size = 11),
+    legend.text  = element_text(size = 10),
+    axis.title   = element_text(size = 11),
+    axis.text    = element_text(size = 10),
+    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
+  )
+
+gg_race_income
+
+```
+
+**Income by Race/Ethnicity for Primary Caregiver**
+
+```{r}
+unique(race_comp_primary_inc_tidy$faminc_cat)
+
+```
+
+```{r}
+race_palette <- c(
+  "White"                  = "#2C3E50",   # deep slate
+  "Black"                  = "#4C4C4C",   # dark gray
+  "Hispanic"               = "#7A3E9D",   # purple highlight
+  "Asian/Pacific Islander" = "#8E44AD",   # lighter purple
+  "Native American"        = "#16A085",   # teal
+  "Other/Multiracial"      = "#95A5A6"    # light gray
+)
+
+library(dplyr)
+
+race_plot_df <- race_comp_primary_inc_tidy %>%
+  mutate(
+    faminc_cat = factor(
+      faminc_cat,
+      levels = c("Low (<$40k)", "Middle ($40k-$99,999)", "High (>=$100k)")
+    ),
+    race_cat = factor(
+      race_cat,
+      levels = c(
+        "White", "Black", "Hispanic",
+        "Asian/Pacific Islander", "Native American",
+        "Other/Multiracial"
+      )
+    ),
+    share = share_pct / 100
+  )
+
+#Plot
+
+gg_race_income <- ggplot(race_plot_df, aes(y = faminc_cat, x = share, fill = race_cat)) +
+  geom_col(width = 0.70, position = "stack", col = "grey40") +
+  scale_x_continuous(labels = percent_format(accuracy = 1)) +
+  scale_fill_manual(values = race_palette) +
+  labs(
+    x    = "Share of Primary Caregivers",
+    y    = "Family Income Category",
+    fill = "Race/Ethnicity"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.position = "bottom",
+    legend.spacing.x = unit(0.4, "cm"),
+    legend.title = element_text(size = 11),
+    legend.text  = element_text(size = 10),
+    axis.title   = element_text(size = 11),
+    axis.text    = element_text(size = 10),
+    plot.title   = element_text(face = "bold"),
+    plot.caption = element_text(size = 9, color = "gray40")
+  )
+
+gg_race_income
+
+```
