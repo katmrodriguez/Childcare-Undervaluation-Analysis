@@ -40,3 +40,5 @@ Thumbs.db
 # after the rules they override, i.e. at the end of this file.)
 !docs/
 !docs/**
+
+**/*.quarto_ipynb
