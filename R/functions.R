@@ -3,26 +3,6 @@
 # original ATUS notebook so there is a single definition to maintain.
 # All functions expect a survey design object (svrepdesign / subset).
 
-# Mean + SE for one or more variables, returned as a tidy one-row-per-
-# variable data frame tagged with a group and period label.
-get_mean_se_multi <- function(formula, design, group_name, period) {
-  est <- svymean(formula, design, na.rm = TRUE)
-
-  variable_names <- names(coef(est))
-
-  # Clean names like "I(SEX == 2)" -> "SEX == 2"
-  vars_clean <- gsub("^I\\((.*)\\$", "\\1", variable_names)
-
-  data.frame(
-    variable = vars_clean,
-    group    = group_name,
-    period   = period,
-    mean     = as.numeric(coef(est)),
-    se       = as.numeric(SE(est)),
-    row.names = NULL
-  )
-}
-
 # Sex + race/ethnicity composition for one design ("nh" = non-Hispanic).
 get_comp_row <- function(design, group_label, period_label) {
   est <- svymean(

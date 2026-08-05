@@ -1,5 +1,5 @@
 ---
-title: "CPS - IPMUS: Paid Childcare Workers"
+title: "Visible Inequalities: Wages in Paid Childcare Work"
 author: "Katherine Rodriguez"
 format: 
   html:
@@ -7,28 +7,19 @@ format:
     toc-location: left
     number-sections: true
     theme: cosmo
+execute:
+  warning: false
+  message: false
 editor: visual
 ---
 
-## Table of Contents
-
-0.  Introduction/background research
-1.  Setup
-2.  Load and prepare data
-3.  Build survey designs
-4.  Descriptive results (paid care)
-5.  Dollar valuation
-6.  Paid childcare (BLS/CPS)
-7.  Plots / tables
-8.  Concluding thoughts
-
-## Introduction
+# Introduction
 
 Childcare is an undervalued service in both unpaid (household labor) and paid work (childcare workforce). Both are closely connected, families supply time, while the childcare industry supplies services. The objective of this project is to estimate the dollar value of unpaid childcare and measure it against market pay for childcare workers, demonstrating that childcare is undervalued both within households and the childcare industry.
 
 **Research Question 2 (comparative)** Among paid childcare workers, how do wages compare to similar occupations (Preschool teachers, Home and Health Aides)? What is the gender composition and race/ethnicity profile of unpaid and paid childcare work?
 
-## Setup
+# Setup
 
 Load necessary libraries.
 
@@ -39,10 +30,9 @@ source(here::here("R", "setup.R"))
 
 **Survey Defaults**
 
-Survey variance options (`survey.lonely.psu`, `scipen`) are set once in
-`R/setup.R`, sourced above.
+Survey variance options (`survey.lonely.psu`, `scipen`) are set once in `R/setup.R`, sourced above.
 
-## Load and Prepare Data
+# Load and Tidy Data
 
 The data is loaded into the program to prepare for analyses.
 
@@ -141,7 +131,7 @@ cps <- cps |>
     other_nh = ifelse(
       hispanic_any == 0L &
         RACE %in% c(
-          700,     #other single rae, n.e.c.
+          700,     #other single race, n.e.c.
           801:820, #2-3 race combos (with various combos)
           830      #4-5 race combos
         ),
@@ -153,7 +143,7 @@ cps <- cps |>
       hispanic_any == 1L          ~ "Hispanic",
       white_nh     == 1L          ~ "White",
       black_nh     == 1L          ~ "Black",
-      asian_nh     == 1L          ~ "Asian",
+      asian_nh     == 1L          ~ "Asian/Pacific Islander",
       native_nh    == 1L          ~ "Native American",
       other_nh     == 1L          ~ "Other/Multiracial",
       TRUE                         ~ NA_character_
@@ -184,7 +174,7 @@ cps <- cps |>
        "White",
        "Black",
        "Hispanic",
-       "Asian",
+       "Asian/Pacific Islander",
        "Native American",
        "Other/Multiracial"
     )
@@ -209,7 +199,7 @@ table(cps$sex_category, useNA = "ifany")
 **Filter to Workers Aged 16 and Older with Positive Wages**
 
 ```{r}
-#Define emplyed workers with positive wages
+#Define employed workers with positive wages
 cps_workers <- cps |>
   mutate(
     employed    = EMPSTAT %in% c(10,12),
@@ -230,7 +220,7 @@ cps_workers <- cps_workers |>
 cps_workers
 ```
 
-## Build Survey Designs
+# Build Survey Designs
 
 ```{r}
 design_cps <- svrepdesign(
@@ -257,11 +247,12 @@ svyby(
 )
 ```
 
-## Descriptive Results
+# Descriptive Results
 
 **Composition of Sex Category in Each Occupation**
 
 ```{r}
+#| output: false
 sex_comp <- svyby(
   ~sex_category,
   ~occ_group, 
@@ -275,6 +266,7 @@ sex_comp
 **Race/Ethnicity Composition by Occupation**
 
 ```{r}
+#| output: false
 race_comp <- svyby(
   ~race_cat,
   ~occ_group, 
@@ -297,6 +289,7 @@ svyby(
 **Mean Wages by Occupation**
 
 ```{r}
+#| output: false
 mean_wage_occ <- svyby(
   ~wage_annual,
   ~occ_group,
@@ -310,6 +303,7 @@ mean_wage_occ
 **Mean Wage by Occupation and Sex**
 
 ```{r}
+#| output: false
 mean_wage_sex <- svyby(
   ~wage_annual,
   ~occ_group + sex_category,
@@ -323,6 +317,7 @@ mean_wage_sex
 **Occupation Mean Wages by Race/Ethnicity**
 
 ```{r}
+#| output: false
 mean_wage_r <- svyby(
   ~wage_annual,
   ~occ_group + race_cat,
@@ -333,7 +328,7 @@ mean_wage_r <- svyby(
 mean_wage_r
 ```
 
-## Regression
+# Regression
 
 Preliminary
 
@@ -411,7 +406,7 @@ ggplot(pred_df, aes(x = occ_group, y = wage_pred,
 
 ```
 
-## Summary Table
+# Summary Table
 
 **Key Statistics by Occupation**
 
@@ -500,7 +495,7 @@ kable(
   kable_styling(full_width = FALSE)
 ```
 
-## Visualizations
+# Visualizations
 
 **Mean Wages by Occupation Plot**
 
@@ -582,7 +577,7 @@ race_comp_long <- race_comp |>
     pct_white     =  race_catWhite    * 100,
     pct_black     =  race_catBlack    * 100,
     pct_hispanic  =  race_catHispanic * 100,
-    pct_asian     =  race_catAsian    * 100,
+    pct_asian     = `race_catAsian/Pacific Islander` * 100,
     pct_native    = `race_catNative American`   * 100,
     pct_other     = `race_catOther/Multiracial` * 100
   ) |>
@@ -633,7 +628,7 @@ ggplot(mean_wage_sex, aes(x = occ_group, y = mean_wage, fill = sex_category)) +
   labs(
     x = "Occupation Group",
     y = "Mean Annual Wage (USD)",
-    title = "Gender Wage Differences by Occuptation"
+    title = "Gender Wage Differences by Occupation"
   ) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 20, hjust = 1),
@@ -641,7 +636,7 @@ ggplot(mean_wage_sex, aes(x = occ_group, y = mean_wage, fill = sex_category)) +
   panel.border = element_rect(color = "black", fill = NA, linewidth =1))
 ```
 
-## Dollar Valuation of Unpaid Childcare
+# Dollar Valuation of Unpaid Childcare
 
 **Implied Annual Value of Unpaid Care**
 
@@ -730,6 +725,8 @@ ggplot(valuation_df, aes(x = group, y = annual_value_k))+
 ```
 
 ```{r}
+#| include: false
+# Quick check of occupation-group levels (not shown in the document).
 mean_wage_occ$occ_group
 ```
 

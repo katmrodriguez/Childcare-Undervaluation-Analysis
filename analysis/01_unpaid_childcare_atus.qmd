@@ -1,5 +1,5 @@
 ---
-title: "WIL Draft"
+title: "Invisible Labor: The Economic Value of Unpaid Childcare"
 author: "Katherine Rodriguez"
 format: 
   html:
@@ -7,19 +7,11 @@ format:
     toc-location: left
     number-sections: true
     theme: cosmo
+execute:
+  warning: false
+  message: false
 editor: visual
 ---
-
-# Table of Contents
-
-0.  Introduction/background research
-1.  Setup
-2.  Load and tidy data
-3.  Build survey designs
-4.  Descriptive results (unpaid care)
-5.  Dollar valuation
-6.  Plots / tables
-7.  Concluding thoughts
 
 # Introduction
 
@@ -27,7 +19,7 @@ Childcare is an undervalued service in both unpaid (household labor) and paid wo
 
 **Research Question 1** What is the dollar value of unpaid childcare in families and what is the gender composition and socioeconomic background of unpaid/paid childcare work?
 
-## Setup
+# Setup
 
 Load necessary libraries.
 
@@ -80,7 +72,10 @@ head(atus)
 
 Determining if replicate weights are within the data set that was downloaded.
 
-```{r, include=FALSE, echo=TRUE}
+```{r}
+#| include: false
+# Data-integrity check (not shown in the rendered document): confirm the
+# replicate-weight columns exist and are usable before building the design.
 # 1. Do replicate weight columns actually exist?
 grep("^RWT06_", names(atus), value = TRUE)
 grep("^RWT20_", names(atus), value = TRUE)
@@ -291,7 +286,7 @@ atus <- atus |>
 
 - repweights = "RWT06\_\[1-9\]+": this argument identifies the replicate weight columns.
 
-- IPMUS ATUS gives 160 replicate weight variables for each main weight (RWT06_1 to RWT06_160 for WT06, and RWT20_1 to RWT20_160 for WT20).
+- IPUMS ATUS gives 160 replicate weight variables for each main weight (RWT06_1 to RWT06_160 for WT06, and RWT20_1 to RWT20_160 for WT20).
 
 - Instead of listing all 160 by hand, we give a regular expression ("RWT06\_\[1-9\]+") that matches all those column names.
 
@@ -311,7 +306,7 @@ Technically:
 
 - With mse = TRUE, variance is based on squared deviations of each replicate estimate from the full-sample estimate (($\hat{\theta}_r - \hat{\theta}$)$^2$).
 
-- With mse = FALSE, it's based on deviations around the mean of the replicate estimates (slighty different center).
+- With mse = FALSE, it's based on deviations around the mean of the replicate estimates (slightly different center).
 
 For ACS/SDR and IPUMS-style replicates, the docs strongly recommend mse = TRUE.
 
@@ -568,6 +563,7 @@ race_pipeline |>
 **Composition of Caregivers**
 
 ```{r}
+#| output: false
 #Distribution of race among caregivers with children under 5
 svymean(~factor(race_cat), design_under5, na.rm = TRUE)
 
@@ -649,6 +645,7 @@ svymean(~work_today, subset(design_main,  primary_caregiver))
 **Sex Composition within Full ATUS sample, then probability of sex within caregiver groups.**
 
 ```{r}
+#| output: false
 # Sex Proportions of full ATUS Sample
 svymean(~factor(sex_category), design_main)
 
@@ -660,6 +657,7 @@ svyby(~primary_caregiver, ~sex_category, design_under5, svymean)
 ```
 
 ```{r}
+#| output: false
 #Proportion of female primary caregivers
 svymean(~sex_category, design_primary,  na.rm = TRUE)
 
@@ -690,6 +688,7 @@ svyby(~cc_total_hr, ~sex_category, design_primary_employed, svymean, na.rm = TRU
 We can also ask among female primary caregivers, what share worked today?
 
 ```{r}
+#| output: false
 #Female primary caregivers who worked today
 svymean(~work_today, subset(design_primary,  female,), na.rm = TRUE)
 
@@ -815,6 +814,7 @@ comp_race
 **Number of Hours for Race/Ethnicity**
 
 ```{r}
+#| output: false
 #Number of race/ethnicity for all caregivers
 svyby(~cc_total_hr, ~race_cat, design_under5, svymean, na.rm = TRUE)
 
@@ -842,6 +842,7 @@ svyby(~sex_category, ~race_cat, design_primary_employed, svymean, na.rm = TRUE)
 **Childcare Hours by Sex within Race/Ethnicity among Caregivers**
 
 ```{r}
+#| output: false
 #Primary caregivers
 svyby(~cc_total_hr, ~sex_race, design_primary, svymean, na.rm = TRUE)
 
@@ -852,6 +853,7 @@ svyby(~cc_total_hr, ~sex_race, design_primary_employed, svymean, na.rm = TRUE)
 **Proportion of Females and Males within Race/Ethnicity among Caregivers**
 
 ```{r}
+#| output: false
 #Primary Caregivers
 svymean(~sex_race, subset(design_main,  primary_caregiver), na.rm = TRUE)
 
@@ -862,6 +864,7 @@ svymean(~sex_race, subset(design_main,  employed_caregiver), na.rm = TRUE)
 **Within Each Race/Ethnicity, Sex Composition**
 
 ```{r}
+#| output: false
 #Primary Caregivers
 svyby(~female, ~race_cat, subset(design_main,  primary_caregiver), 
       svymean, na.rm = TRUE)
@@ -1027,13 +1030,13 @@ primary_demo |>
 
 To quantify the value of unpaid childcare, I will use the national hourly mean pay rate for childcare workers in 2024 obtained from the Bureau of Labor Statistics (BLS) from https://data.bls.gov/oesprofile/.gov.
 
-Additionally, we can compare similar roles of the childcare worker such as preschool/kindergarten teachers and home health and personal aids.
+Additionally, we can compare similar roles of the childcare worker such as preschool/kindergarten teachers and home health and personal care aides.
 
 - Childcare workers (Occupation code:39-9011), mean hourly wage: \$15.93
 
 - Preschool and Kindergarten teachers (Occupation code:25-2010), mean hourly wage: \$22.44
 
-- Home Health and Personal Aids (Occupation code: 31-1120), mean hourly wage: \$16.32
+- Home Health and Personal Care Aides (Occupation code: 31-1120), mean hourly wage: \$16.32
 
 **Dollar Valuation of Unpaid Childcare**
 
@@ -1102,6 +1105,7 @@ Variables to be used:
 **Proportion of Family Income Categories among under-5 Households**
 
 ```{r}
+#| output: false
 svymean(~factor(faminc_cat), design_under5, na.rm = TRUE)
 ```
 
@@ -1204,6 +1208,8 @@ primary_race_inc_tb
 ```
 
 ```{r}
+#| include: false
+# Sanity check on the primary_caregiver flag (not shown in the document).
 table(design_under5$variables$primary_caregiver, useNA = "ifany")
 ```
 
@@ -1317,15 +1323,6 @@ atus_reg_hours_nowork <- svyglm(
 )
 summary(atus_reg_hours_nowork)
 
-```
-
-```{r}
-atus_reg_hours_nowork <- svyglm(
-  cc_total_hr ~ female + race_cat + faminc_cat,
-  design = design_under5,
-  na.action = na.omit
-)
-summary(atus_reg_hours_nowork)
 ```
 
 # Visualizations
@@ -1449,9 +1446,6 @@ ggplot(plot_df, aes(x = pct_under5, y = race)) +
 **Share of who becomes Primary Caregivers by Race/Ethnicity**
 
 ```{r}
-library(ggplot2)
-library(dplyr)
-
 plot_df <- primary_by_race %>%
   rename(
     race = race_cat,
@@ -1702,68 +1696,7 @@ ggplot(worked_primary_sex,
     
 ```
 
-**Race, Income, and Who Becomes the Primary Caregiver**
-
-```{r}
-race_plot_df <- race_comp_primary_inc_tidy |>
-  mutate(
-    faminc_cat = factor(
-      faminc_cat,
-      levels = c("Low (<$40k)", "Middle ($40k-$99,999)", "High (>$100k)")
-    ),
-    race_cat = factor(
-      race_cat,
-      levels = c("White",
-                 "Black",
-                 "Hispanic",
-                 "Asian/Pacific Islander",
-                 "Native American",
-                 "Other/Multiracial")
-    ),
-    share = share_pct / 100  # convert back to proportion for plotting
-  )
-#Custom palette – change these hex codes to your Canva colors if you want
-race_palette <- c(
-  "White"                  = "gray40",
-  "Black"                  = "gray20",
-  "Hispanic"               = "#7A3E9D",  # purple highlight
-  "Asian/Pacific Islander" = "#B6A3D6",
-  "Native American"        = "#C9C9E0",  # optional, light lavender/gray
-  "Other/Multiracial"      = "#F2F2F7"
-)
-race_plot_df
-gg_race_income <- race_plot_df |>
-  ggplot(aes(x = faminc_cat, y = share, fill = race_cat)) +
-  geom_col(width = 0.65) +
-  scale_y_continuous(labels = percent_format(accuracy = 1)) +
-  scale_fill_manual(values = race_palette) +
-  labs(
-    x    = "Family income",
-    y    = "",
-    fill = "Race/ethnicity"
-  ) +
-  theme_minimal(base_size = 12) +
-  theme(
-    panel.grid.major.x = element_blank(),
-    panel.grid.minor = element_blank(),
-    legend.position = "bottom",
-    legend.title = element_text(size = 11),
-    legend.text  = element_text(size = 10),
-    axis.title   = element_text(size = 11),
-    axis.text    = element_text(size = 10),
-    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
-  )
-
-gg_race_income
-
-```
-
 **Income by Race/Ethnicity for Primary Caregiver**
-
-```{r}
-unique(race_comp_primary_inc_tidy$faminc_cat)
-
-```
 
 ```{r}
 race_palette <- c(
@@ -1774,8 +1707,6 @@ race_palette <- c(
   "Native American"        = "#16A085",   # teal
   "Other/Multiracial"      = "#95A5A6"    # light gray
 )
-
-library(dplyr)
 
 race_plot_df <- race_comp_primary_inc_tidy %>%
   mutate(
