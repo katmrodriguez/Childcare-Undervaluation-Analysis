@@ -8,9 +8,9 @@ and Bureau of Labor Statistics (BLS) wage data.
 
 The project asks two questions:
 
-1. **Unpaid childcare** — What is the economic value of unpaid childcare, and
+1. **Unpaid childcare**: What is the economic value of unpaid childcare, and
    how does it vary by gender, race/ethnicity, and family income?
-2. **Paid childcare** — How do wages and demographics in paid childcare
+2. **Paid childcare**: How do wages and demographics in paid childcare
    occupations compare to similar jobs, and what do they reveal about gender
    and racial gaps in the care economy?
 
@@ -52,7 +52,7 @@ childcare-undervaluation/
 
 ## Data
 
-The two IPUMS extracts are **not included** in this repository — IPUMS data
+The two IPUMS extracts are **not included** in this repository, IPUMS data
 cannot be redistributed. See [`data/raw/README.md`](data/raw/README.md) for the
 exact samples, variables, and filenames needed to recreate them from your own
 IPUMS account.
@@ -65,7 +65,7 @@ IPUMS account.
 2. **Add the data** to `data/raw/` as described in `data/raw/README.md`.
 3. **Restore packages** (if using `renv`, see below), or install the packages
    listed in `R/setup.R`.
-4. **Render the notebooks in order** — the CPS notebook depends on a value
+4. **Render the notebooks in order**, the CPS notebook depends on a value
    written by the ATUS notebook:
 
    ```r
