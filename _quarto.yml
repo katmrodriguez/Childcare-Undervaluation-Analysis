@@ -1,0 +1,31 @@
+project:
+  type: website
+  output-dir: docs        # GitHub Pages will serve from this folder
+
+website:
+  title: "The Undervaluation of Childcare"
+  description: "Wage disparities and time-use gaps in the care economy"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: analysis/01_unpaid_childcare_atus.qmd
+        text: "Unpaid Childcare (ATUS)"
+      - href: analysis/02_paid_childcare_cps.qmd
+        text: "Paid Childcare (CPS)"
+    right:
+      # Replace <your-username> with your GitHub username, or delete these
+      # three lines if you'd rather not show a GitHub icon in the navbar.
+      - icon: github
+        href: https://github.com/<your-username>/Childcare-Undervaluation-Analysis
+        aria-label: GitHub repository
+
+# Site-wide HTML settings. These apply to every page, so the per-file
+# `format: html` blocks in your two .qmd files are now optional — you can
+# leave them (document settings win) or delete them to keep things tidy.
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-location: left
+    number-sections: true

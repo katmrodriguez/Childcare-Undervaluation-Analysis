@@ -33,3 +33,10 @@ renv/staging/
 # OS files
 .DS_Store
 Thumbs.db
+
+# --- Rendered Quarto site (published via GitHub Pages) -----------------
+# The site is built into docs/. The *.html rule above would otherwise
+# exclude it, so re-include everything under docs/. (Negations must come
+# after the rules they override, i.e. at the end of this file.)
+!docs/
+!docs/**
