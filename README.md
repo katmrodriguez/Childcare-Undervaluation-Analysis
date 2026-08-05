@@ -1,4 +1,4 @@
-**Live site:** https://<katmrodriguez>.github.io/Childcare-Undervaluation-Analysis/
+**Live site:** https://katmrodriguez.github.io/Childcare-Undervaluation-Analysis/
 
 # Invisible Labor, Visible Inequalities: The Undervaluation of Childcare
 
