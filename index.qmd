@@ -11,9 +11,9 @@ Bureau of Labor Statistics (BLS) wage data.
 
 ## The questions
 
-1. **Unpaid childcare** — What is the economic value of unpaid childcare, and
+1. **Unpaid childcare**: What is the economic value of unpaid childcare, and
    how does it vary by gender, race/ethnicity, and family income?
-2. **Paid childcare** — How do wages and demographics in paid childcare
+2. **Paid childcare**: How do wages and demographics in paid childcare
    occupations compare to similar jobs, and what do they reveal about gender and
    racial gaps in the care economy?
 
@@ -26,15 +26,15 @@ Bureau of Labor Statistics (BLS) wage data.
 - Paid childcare work is **90–98% female**, and childcare workers earn about
   **\$22,000** a year against roughly **\$70,000** for all other occupations.
 - Valued at market childcare wages, an unpaid primary caregiver's labor is worth
-  about **\$69,600** a year — more than what paid childcare workers and even
+  about **\$69,600** a year, more than what paid childcare workers and even
   preschool/kindergarten teachers earn.
 
 ## The analyses
 
-- [**Unpaid Childcare (ATUS)**](analysis/01_unpaid_childcare_atus.qmd) — time-use
+- [**Unpaid Childcare (ATUS)**](analysis/01_unpaid_childcare_atus.qmd): time-use
   patterns, caregiving by gender and race/ethnicity, and the imputed dollar
   value of unpaid care.
-- [**Paid Childcare (CPS)**](analysis/02_paid_childcare_cps.qmd) — wages,
+- [**Paid Childcare (CPS)**](analysis/02_paid_childcare_cps.qmd): wages,
   occupational gender concentration, and gender and racial wage gaps in paid
   childcare work.
 
