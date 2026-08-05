@@ -18,10 +18,6 @@ The full write-up is in [`report/`](report/).
 
 ```
 childcare-undervaluation/
-├── README.md
-├── LICENSE
-├── .gitignore
-├── childcare-undervaluation.Rproj
 ├── R/
 │   ├── setup.R          # packages, survey options, BLS wage constants
 │   └── functions.R      # survey-weighted summary helpers
@@ -34,8 +30,21 @@ childcare-undervaluation/
 ├── outputs/
 │   ├── figures/
 │   └── tables/
-└── report/
-    └── Rodriguez_Katherine_Childcare_Policy_Report.pdf
+├── renv/
+|   ├── .gitignore
+|   ├── .activate.R
+|   └── settings.json
+├── report/
+|   └── Rodriguez_Katherine_Childcare_Policy_Report.pdf
+├── .Rprofile
+├── .gitignore
+├── Childcare-Undervaluation-Analysis.Rproj
+├── LICENSE
+├── README.md
+├── _quarto.yml
+├── index.qmd
+└── renv.lock
+
 ```
 
 ## Data
