@@ -26,7 +26,7 @@ Bureau of Labor Statistics (BLS) wage data.
 - Paid childcare work is **90–98% female**, and childcare workers earn about
   **\$22,000** a year against roughly **\$70,000** for all other occupations.
 - Valued at market childcare wages, an unpaid primary caregiver's labor is worth
-  about **\$69,600** a year, more than what paid childcare workers and even
+  about **\$69,100** a year, more than what paid childcare workers and even
   preschool/kindergarten teachers earn.
 
 ## The analyses
