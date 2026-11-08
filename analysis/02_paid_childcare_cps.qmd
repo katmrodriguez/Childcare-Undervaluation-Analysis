@@ -488,10 +488,15 @@ ggplot(mean_wage_occ, aes(x = occ_group, y = mean_wage)) +
     y = "Mean Annual Wage (USD)",
     title = "Mean Annual Wages by Occupation Group",
     ) + 
-   theme_minimal() +
-   theme(axis.text.x = element_text(angle = 20, hjust = 1), 
-   plot.title   =  element_text(hjust = 0.5),    
-   panel.border = element_rect(color = "black", fill = NA, linewidth =1))
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    panel.grid.minor   = element_blank(),   
+    panel.grid.major.y = element_blank(),    
+    panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+    axis.title         = element_text(face = "bold"),
+    legend.position    = "bottom"
+  )
 ```
 
 **Sex Composition by Occupation Plot**
@@ -512,13 +517,13 @@ sex_comp_long <- sex_comp |>
 ggplot(sex_comp_long, aes(x = occ_group, y = share_pct, fill = sex)) +
   geom_col(position = "dodge", col = "grey40") +
   coord_flip() +
-  scale_fill_manual(values = c("Female" = "#2C3E50", "Male" = "#1ABC9C")) +
+  scale_fill_manual(values = c("Female" = "#2E3F50", "Male" = "#0E7C6B"))+
   geom_text(
     aes(label = paste0(round(share_pct, 1), "%")),
     position = position_dodge(width = 0.7),
-    hjust = -0.2,
+    hjust = -0.16,
     fontface = "bold",
-    color = "grey30",
+    color = "gray30",
     size = 3.2
   ) +
   labs(
@@ -528,10 +533,14 @@ ggplot(sex_comp_long, aes(x = occ_group, y = share_pct, fill = sex)) +
   ) +
   theme_minimal(base_size = 12) +
   theme(
-    legend.position = "bottom",
-    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
+    plot.title = element_text(hjust = 0.5),
+    panel.grid.minor   = element_blank(),   
+    panel.grid.major.y = element_blank(),    
+    panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+    axis.title         = element_text(face = "bold"),
+    legend.position    = "bottom"
   )
-ggsave("fig6.png", width = 6.5, height = 3.5, dpi = 300)
+ggsave("fig6.png", width = 9.5, height = 3.5, dpi = 300)
 ```
 
 **Race/Ethnicity Composition by Occupation**
@@ -561,10 +570,15 @@ ggplot(race_comp_long, aes(x = occ_group, y = pct, fill = race))+
     y = "Composition",
     title = "Racial/Ethnicity Composition of Childcare and Care Occupation"
   )+
-  theme_minimal() +
+  theme_minimal(base_size = 12) +
   theme(axis.text.x = element_text(angle = 20, hjust = 1),
-   plot.title   =  element_text(hjust = 0.5),    
-   panel.border = element_rect(color = "black", fill = NA, linewidth =1)) 
+    plot.title = element_text(hjust = 0.5),
+    panel.grid.minor   = element_blank(),   
+    panel.grid.major.y = element_blank(),    
+    panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+    axis.title         = element_text(face = "bold"),
+    legend.position    = "bottom"
+  ) 
 
 ```
 
@@ -595,10 +609,15 @@ ggplot(mean_wage_sex, aes(x = occ_group, y = mean_wage, fill = sex_category)) +
     y = "Mean Annual Wage (USD)",
     title = "Gender Wage Differences by Occupation"
   ) +
-  theme_minimal() +
+theme_minimal(base_size = 12) +
   theme(axis.text.x = element_text(angle = 20, hjust = 1),
-  plot.title   =  element_text(hjust = 0.5),    
-  panel.border = element_rect(color = "black", fill = NA, linewidth =1))
+    plot.title = element_text(hjust = 0.5),
+    panel.grid.minor   = element_blank(),   
+    panel.grid.major.y = element_blank(),    
+    panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+    axis.title         = element_text(face = "bold"),
+    legend.position    = "bottom"
+  ) 
 ```
 
 # Dollar Valuation of Unpaid Childcare
@@ -679,10 +698,10 @@ mean_wage_occ$occ_group
 
 # Color palette: unpaid highlighted, paid uniform
 val_colors <- c(
-  "Unpaid Primary Caregiver (implied)" = "#1ABC9C",   # teal
-  "Childcare Workers (paid)"           = "#2C3E50",   # uniform blue
-  "Preschool/ K Teachers (paid)"       = "#2C3E50",   # uniform blue
-  "Other (paid)"                       = "#2C3E50"    # uniform blue
+  "Unpaid Primary Caregiver (implied)" = "#0E7C6B",   # teal
+  "Childcare Workers (paid)"           = "#2E3F50",   # uniform blue
+  "Preschool/ K Teachers (paid)"       = "#2E3F50",   # uniform blue
+  "Other (paid)"                       = "#2E3F50"    # uniform blue
 )
 
 # Ensure ordering
@@ -714,9 +733,12 @@ ggplot(valuation_df, aes(x = group, y = annual_value_k, fill = group)) +
   coord_flip() +
   theme_minimal(base_size = 12) +
   theme(
-    plot.title   = element_text(hjust = 0.5),
-    legend.position = "none",
-    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
+    plot.title = element_text(hjust = 0.5),
+    panel.grid.minor   = element_blank(),   
+    panel.grid.major.y = element_blank(),    
+    panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+    axis.title         = element_text(face = "bold"),
+    legend.position    = "bottom"
   )
 
 ggsave("fig7.png", width = 6.5, height = 3.5, dpi = 300)

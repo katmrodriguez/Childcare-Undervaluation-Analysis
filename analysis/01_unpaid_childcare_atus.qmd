@@ -1368,11 +1368,15 @@ ggplot(atus_prim_sex,
        y = "Percentage of Primary Caregivers",
        title = "Share of Adults Who Are Primary Caregivers 
        (2018-2019 & 2021-2024)") +
-theme_minimal() +
- theme(
- plot.title = element_text(hjust = 0.5),
- panel.border = element_rect(color = "black", fill = NA, linewidth =1)
- )
+theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    panel.grid.minor   = element_blank(),   
+    panel.grid.major.y = element_blank(),    
+    panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+    axis.title         = element_text(face = "bold"),
+    legend.position    = "bottom"
+  )
 ```
 
 **Race Composition of under-5 Households vs Primary Caregivers**
@@ -1397,10 +1401,15 @@ ggplot(comp_long, aes(x = race, y = pct, fill = group))+
     fill = "Group",
     title = "Race/Ethnicity Composition: \n Under-5 Households vs Primary Caregivers (2021-2024)"
   )+
-   theme_minimal() +
-   theme(axis.text.x = element_text(angle = 45, hjust = 1), 
-   plot.title   =  element_text(hjust = 0.5),    
-   panel.border = element_rect(color = "black", fill = NA, linewidth =1))
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        plot.title   =  element_text(hjust = 0.5),
+        panel.grid.minor   = element_blank(),   
+        panel.grid.major.y = element_blank(),    
+        panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+        axis.title         = element_text(face = "bold"),
+        legend.position    = "bottom")
+        
 ```
 
 **Within each race, who is more likely to live with children under five?**
@@ -1431,7 +1440,7 @@ plot_df <- under5_by_race %>%
 
 #Plot
 ggplot(plot_df, aes(x = pct_under5, y = race)) +
-  geom_col(fill = "#2C3E50", width = 0.7, col = "gray40") +
+  geom_col(fill = "#2E3F50", width = 0.7, col = "gray40") +
   geom_text(
     aes(label = paste0(round(pct_under5, 1), "%")),
     hjust = 1.2,
@@ -1443,13 +1452,16 @@ ggplot(plot_df, aes(x = pct_under5, y = race)) +
     x = "Share Living in Under-Five Household",
     y = "Race/Ethnicity",
   ) +
-  theme_minimal(base_size = 13) +
+  theme_minimal(base_size = 12) +
   theme(
-    plot.title = element_text(face = "bold"),
-    axis.title = element_text(face = "bold"),
-    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
+    plot.title = element_text(hjust = 0.5),
+    panel.grid.minor   = element_blank(),   
+    panel.grid.major.y = element_blank(),    
+    panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+    axis.title         = element_text(face = "bold"),
+    legend.position    = "bottom"
   ) +
-  coord_cartesian(xlim = c(0, max(plot_df$pct_under5) + 10))
+coord_cartesian(xlim = c(0, max(plot_df$pct_under5) + 10))
 ggsave("fig3.png", width = 6.5, height = 3.5, dpi = 300)
 
 ```
@@ -1464,7 +1476,7 @@ plot_df <- primary_by_race %>%
   )
 
 ggplot(plot_df, aes(x = pct_primary, y = race)) +
-  geom_col(fill = "#1ABC9C", width = 0.7, col = "gray40") +
+  geom_col(fill = "#0E7C6B", width = 0.7, col = "gray40") +
   geom_text(
     aes(label = paste0(round(pct_primary, 1), "%")),
     hjust = 1.2,
@@ -1476,13 +1488,15 @@ ggplot(plot_df, aes(x = pct_primary, y = race)) +
     x = "Share Primary Caregiver",
     y = "Race/Ethnicity",
   ) +
-  theme_minimal(base_size = 13) +
+  theme_minimal(base_size = 12) +
   theme(
-    plot.title = element_text(face = "bold"),
-    axis.title = element_text(face = "bold"),
-    plot.caption = element_text(size = 9, color = "gray40"),
-    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
-  ) +
+    plot.title = element_text(hjust = 0.5),
+    panel.grid.minor   = element_blank(),   
+    panel.grid.major.y = element_blank(),    
+    panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+    axis.title         = element_text(face = "bold"),
+    legend.position    = "bottom"
+  )+
   coord_cartesian(xlim = c(0, max(plot_df$pct_primary) + 10))
 ggsave("fig4.png", width = 6.5, height = 3.5, dpi = 300)
 
@@ -1525,18 +1539,20 @@ ggplot(prop_df, aes(x = race, y = percent, fill = gender)) +
     size = 2.8
   ) +
   coord_flip() +
-  scale_fill_manual(values = c("Female" = "#2C3E50", "Male" = "#1ABC9C")) +
+  scale_fill_manual(values = c("Female" = "#2E3F50", "Male" = "#0E7C6B")) +
   labs(
     title = " ",
     x = "Race/Ethnicity",
     y = "Share of Primary Caregivers",
    ) +
-  theme_minimal(base_size = 13) +
+theme_minimal(base_size = 12) +
   theme(
-    plot.title = element_text(face = "bold"),
-    axis.title = element_text(face = "bold"),
-    legend.title = element_blank(),
-    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
+    plot.title = element_text(hjust = 0.5),
+    panel.grid.minor   = element_blank(),   
+    panel.grid.major.y = element_blank(),    
+    panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+    axis.title         = element_text(face = "bold"),
+    legend.position    = "bottom"
   )
 ggsave("fig2.png", width = 6.5, height = 3.5, dpi = 300)
 ```
@@ -1555,11 +1571,15 @@ ggplot(atus_dat, aes(x = sex_category, y = cc_total_hr)) +
     x = "Sex",
     y = "Childcare hours (per day",
     title = "Distribution of Childcare Hours by Sex \n (under-5 Households, 2021-2024)")+
- theme_minimal() +
- theme(
- plot.title = element_text(hjust = 0.5),
- panel.border = element_rect(color = "black", fill = NA, linewidth =1)
- )
+theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    panel.grid.minor   = element_blank(),   
+    panel.grid.major.y = element_blank(),    
+    panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+    axis.title         = element_text(face = "bold"),
+    legend.position    = "bottom"
+  )
 ```
 
 **Distribution of** **Childcare Hours by Sex (weighted)**
@@ -1577,24 +1597,26 @@ avg_hr_df <- avg_hr_under5 |>
 ggplot(avg_hr_df, aes(x = gender, y = childcare_hrs, fill = gender)) +
   geom_col(width = 0.6, col = "gray40") +
   geom_text(
-    aes(label = round (childcare_hrs, 1)),
+    aes(label = sprintf("%.1f", childcare_hrs)),
     vjust = 1.5,
     color = "white",
     fontface = "bold",
-    size = 4
+    size = 3.2
   ) +
-  scale_fill_manual(values = c("#2C3E50", "#1ABC9C")) +
+scale_fill_manual(values = c("Female" = "#2E3F50", "Male" = "#0E7C6B")) +
   labs(
     title = " ",
     x = "Gender",
     y = "Childcare Hours (per day)"
   ) +
-  theme_minimal(base_size = 13) +
+theme_minimal(base_size = 12) +
   theme(
-    legend.position = "none",
-    plot.title = element_text(face = "bold"),
-    axis.title = element_text(face = "bold"),
-    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
+    plot.title = element_text(hjust = 0.5),
+    panel.grid.minor   = element_blank(),   
+    panel.grid.major.y = element_blank(),    
+    panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+    axis.title         = element_text(face = "bold"),
+    legend.position    = "bottom"
   )
 ggsave("fig1.png", width = 6.5, height = 3.5, dpi = 300)
 ```
@@ -1671,10 +1693,12 @@ ggplot(sex_comp_roles,
   #bold axis labels
   theme_minimal(base_size = 12) +
   theme(
-    legend.position = "right",
-    axis.text.x  = element_text(angle = 0, hjust = 0.5),
-    plot.title   = element_text(hjust = 0.5),
-    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
+    plot.title = element_text(hjust = 0.5),
+    panel.grid.minor   = element_blank(),   
+    panel.grid.major.y = element_blank(),    
+    panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+    axis.title         = element_text(face = "bold"),
+    legend.position    = "bottom"
   )
 ```
 
@@ -1688,7 +1712,7 @@ ggplot(worked_primary_sex,
                     ymax = share_pct + 1.96*se_pct),
                 width = 0.2,
                 alpha = 0.4) +
-  scale_fill_manual(values = c("Female" = "#6C4B9E", "Male" = "grey40")) +
+  scale_fill_manual(values = c("Female" = "#2E3F50", "Male" = "#0E7C6B")) +
   
   #Labels - % of female vs male
   geom_text(aes(label = sprintf("%.1f%%", share_pct)),
@@ -1704,11 +1728,13 @@ ggplot(worked_primary_sex,
   )+
   theme_minimal(base_size = 12) +
   theme(
-    legend.position = "none",
     plot.title = element_text(hjust = 0.5),
-    axis.text.x = element_text(angle = 0, hjust = 0.5),
-    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
-    )
+    panel.grid.minor   = element_blank(),   
+    panel.grid.major.y = element_blank(),    
+    panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+    axis.title         = element_text(face = "bold"),
+    legend.position    = "bottom"
+  )
     
 ```
 
@@ -1754,20 +1780,20 @@ gg_race_income <- ggplot(race_plot_df, aes(y = faminc_cat, x = share, fill = rac
   ) +
   theme_minimal(base_size = 12) +
   theme(
-    panel.grid.major.y = element_blank(),
-    panel.grid.minor = element_blank(),
+    panel.grid.minor   = element_blank(),   
+    panel.grid.major.y = element_blank(),    
+    panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+    axis.title         = element_text(face = "bold"),
     legend.position = "bottom",
     legend.spacing.x = unit(0.4, "cm"),
     legend.title = element_text(size = 11),
     legend.text  = element_text(size = 10),
-    axis.title   = element_text(size = 11),
     axis.text    = element_text(size = 10),
     plot.title   = element_text(face = "bold"),
     plot.caption = element_text(size = 9, color = "gray40"),
-    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
   )
 
 gg_race_income
-ggsave("fig5.png", width = 6.5, height = 3.5, dpi = 300)
+ggsave("fig5.png", width = 7.5, height = 3.5, dpi = 300)
 
 ```

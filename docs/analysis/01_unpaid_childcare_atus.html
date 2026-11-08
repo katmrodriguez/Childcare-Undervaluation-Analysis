@@ -2882,11 +2882,15 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <span id="cb145-27"><a href="#cb145-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Percentage of Primary Caregivers"</span>,</span>
 <span id="cb145-28"><a href="#cb145-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Share of Adults Who Are Primary Caregivers </span></span>
 <span id="cb145-29"><a href="#cb145-29" aria-hidden="true" tabindex="-1"></a><span class="st">       (2018-2019 &amp; 2021-2024)"</span>) <span class="sc">+</span></span>
-<span id="cb145-30"><a href="#cb145-30" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb145-31"><a href="#cb145-31" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme</span>(</span>
-<span id="cb145-32"><a href="#cb145-32" aria-hidden="true" tabindex="-1"></a> <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb145-33"><a href="#cb145-33" aria-hidden="true" tabindex="-1"></a> <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span><span class="dv">1</span>)</span>
-<span id="cb145-34"><a href="#cb145-34" aria-hidden="true" tabindex="-1"></a> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb145-30"><a href="#cb145-30" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb145-31"><a href="#cb145-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb145-32"><a href="#cb145-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb145-33"><a href="#cb145-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),   </span>
+<span id="cb145-34"><a href="#cb145-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
+<span id="cb145-35"><a href="#cb145-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb145-36"><a href="#cb145-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb145-37"><a href="#cb145-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"bottom"</span></span>
+<span id="cb145-38"><a href="#cb145-38" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2916,10 +2920,14 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <span id="cb146-17"><a href="#cb146-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Group"</span>,</span>
 <span id="cb146-18"><a href="#cb146-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Race/Ethnicity Composition: </span><span class="sc">\n</span><span class="st"> Under-5 Households vs Primary Caregivers (2021-2024)"</span></span>
 <span id="cb146-19"><a href="#cb146-19" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb146-20"><a href="#cb146-20" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb146-21"><a href="#cb146-21" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>), </span>
-<span id="cb146-22"><a href="#cb146-22" aria-hidden="true" tabindex="-1"></a>   <span class="at">plot.title   =</span>  <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),    </span>
-<span id="cb146-23"><a href="#cb146-23" aria-hidden="true" tabindex="-1"></a>   <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span><span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb146-20"><a href="#cb146-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb146-21"><a href="#cb146-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>), </span>
+<span id="cb146-22"><a href="#cb146-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title   =</span>  <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb146-23"><a href="#cb146-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),   </span>
+<span id="cb146-24"><a href="#cb146-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
+<span id="cb146-25"><a href="#cb146-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb146-26"><a href="#cb146-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb146-27"><a href="#cb146-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position    =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2955,7 +2963,7 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <span id="cb147-23"><a href="#cb147-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb147-24"><a href="#cb147-24" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot</span></span>
 <span id="cb147-25"><a href="#cb147-25" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> pct_under5, <span class="at">y =</span> race)) <span class="sc">+</span></span>
-<span id="cb147-26"><a href="#cb147-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#2C3E50"</span>, <span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">col =</span> <span class="st">"gray40"</span>) <span class="sc">+</span></span>
+<span id="cb147-26"><a href="#cb147-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#2E3F50"</span>, <span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">col =</span> <span class="st">"gray40"</span>) <span class="sc">+</span></span>
 <span id="cb147-27"><a href="#cb147-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
 <span id="cb147-28"><a href="#cb147-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(pct_under5, <span class="dv">1</span>), <span class="st">"%"</span>)),</span>
 <span id="cb147-29"><a href="#cb147-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">hjust =</span> <span class="fl">1.2</span>,</span>
@@ -2967,13 +2975,16 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <span id="cb147-35"><a href="#cb147-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Share Living in Under-Five Household"</span>,</span>
 <span id="cb147-36"><a href="#cb147-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Race/Ethnicity"</span>,</span>
 <span id="cb147-37"><a href="#cb147-37" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb147-38"><a href="#cb147-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb147-38"><a href="#cb147-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
 <span id="cb147-39"><a href="#cb147-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb147-40"><a href="#cb147-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb147-41"><a href="#cb147-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb147-42"><a href="#cb147-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span><span class="dv">1</span>)</span>
-<span id="cb147-43"><a href="#cb147-43" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb147-44"><a href="#cb147-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(plot_df<span class="sc">$</span>pct_under5) <span class="sc">+</span> <span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb147-40"><a href="#cb147-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb147-41"><a href="#cb147-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),   </span>
+<span id="cb147-42"><a href="#cb147-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
+<span id="cb147-43"><a href="#cb147-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb147-44"><a href="#cb147-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb147-45"><a href="#cb147-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"bottom"</span></span>
+<span id="cb147-46"><a href="#cb147-46" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb147-47"><a href="#cb147-47" aria-hidden="true" tabindex="-1"></a><span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(plot_df<span class="sc">$</span>pct_under5) <span class="sc">+</span> <span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2992,7 +3003,7 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <span id="cb149-5"><a href="#cb149-5" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb149-6"><a href="#cb149-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb149-7"><a href="#cb149-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> pct_primary, <span class="at">y =</span> race)) <span class="sc">+</span></span>
-<span id="cb149-8"><a href="#cb149-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#1ABC9C"</span>, <span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">col =</span> <span class="st">"gray40"</span>) <span class="sc">+</span></span>
+<span id="cb149-8"><a href="#cb149-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#0E7C6B"</span>, <span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">col =</span> <span class="st">"gray40"</span>) <span class="sc">+</span></span>
 <span id="cb149-9"><a href="#cb149-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
 <span id="cb149-10"><a href="#cb149-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(pct_primary, <span class="dv">1</span>), <span class="st">"%"</span>)),</span>
 <span id="cb149-11"><a href="#cb149-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">hjust =</span> <span class="fl">1.2</span>,</span>
@@ -3004,14 +3015,16 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <span id="cb149-17"><a href="#cb149-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Share Primary Caregiver"</span>,</span>
 <span id="cb149-18"><a href="#cb149-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Race/Ethnicity"</span>,</span>
 <span id="cb149-19"><a href="#cb149-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb149-20"><a href="#cb149-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb149-20"><a href="#cb149-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
 <span id="cb149-21"><a href="#cb149-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb149-22"><a href="#cb149-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb149-23"><a href="#cb149-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb149-24"><a href="#cb149-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>, <span class="at">color =</span> <span class="st">"gray40"</span>),</span>
-<span id="cb149-25"><a href="#cb149-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span><span class="dv">1</span>)</span>
-<span id="cb149-26"><a href="#cb149-26" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb149-27"><a href="#cb149-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(plot_df<span class="sc">$</span>pct_primary) <span class="sc">+</span> <span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb149-22"><a href="#cb149-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb149-23"><a href="#cb149-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),   </span>
+<span id="cb149-24"><a href="#cb149-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
+<span id="cb149-25"><a href="#cb149-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb149-26"><a href="#cb149-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb149-27"><a href="#cb149-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"bottom"</span></span>
+<span id="cb149-28"><a href="#cb149-28" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb149-29"><a href="#cb149-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(plot_df<span class="sc">$</span>pct_primary) <span class="sc">+</span> <span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3057,19 +3070,21 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <span id="cb151-32"><a href="#cb151-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.8</span></span>
 <span id="cb151-33"><a href="#cb151-33" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb151-34"><a href="#cb151-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb151-35"><a href="#cb151-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Female"</span> <span class="ot">=</span> <span class="st">"#2C3E50"</span>, <span class="st">"Male"</span> <span class="ot">=</span> <span class="st">"#1ABC9C"</span>)) <span class="sc">+</span></span>
+<span id="cb151-35"><a href="#cb151-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Female"</span> <span class="ot">=</span> <span class="st">"#2E3F50"</span>, <span class="st">"Male"</span> <span class="ot">=</span> <span class="st">"#0E7C6B"</span>)) <span class="sc">+</span></span>
 <span id="cb151-36"><a href="#cb151-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
 <span id="cb151-37"><a href="#cb151-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">" "</span>,</span>
 <span id="cb151-38"><a href="#cb151-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Race/Ethnicity"</span>,</span>
 <span id="cb151-39"><a href="#cb151-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Share of Primary Caregivers"</span>,</span>
 <span id="cb151-40"><a href="#cb151-40" aria-hidden="true" tabindex="-1"></a>   ) <span class="sc">+</span></span>
-<span id="cb151-41"><a href="#cb151-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb151-41"><a href="#cb151-41" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
 <span id="cb151-42"><a href="#cb151-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb151-43"><a href="#cb151-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb151-44"><a href="#cb151-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb151-45"><a href="#cb151-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb151-46"><a href="#cb151-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span><span class="dv">1</span>)</span>
-<span id="cb151-47"><a href="#cb151-47" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb151-43"><a href="#cb151-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb151-44"><a href="#cb151-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),   </span>
+<span id="cb151-45"><a href="#cb151-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
+<span id="cb151-46"><a href="#cb151-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb151-47"><a href="#cb151-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb151-48"><a href="#cb151-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"bottom"</span></span>
+<span id="cb151-49"><a href="#cb151-49" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3092,11 +3107,15 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <span id="cb153-9"><a href="#cb153-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Sex"</span>,</span>
 <span id="cb153-10"><a href="#cb153-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Childcare hours (per day"</span>,</span>
 <span id="cb153-11"><a href="#cb153-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribution of Childcare Hours by Sex </span><span class="sc">\n</span><span class="st"> (under-5 Households, 2021-2024)"</span>)<span class="sc">+</span></span>
-<span id="cb153-12"><a href="#cb153-12" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb153-13"><a href="#cb153-13" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme</span>(</span>
-<span id="cb153-14"><a href="#cb153-14" aria-hidden="true" tabindex="-1"></a> <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb153-15"><a href="#cb153-15" aria-hidden="true" tabindex="-1"></a> <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span><span class="dv">1</span>)</span>
-<span id="cb153-16"><a href="#cb153-16" aria-hidden="true" tabindex="-1"></a> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb153-12"><a href="#cb153-12" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb153-13"><a href="#cb153-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb153-14"><a href="#cb153-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb153-15"><a href="#cb153-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),   </span>
+<span id="cb153-16"><a href="#cb153-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
+<span id="cb153-17"><a href="#cb153-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb153-18"><a href="#cb153-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb153-19"><a href="#cb153-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"bottom"</span></span>
+<span id="cb153-20"><a href="#cb153-20" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3119,25 +3138,27 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <span id="cb154-10"><a href="#cb154-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(avg_hr_df, <span class="fu">aes</span>(<span class="at">x =</span> gender, <span class="at">y =</span> childcare_hrs, <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
 <span id="cb154-11"><a href="#cb154-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>, <span class="at">col =</span> <span class="st">"gray40"</span>) <span class="sc">+</span></span>
 <span id="cb154-12"><a href="#cb154-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb154-13"><a href="#cb154-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span> (childcare_hrs, <span class="dv">1</span>)),</span>
+<span id="cb154-13"><a href="#cb154-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%.1f"</span>, childcare_hrs)),</span>
 <span id="cb154-14"><a href="#cb154-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">vjust =</span> <span class="fl">1.5</span>,</span>
 <span id="cb154-15"><a href="#cb154-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
 <span id="cb154-16"><a href="#cb154-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontface =</span> <span class="st">"bold"</span>,</span>
-<span id="cb154-17"><a href="#cb154-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">4</span></span>
+<span id="cb154-17"><a href="#cb154-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">3.2</span></span>
 <span id="cb154-18"><a href="#cb154-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb154-19"><a href="#cb154-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#2C3E50"</span>, <span class="st">"#1ABC9C"</span>)) <span class="sc">+</span></span>
+<span id="cb154-19"><a href="#cb154-19" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Female"</span> <span class="ot">=</span> <span class="st">"#2E3F50"</span>, <span class="st">"Male"</span> <span class="ot">=</span> <span class="st">"#0E7C6B"</span>)) <span class="sc">+</span></span>
 <span id="cb154-20"><a href="#cb154-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
 <span id="cb154-21"><a href="#cb154-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">" "</span>,</span>
 <span id="cb154-22"><a href="#cb154-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Gender"</span>,</span>
 <span id="cb154-23"><a href="#cb154-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Childcare Hours (per day)"</span></span>
 <span id="cb154-24"><a href="#cb154-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb154-25"><a href="#cb154-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb154-25"><a href="#cb154-25" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
 <span id="cb154-26"><a href="#cb154-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb154-27"><a href="#cb154-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
-<span id="cb154-28"><a href="#cb154-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb154-29"><a href="#cb154-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb154-30"><a href="#cb154-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span><span class="dv">1</span>)</span>
-<span id="cb154-31"><a href="#cb154-31" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb154-27"><a href="#cb154-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb154-28"><a href="#cb154-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),   </span>
+<span id="cb154-29"><a href="#cb154-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
+<span id="cb154-30"><a href="#cb154-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb154-31"><a href="#cb154-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb154-32"><a href="#cb154-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"bottom"</span></span>
+<span id="cb154-33"><a href="#cb154-33" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3233,11 +3254,13 @@ Male   1.727112</code></pre>
 <span id="cb160-23"><a href="#cb160-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">#bold axis labels</span></span>
 <span id="cb160-24"><a href="#cb160-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
 <span id="cb160-25"><a href="#cb160-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb160-26"><a href="#cb160-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
-<span id="cb160-27"><a href="#cb160-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x  =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb160-28"><a href="#cb160-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title   =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb160-29"><a href="#cb160-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span><span class="dv">1</span>)</span>
-<span id="cb160-30"><a href="#cb160-30" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb160-26"><a href="#cb160-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb160-27"><a href="#cb160-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),   </span>
+<span id="cb160-28"><a href="#cb160-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
+<span id="cb160-29"><a href="#cb160-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb160-30"><a href="#cb160-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb160-31"><a href="#cb160-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"bottom"</span></span>
+<span id="cb160-32"><a href="#cb160-32" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3255,7 +3278,7 @@ Male   1.727112</code></pre>
 <span id="cb161-5"><a href="#cb161-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax =</span> share_pct <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>se_pct),</span>
 <span id="cb161-6"><a href="#cb161-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="fl">0.2</span>,</span>
 <span id="cb161-7"><a href="#cb161-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
-<span id="cb161-8"><a href="#cb161-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Female"</span> <span class="ot">=</span> <span class="st">"#6C4B9E"</span>, <span class="st">"Male"</span> <span class="ot">=</span> <span class="st">"grey40"</span>)) <span class="sc">+</span></span>
+<span id="cb161-8"><a href="#cb161-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Female"</span> <span class="ot">=</span> <span class="st">"#2E3F50"</span>, <span class="st">"Male"</span> <span class="ot">=</span> <span class="st">"#0E7C6B"</span>)) <span class="sc">+</span></span>
 <span id="cb161-9"><a href="#cb161-9" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb161-10"><a href="#cb161-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Labels - % of female vs male</span></span>
 <span id="cb161-11"><a href="#cb161-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%.1f%%"</span>, share_pct)),</span>
@@ -3271,11 +3294,13 @@ Male   1.727112</code></pre>
 <span id="cb161-21"><a href="#cb161-21" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
 <span id="cb161-22"><a href="#cb161-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
 <span id="cb161-23"><a href="#cb161-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb161-24"><a href="#cb161-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
-<span id="cb161-25"><a href="#cb161-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb161-26"><a href="#cb161-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb161-27"><a href="#cb161-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span><span class="dv">1</span>)</span>
-<span id="cb161-28"><a href="#cb161-28" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb161-24"><a href="#cb161-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb161-25"><a href="#cb161-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),   </span>
+<span id="cb161-26"><a href="#cb161-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
+<span id="cb161-27"><a href="#cb161-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb161-28"><a href="#cb161-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb161-29"><a href="#cb161-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"bottom"</span></span>
+<span id="cb161-30"><a href="#cb161-30" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3325,17 +3350,17 @@ Male   1.727112</code></pre>
 <span id="cb162-37"><a href="#cb162-37" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb162-38"><a href="#cb162-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
 <span id="cb162-39"><a href="#cb162-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb162-40"><a href="#cb162-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb162-41"><a href="#cb162-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb162-42"><a href="#cb162-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
-<span id="cb162-43"><a href="#cb162-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.spacing.x =</span> <span class="fu">unit</span>(<span class="fl">0.4</span>, <span class="st">"cm"</span>),</span>
-<span id="cb162-44"><a href="#cb162-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
-<span id="cb162-45"><a href="#cb162-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text  =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
-<span id="cb162-46"><a href="#cb162-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title   =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
-<span id="cb162-47"><a href="#cb162-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text    =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
-<span id="cb162-48"><a href="#cb162-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title   =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb162-49"><a href="#cb162-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>, <span class="at">color =</span> <span class="st">"gray40"</span>),</span>
-<span id="cb162-50"><a href="#cb162-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span><span class="dv">1</span>)</span>
+<span id="cb162-40"><a href="#cb162-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),   </span>
+<span id="cb162-41"><a href="#cb162-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
+<span id="cb162-42"><a href="#cb162-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb162-43"><a href="#cb162-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb162-44"><a href="#cb162-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb162-45"><a href="#cb162-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.spacing.x =</span> <span class="fu">unit</span>(<span class="fl">0.4</span>, <span class="st">"cm"</span>),</span>
+<span id="cb162-46"><a href="#cb162-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb162-47"><a href="#cb162-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text  =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb162-48"><a href="#cb162-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text    =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb162-49"><a href="#cb162-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title   =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb162-50"><a href="#cb162-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>, <span class="at">color =</span> <span class="st">"gray40"</span>),</span>
 <span id="cb162-51"><a href="#cb162-51" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb162-52"><a href="#cb162-52" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb162-53"><a href="#cb162-53" aria-hidden="true" tabindex="-1"></a>gg_race_income</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -3346,7 +3371,7 @@ Male   1.727112</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb163"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb163-1"><a href="#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"fig5.png"</span>, <span class="at">width =</span> <span class="fl">6.5</span>, <span class="at">height =</span> <span class="fl">3.5</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb163"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb163-1"><a href="#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"fig5.png"</span>, <span class="at">width =</span> <span class="fl">7.5</span>, <span class="at">height =</span> <span class="fl">3.5</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 
