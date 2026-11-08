@@ -692,7 +692,7 @@ val_colors <- c(
 mean_wage_occ$occ_group
 ```
 
-**Implied Annual Value of Unpaid Care B**
+**Implied Annual Value of Unpaid Care**
 
 ```{r}
 
@@ -727,6 +727,7 @@ ggplot(valuation_df, aes(x = group, y = annual_value_k, fill = group)) +
   ) +
   scale_fill_manual(values = val_colors) +
   labs(
+    title = "Implied Annual Value of Unpaid Care",
     x = NULL,
     y = "Annual Value (in thousands USD)"
   ) +
@@ -738,8 +739,8 @@ ggplot(valuation_df, aes(x = group, y = annual_value_k, fill = group)) +
     panel.grid.major.y = element_blank(),    
     panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
     axis.title         = element_text(face = "bold"),
-    legend.position    = "bottom"
+    legend.position    = "none"
   )
 
-ggsave("fig7.png", width = 6.5, height = 3.5, dpi = 300)
+ggsave("fig7.png", width = 11.5, height = 3.5, dpi = 300)
 ```
