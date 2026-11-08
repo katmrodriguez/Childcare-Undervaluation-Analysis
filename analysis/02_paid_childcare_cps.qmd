@@ -247,6 +247,14 @@ svyby(
 )
 ```
 
+## Check Nas after filter
+
+```{r}
+sort(colSums(is.na(design_cps$variables)), decreasing = TRUE)
+
+sum(is.na(design_cps$variables))
+```
+
 # Descriptive Results
 
 **Composition of Sex Category in Each Occupation**
@@ -358,51 +366,6 @@ levels(design_cps$variables$occ_group)
 levels(design_cps$variables$sex_category)
 levels(design_cps$variables$race_cat)
 class(design_cps$variables$full_time)
-
-```
-
-**Predicted Wages for Each Group**
-
-```{r, eval=FALSE}
-newdat <- expand.grid(
-  occ_group    = c("Childcare Workers", "Preschool/ K Teachers", "Other"),
-  sex_category = c("Female", "Male"),
-  race_cat     = "White",          # fix race to simplify story
-  full_time    = TRUE,             # full-time workers
-  AGE          = 30                # pick a representative age
-)
-
-preds <- predict(
-  cps_reg_int,
-  newdata = newdat,
-  se.fit  = TRUE
-)
-
-pred_df <- newdat |>
-  mutate(
-    wage_pred = as.numeric(preds$fit),
-    wage_se   = as.numeric(preds$se.fit),
-    wage_lo   = wage_pred - 1.96 * wage_se,
-    wage_hi   = wage_pred + 1.96 * wage_se
-  )
-
-pred_df
-
-#Plot
-ggplot(pred_df, aes(x = occ_group, y = wage_pred,
-                    fill = sex_category)) +
-  geom_col(position = position_dodge(width = 0.6)) +
-  geom_errorbar(aes(ymin = wage_lo, ymax = wage_hi),
-                position = position_dodge(width = 0.6),
-                width = 0.2) +
-  labs(
-    x = "Occupation group",
-    y = "Predicted annual wage (US$)",
-    fill = "Sex",
-    title = "Predicted annual wages by occupation and sex\n(White, age 35, full-time, CPS 2023)"
-  ) +
-  scale_y_continuous(labels = scales::dollar_format())
-
 
 ```
 
@@ -547,7 +510,7 @@ sex_comp_long <- sex_comp |>
   )
 
 ggplot(sex_comp_long, aes(x = occ_group, y = share_pct, fill = sex)) +
-  geom_col(position = "dodge") +
+  geom_col(position = "dodge", col = "grey40") +
   coord_flip() +
   scale_fill_manual(values = c("Female" = "#2C3E50", "Male" = "#1ABC9C")) +
   geom_text(
@@ -565,8 +528,10 @@ ggplot(sex_comp_long, aes(x = occ_group, y = share_pct, fill = sex)) +
   ) +
   theme_minimal(base_size = 12) +
   theme(
-    legend.position = "bottom"
+    legend.position = "bottom",
+    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
   )
+ggsave("fig6.png", width = 6.5, height = 3.5, dpi = 300)
 ```
 
 **Race/Ethnicity Composition by Occupation**
@@ -619,7 +584,7 @@ mean_wage_sex <- svyby(
   )
 mean_wage_sex
 ggplot(mean_wage_sex, aes(x = occ_group, y = mean_wage, fill = sex_category)) +
-  geom_col(position = "dodge") +
+  geom_col(position = "dodge", col = "grey40") +
   geom_errorbar(aes(ymin = mean_wage - 1.96 * se_wage, 
                     ymax = mean_wage + 1.96 * se_wage),
                 position = position_dodge(width = 0.9),
@@ -640,7 +605,7 @@ ggplot(mean_wage_sex, aes(x = occ_group, y = mean_wage, fill = sex_category)) +
 
 **Implied Annual Value of Unpaid Care**
 
-```{r}
+```{r, eval=FALSE, echo=FALSE}
 #Mean childcare rate (defined once in R/setup.R)
 childcare_rate <- BLS_WAGE_CHILDCARE_WORKER
 
@@ -772,8 +737,9 @@ ggplot(valuation_df, aes(x = group, y = annual_value_k, fill = group)) +
   theme_minimal(base_size = 12) +
   theme(
     plot.title   = element_text(hjust = 0.5),
-    legend.position = "none"
+    legend.position = "none",
+    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
   )
 
-
+ggsave("fig7.png", width = 6.5, height = 3.5, dpi = 300)
 ```

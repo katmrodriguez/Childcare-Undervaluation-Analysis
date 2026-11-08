@@ -375,6 +375,15 @@ design_main <- subset(
 table(design_main$variables$YEAR)
 ```
 
+## Check NAs after filter and building
+
+```{r}
+sort(colSums(is.na(design_main$variables)), decreasing = TRUE)
+
+sum(is.na(design_main$variables))
+
+```
+
 ## Primary Caregivers
 
 I want to filter my data that looks at primary caregivers of children that are not in primary and secondary school nor other child care options. I explore this because I want to see how many primary caregivers are providing care to children that are not in school or other care options.
@@ -1438,8 +1447,10 @@ ggplot(plot_df, aes(x = pct_under5, y = race)) +
   theme(
     plot.title = element_text(face = "bold"),
     axis.title = element_text(face = "bold"),
+    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
   ) +
   coord_cartesian(xlim = c(0, max(plot_df$pct_under5) + 10))
+ggsave("fig3.png", width = 6.5, height = 3.5, dpi = 300)
 
 ```
 
@@ -1469,10 +1480,11 @@ ggplot(plot_df, aes(x = pct_primary, y = race)) +
   theme(
     plot.title = element_text(face = "bold"),
     axis.title = element_text(face = "bold"),
-    plot.caption = element_text(size = 9, color = "gray40")
+    plot.caption = element_text(size = 9, color = "gray40"),
+    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
   ) +
   coord_cartesian(xlim = c(0, max(plot_df$pct_primary) + 10))
-
+ggsave("fig4.png", width = 6.5, height = 3.5, dpi = 300)
 
 ```
 
@@ -1523,8 +1535,10 @@ ggplot(prop_df, aes(x = race, y = percent, fill = gender)) +
   theme(
     plot.title = element_text(face = "bold"),
     axis.title = element_text(face = "bold"),
-    legend.title = element_blank()
+    legend.title = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
   )
+ggsave("fig2.png", width = 6.5, height = 3.5, dpi = 300)
 ```
 
 **Distribution of Childcare by Hours (raw hours)**
@@ -1579,8 +1593,10 @@ ggplot(avg_hr_df, aes(x = gender, y = childcare_hrs, fill = gender)) +
   theme(
     legend.position = "none",
     plot.title = element_text(face = "bold"),
-    axis.title = element_text(face = "bold")
+    axis.title = element_text(face = "bold"),
+    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
   )
+ggsave("fig1.png", width = 6.5, height = 3.5, dpi = 300)
 ```
 
 **Distribution of Primary Caregivers by Sex, Worked Today, and Employed**
@@ -1747,9 +1763,11 @@ gg_race_income <- ggplot(race_plot_df, aes(y = faminc_cat, x = share, fill = rac
     axis.title   = element_text(size = 11),
     axis.text    = element_text(size = 10),
     plot.title   = element_text(face = "bold"),
-    plot.caption = element_text(size = 9, color = "gray40")
+    plot.caption = element_text(size = 9, color = "gray40"),
+    panel.border = element_rect(color = "black", fill = NA, linewidth =1)
   )
 
 gg_race_income
+ggsave("fig5.png", width = 6.5, height = 3.5, dpi = 300)
 
 ```
