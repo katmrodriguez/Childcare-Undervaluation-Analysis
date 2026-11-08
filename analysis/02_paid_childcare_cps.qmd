@@ -605,7 +605,7 @@ ggplot(mean_wage_sex, aes(x = occ_group, y = mean_wage, fill = sex_category)) +
 
 **Implied Annual Value of Unpaid Care**
 
-```{r, eval=FALSE, echo=FALSE}
+```{r}
 #Mean childcare rate (defined once in R/setup.R)
 childcare_rate <- BLS_WAGE_CHILDCARE_WORKER
 
@@ -665,28 +665,6 @@ val_colors <- c(
   "Other (paid)"                       = "#8FB3D9"    # uniform blue
 ) 
 
-
-#Bar Plot
-ggplot(valuation_df, aes(x = group, y = annual_value_k))+ 
-  geom_col(col = "grey40") +
-  geom_text(
-    aes(label = paste0("$", round(annual_value_k, 1), "k")),
-    position = position_dodge(width = 0.7),
-    hjust = 1.2,
-    fontface = "bold",
-    color = "white",
-    size = 3.2
-  ) +
-  scale_fill_manual(values = val_colors) +
-  labs(
-    x = NULL,
-    y = "Annual Value (in thousands USD)"
-    #subtitle = "Unpaid Value Based on Atus Hours (2021-2024) \n x Childcare Worker Hourly Wage"
-  ) +
-  coord_flip() +
-  theme_minimal() +
-  theme(
-  plot.title   =  element_text(hjust = 0.5))
 ```
 
 ```{r}
