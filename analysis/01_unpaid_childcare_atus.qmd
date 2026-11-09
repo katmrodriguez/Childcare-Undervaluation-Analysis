@@ -1598,7 +1598,7 @@ ggplot(prop_df, aes(x = percent, y = race, fill = Sex)) +
     legend.position    = "bottom"
   )
 
-ggsave("fig2.png", width = 6.5, height = 3.5, dpi = 300)
+ggsave("fig2.png", width = 6.5, height = 3.2, dpi = 300)
 ```
 
 **Distribution of Childcare by Hours (raw hours)**
