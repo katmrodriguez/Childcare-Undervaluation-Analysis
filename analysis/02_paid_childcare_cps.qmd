@@ -159,7 +159,7 @@ cps <- cps |>
       childcare_worker  ~ "Childcare Workers",
       pre_kinder_teach  ~ "Preschool/ K Teachers",
       #home_health_aide  ~ "Home Health & Personal Care Aides", removing home health aides for this project to focus on childcare occupations, but could be added back in if we want to expand to other care occupations
-      TRUE              ~ "Other"
+      TRUE              ~ "All Other Occupations"
     ),
     
     #Factor sex category
@@ -186,7 +186,7 @@ cps <- cps |>
         "Childcare Workers",
         "Preschool/ K Teachers",
         #"Home Health & Personal Care Aides", removing for now
-        "Other"
+        "All Other Occupations"
     )
   )
 )
@@ -452,7 +452,7 @@ cps_table_display <- cps_table |>
 
 kable(
   cps_table_display,
-  caption = "Summary of paid care and other occupations, CPS ASEC 2023",
+  caption = "Summary of Paid care and All Other Occupations, CPS ASEC 2023",
   align   = c("l", "r", "r", "r", "r", "r")
 ) |>
   kable_styling(full_width = FALSE)
@@ -483,7 +483,7 @@ ggplot(mean_wage_occ, aes(x = occ_group, y = mean_wage, fill = occ_group)) +
   geom_errorbar(aes(ymin = mean_wage - 1.96 * se_wage, 
                     ymax = mean_wage + 1.96 * se_wage),
                 width = 0.2) +
-scale_fill_manual(values = c("Childcare Workers" = "#2E3F50", "Preschool/ K Teachers" = "#0E7C6B", "Other" = "#E69F00")) +
+scale_fill_manual(values = c("Childcare Workers" = "#2E3F50", "Preschool/ K Teachers" = "#0E7C6B", "All Other Occupations" = "#E69F00")) +
   labs(
     x = "Occupation Group",
     y = "Mean Annual Wage (USD)",
@@ -669,7 +669,7 @@ unpaid_val_annual
 
 childcare_annual  <- mean_wage_occ$mean_wage[mean_wage_occ$occ_group == "Childcare Workers"]
 prek_annual       <- mean_wage_occ$mean_wage[mean_wage_occ$occ_group == "Preschool/ K Teachers"]
-homehealth_annual <- mean_wage_occ$mean_wage[mean_wage_occ$occ_group == "Other"] 
+all_other_occ     <- mean_wage_occ$mean_wage[mean_wage_occ$occ_group == "All Other Occupations"] 
 
 
 unique(mean_wage_occ$occ_group)
@@ -678,14 +678,14 @@ valuation_df <- tibble(
     "Unpaid Primary Caregiver (implied)",
     "Childcare Workers (paid)",
     "Preschool/ K Teachers (paid)",
-    "Other (paid)"
+    "All Other Occupations (paid)"
   ),
 
   annual_value = c(
     unpaid_val_annual,
     childcare_annual,
     prek_annual,
-    homehealth_annual
+    all_other_occ
   )
 )
 
@@ -701,7 +701,7 @@ val_colors <- c(
   "Unpaid Primary Caregiver (implied)" = "#6C4B9E",   # highlight purple
   "Childcare Workers (paid)"           = "#8FB3D9",   # uniform blue
   "Preschool/ K Teachers (paid)"       = "#8FB3D9",   # uniform blue
-  "Other (paid)"                       = "#8FB3D9"    # uniform blue
+  "All Other Occupations (paid)"       = "#8FB3D9"    # uniform blue
 ) 
 
 ```
@@ -718,44 +718,49 @@ mean_wage_occ$occ_group
 
 # Color palette: unpaid highlighted, paid uniform
 val_colors <- c(
-  "Unpaid Primary Caregiver (implied)" = "#0E7C6B",   # teal
-  "Childcare Workers (paid)"           = "#2E3F50",   # uniform blue
-  "Preschool/ K Teachers (paid)"       = "#2E3F50",   # uniform blue
-  "Other (paid)"                       = "#2E3F50"    # uniform blue
+  "Unpaid Primary Caregiver (implied)" = "#0E7C6B",
+  "Childcare Workers (paid)"           = "#2E3F50",
+  "Preschool/ K Teachers (paid)"       = "#2E3F50",
+  "All Other Occupations (paid)"       = "#2E3F50"
 )
 
-# Ensure ordering
+# Ensure ordering (reversed so the unpaid bar is on top after coord_flip)
 valuation_df$group <- factor(
   valuation_df$group,
-  levels = c(
+  levels = rev(c(
     "Unpaid Primary Caregiver (implied)",
     "Childcare Workers (paid)",
     "Preschool/ K Teachers (paid)",
-    "Other (paid)"
-  )
+    "All Other Occupations (paid)"
+  ))
 )
 
 # Plot
 ggplot(valuation_df, aes(x = group, y = annual_value_k, fill = group)) +
-  geom_col(color = "grey40") +
+  geom_col(color = "grey40", width = 0.7) +
   geom_text(
-    aes(label = paste0("$", round(annual_value_k, 1), "k")),
-    hjust = 1.2,
+    aes(label = sprintf("$%.1fk", annual_value_k)),
+    hjust = -0.15,
     fontface = "bold",
-    color = "white",
-    size = 3.2
+    color = "gray20",
+    size = 3.5
   ) +
   scale_fill_manual(values = val_colors) +
+  scale_x_discrete(labels = scales::label_wrap(22)) +
+  scale_y_continuous(
+    limits = c(0, 90),
+    breaks = seq(0, 80, 20),
+    labels = function(x) paste0("$", x, "k")
+  ) +
   labs(
     x = NULL,
-    y = "Annual Value (in thousands USD)"
+    y = "Annual Value (USD)"
   ) +
   coord_flip() +
   theme_minimal(base_size = 12) +
   theme(
-    plot.title = element_text(hjust = 0.5),
-    panel.grid.minor   = element_blank(),   
-    panel.grid.major.y = element_blank(),    
+    panel.grid.minor   = element_blank(),
+    panel.grid.major.y = element_blank(),
     panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
     axis.title         = element_text(face = "bold"),
     legend.position    = "none"

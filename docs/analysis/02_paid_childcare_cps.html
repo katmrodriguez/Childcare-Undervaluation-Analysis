@@ -377,7 +377,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>      childcare_worker  <span class="sc">~</span> <span class="st">"Childcare Workers"</span>,</span>
 <span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>      pre_kinder_teach  <span class="sc">~</span> <span class="st">"Preschool/ K Teachers"</span>,</span>
 <span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>      <span class="co">#home_health_aide  ~ "Home Health &amp; Personal Care Aides", removing home health aides for this project to focus on childcare occupations, but could be added back in if we want to expand to other care occupations</span></span>
-<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>              <span class="sc">~</span> <span class="st">"Other"</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>              <span class="sc">~</span> <span class="st">"All Other Occupations"</span></span>
 <span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Factor sex category</span></span>
@@ -404,7 +404,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Childcare Workers"</span>,</span>
 <span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Preschool/ K Teachers"</span>,</span>
 <span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>        <span class="co">#"Home Health &amp; Personal Care Aides", removing for now</span></span>
-<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Other"</span></span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>        <span class="st">"All Other Occupations"</span></span>
 <span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -491,60 +491,60 @@ Female   Male
 <pre><code>                                                         occ_group
 Childcare Workers.White                          Childcare Workers
 Preschool/ K Teachers.White                  Preschool/ K Teachers
-Other.White                                                  Other
+All Other Occupations.White                  All Other Occupations
 Childcare Workers.Black                          Childcare Workers
 Preschool/ K Teachers.Black                  Preschool/ K Teachers
-Other.Black                                                  Other
+All Other Occupations.Black                  All Other Occupations
 Childcare Workers.Hispanic                       Childcare Workers
 Preschool/ K Teachers.Hispanic               Preschool/ K Teachers
-Other.Hispanic                                               Other
+All Other Occupations.Hispanic               All Other Occupations
 Childcare Workers.Asian/Pacific Islander         Childcare Workers
 Preschool/ K Teachers.Asian/Pacific Islander Preschool/ K Teachers
-Other.Asian/Pacific Islander                                 Other
+All Other Occupations.Asian/Pacific Islander All Other Occupations
 Childcare Workers.Native American                Childcare Workers
 Preschool/ K Teachers.Native American        Preschool/ K Teachers
-Other.Native American                                        Other
+All Other Occupations.Native American        All Other Occupations
 Childcare Workers.Other/Multiracial              Childcare Workers
 Preschool/ K Teachers.Other/Multiracial      Preschool/ K Teachers
-Other.Other/Multiracial                                      Other
+All Other Occupations.Other/Multiracial      All Other Occupations
                                                            race_cat wage_annual
 Childcare Workers.White                                       White    25733.99
 Preschool/ K Teachers.White                                   White    39785.55
-Other.White                                                   White    79088.50
+All Other Occupations.White                                   White    79088.50
 Childcare Workers.Black                                       Black    28004.87
 Preschool/ K Teachers.Black                                   Black    35559.19
-Other.Black                                                   Black    62065.26
+All Other Occupations.Black                                   Black    62065.26
 Childcare Workers.Hispanic                                 Hispanic    35073.20
 Preschool/ K Teachers.Hispanic                             Hispanic    30255.10
-Other.Hispanic                                             Hispanic    59291.25
+All Other Occupations.Hispanic                             Hispanic    59291.25
 Childcare Workers.Asian/Pacific Islander     Asian/Pacific Islander    32017.61
 Preschool/ K Teachers.Asian/Pacific Islander Asian/Pacific Islander    44417.12
-Other.Asian/Pacific Islander                 Asian/Pacific Islander   100382.96
+All Other Occupations.Asian/Pacific Islander Asian/Pacific Islander   100382.96
 Childcare Workers.Native American                   Native American    26053.69
 Preschool/ K Teachers.Native American               Native American    30406.57
-Other.Native American                               Native American    54431.69
+All Other Occupations.Native American               Native American    54431.69
 Childcare Workers.Other/Multiracial               Other/Multiracial    28155.49
 Preschool/ K Teachers.Other/Multiracial           Other/Multiracial    29243.62
-Other.Other/Multiracial                           Other/Multiracial    69056.67
+All Other Occupations.Other/Multiracial           Other/Multiracial    69056.67
                                                      se
 Childcare Workers.White                       1993.2092
 Preschool/ K Teachers.White                   2107.3978
-Other.White                                    546.4373
+All Other Occupations.White                    546.4373
 Childcare Workers.Black                       2718.3287
 Preschool/ K Teachers.Black                   3361.4796
-Other.Black                                   1138.4377
+All Other Occupations.Black                   1138.4377
 Childcare Workers.Hispanic                    4424.2385
 Preschool/ K Teachers.Hispanic                3682.2382
-Other.Hispanic                                1309.0475
+All Other Occupations.Hispanic                1309.0475
 Childcare Workers.Asian/Pacific Islander     11731.2577
 Preschool/ K Teachers.Asian/Pacific Islander 10105.9177
-Other.Asian/Pacific Islander                  1943.0222
+All Other Occupations.Asian/Pacific Islander  1943.0222
 Childcare Workers.Native American             1919.9412
 Preschool/ K Teachers.Native American         8849.5975
-Other.Native American                         3137.2174
+All Other Occupations.Native American         3137.2174
 Childcare Workers.Other/Multiracial           3006.5625
 Preschool/ K Teachers.Other/Multiracial       4437.7659
-Other.Other/Multiracial                       3614.7680</code></pre>
+All Other Occupations.Other/Multiracial       3614.7680</code></pre>
 </div>
 </div>
 <section id="check-nas-after-filter" class="level2" data-number="4.1">
@@ -744,7 +744,7 @@ Coefficients:
                                 Estimate Std. Error t value
 (Intercept)                    -28577.41    1911.21 -14.952
 occ_groupPreschool/ K Teachers   2486.01    1901.41   1.307
-occ_groupOther                  24521.13    1602.47  15.302
+occ_groupAll Other Occupations  24521.13    1602.47  15.302
 sex_categoryMale                15783.40     782.13  20.180
 race_catBlack                  -13152.25    1193.88 -11.016
 race_catHispanic               -15705.74    1347.80 -11.653
@@ -756,7 +756,7 @@ AGE                               755.71      25.48  29.663
                                            Pr(&gt;|t|)    
 (Intercept)                    &lt; 0.0000000000000002 ***
 occ_groupPreschool/ K Teachers                0.193    
-occ_groupOther                 &lt; 0.0000000000000002 ***
+occ_groupAll Other Occupations &lt; 0.0000000000000002 ***
 sex_categoryMale               &lt; 0.0000000000000002 ***
 race_catBlack                  &lt; 0.0000000000000002 ***
 race_catHispanic               &lt; 0.0000000000000002 ***
@@ -794,7 +794,7 @@ Coefficients:
                                                  Estimate Std. Error t value
 (Intercept)                                     -28880.95    1954.23 -14.779
 occ_groupPreschool/ K Teachers                    2604.41    1925.28   1.353
-occ_groupOther                                   24825.04    1632.56  15.206
+occ_groupAll Other Occupations                   24825.04    1632.56  15.206
 sex_categoryMale                                 20096.33    3870.73   5.192
 race_catBlack                                   -13154.38    1194.06 -11.017
 race_catHispanic                                -15705.71    1347.88 -11.652
@@ -804,11 +804,11 @@ race_catOther/Multiracial                        -4110.36    3286.82  -1.251
 full_timeTRUE                                    41397.97    1042.59  39.707
 AGE                                                755.74      25.48  29.662
 occ_groupPreschool/ K Teachers:sex_categoryMale   4693.77   12790.82   0.367
-occ_groupOther:sex_categoryMale                  -4322.23    4087.15  -1.058
+occ_groupAll Other Occupations:sex_categoryMale  -4322.23    4087.15  -1.058
                                                             Pr(&gt;|t|)    
 (Intercept)                                     &lt; 0.0000000000000002 ***
 occ_groupPreschool/ K Teachers                                 0.178    
-occ_groupOther                                  &lt; 0.0000000000000002 ***
+occ_groupAll Other Occupations                  &lt; 0.0000000000000002 ***
 sex_categoryMale                                      0.000000681362 ***
 race_catBlack                                   &lt; 0.0000000000000002 ***
 race_catHispanic                                &lt; 0.0000000000000002 ***
@@ -818,7 +818,7 @@ race_catOther/Multiracial                                      0.213
 full_timeTRUE                                   &lt; 0.0000000000000002 ***
 AGE                                             &lt; 0.0000000000000002 ***
 occ_groupPreschool/ K Teachers:sex_categoryMale                0.714    
-occ_groupOther:sex_categoryMale                                0.292    
+occ_groupAll Other Occupations:sex_categoryMale                0.292    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -829,7 +829,7 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the levels used in the model/design</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(design_cps<span class="sc">$</span>variables<span class="sc">$</span>occ_group)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Childcare Workers"     "Preschool/ K Teachers" "Other"                </code></pre>
+<pre><code>[1] "Childcare Workers"     "Preschool/ K Teachers" "All Other Occupations"</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(design_cps<span class="sc">$</span>variables<span class="sc">$</span>sex_category)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -907,7 +907,7 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <pre><code>              occ_group mean_wage   se_wage pct_female  pct_male pct_fulltime
 1     Childcare Workers  22167.83 1124.0725   93.04066  6.959343     57.79188
 2 Preschool/ K Teachers  34625.88 1694.8258   97.99262  2.007382     82.35028
-3                 Other  70137.29  406.1268   46.99072 53.009278     86.06340</code></pre>
+3 All Other Occupations  70137.29  406.1268   46.99072 53.009278     86.06340</code></pre>
 </div>
 </div>
 <p><strong>Put Table into Kable Format</strong></p>
@@ -932,13 +932,13 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
 <span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>  cps_table_display,</span>
-<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Summary of paid care and other occupations, CPS ASEC 2023"</span>,</span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Summary of Paid care and All Other Occupations, CPS ASEC 2023"</span>,</span>
 <span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">align   =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>)</span>
 <span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
 <span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="table caption-top table-sm table-striped small">
-<caption>Summary of paid care and other occupations, CPS ASEC 2023</caption>
+<caption>Summary of Paid care and All Other Occupations, CPS ASEC 2023</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Occupation group</th>
@@ -967,7 +967,7 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <td style="text-align: right;">82.4%</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Other</td>
+<td style="text-align: left;">All Other Occupations</td>
 <td style="text-align: right;">$70,137</td>
 <td style="text-align: right;">$ 406</td>
 <td style="text-align: right;">47.0%</td>
@@ -1001,18 +1001,18 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <pre><code>                                  occ_group wage_annual        se mean_wage
 Childcare Workers         Childcare Workers    22167.83 1124.0725  22167.83
 Preschool/ K Teachers Preschool/ K Teachers    34625.88 1694.8258  34625.88
-Other                                 Other    70137.29  406.1268  70137.29
+All Other Occupations All Other Occupations    70137.29  406.1268  70137.29
                         se_wage
 Childcare Workers     1124.0725
 Preschool/ K Teachers 1694.8258
-Other                  406.1268</code></pre>
+All Other Occupations  406.1268</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mean_wage_occ, <span class="fu">aes</span>(<span class="at">x =</span> occ_group, <span class="at">y =</span> mean_wage)) <span class="sc">+</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#6C4B9E"</span>) <span class="sc">+</span></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#coord_flip() +</span></span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean_wage <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se_wage, </span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax =</span> mean_wage <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se_wage),</span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mean_wage_occ, <span class="fu">aes</span>(<span class="at">x =</span> occ_group, <span class="at">y =</span> mean_wage, <span class="at">fill =</span> occ_group)) <span class="sc">+</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">col =</span> <span class="st">"gray40"</span>) <span class="sc">+</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean_wage <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se_wage, </span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax =</span> mean_wage <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se_wage),</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Childcare Workers"</span> <span class="ot">=</span> <span class="st">"#2E3F50"</span>, <span class="st">"Preschool/ K Teachers"</span> <span class="ot">=</span> <span class="st">"#0E7C6B"</span>, <span class="st">"All Other Occupations"</span> <span class="ot">=</span> <span class="st">"#E69F00"</span>)) <span class="sc">+</span></span>
 <span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
 <span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Occupation Group"</span>,</span>
 <span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Mean Annual Wage (USD)"</span>,</span>
@@ -1025,7 +1025,7 @@ Other                  406.1268</code></pre>
 <span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
 <span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
 <span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"bottom"</span></span>
+<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"none"</span></span>
 <span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
@@ -1045,36 +1045,45 @@ Other                  406.1268</code></pre>
 <span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"share"</span></span>
 <span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"Female"</span>, sex), <span class="st">"Female"</span>, <span class="st">"Male"</span>),</span>
-<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">share_pct =</span> share <span class="sc">*</span> <span class="dv">100</span></span>
-<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sex_comp_long, <span class="fu">aes</span>(<span class="at">x =</span> occ_group, <span class="at">y =</span> share_pct, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
-<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>, <span class="at">col =</span> <span class="st">"grey40"</span>) <span class="sc">+</span></span>
-<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Female"</span> <span class="ot">=</span> <span class="st">"#2E3F50"</span>, <span class="st">"Male"</span> <span class="ot">=</span> <span class="st">"#0E7C6B"</span>))<span class="sc">+</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex       =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"Female"</span>, sex), <span class="st">"Female"</span>, <span class="st">"Male"</span>),</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex       =</span> <span class="fu">factor</span>(sex, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Male"</span>, <span class="st">"Female"</span>)),          <span class="co"># see note below</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">occ_group =</span> <span class="fu">factor</span>(occ_group, <span class="at">levels =</span> <span class="fu">rev</span>(<span class="fu">levels</span>(occ_group))), <span class="co"># Childcare Workers on top</span></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">share_pct =</span> share <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sex_comp_long, <span class="fu">aes</span>(<span class="at">x =</span> occ_group, <span class="at">y =</span> share_pct, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.7</span>), <span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">col =</span> <span class="st">"grey40"</span>) <span class="sc">+</span></span>
 <span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(share_pct, <span class="dv">1</span>), <span class="st">"%"</span>)),</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%.1f%%"</span>, share_pct)),</span>
 <span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.7</span>),</span>
-<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.16</span>,</span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.15</span>,</span>
 <span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontface =</span> <span class="st">"bold"</span>,</span>
 <span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"gray30"</span>,</span>
-<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">3.2</span></span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">3.5</span></span>
 <span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Share of workers"</span>,</span>
-<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="cn">NULL</span></span>
-<span id="cb44-29"><a href="#cb44-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb44-30"><a href="#cb44-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb44-31"><a href="#cb44-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb44-32"><a href="#cb44-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb44-33"><a href="#cb44-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),   </span>
-<span id="cb44-34"><a href="#cb44-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
-<span id="cb44-35"><a href="#cb44-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
-<span id="cb44-36"><a href="#cb44-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb44-37"><a href="#cb44-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"bottom"</span></span>
-<span id="cb44-38"><a href="#cb44-38" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Female"</span> <span class="ot">=</span> <span class="st">"#2E3F50"</span>, <span class="st">"Male"</span> <span class="ot">=</span> <span class="st">"#0E7C6B"</span>)) <span class="sc">+</span></span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_wrap</span>(<span class="dv">16</span>)) <span class="sc">+</span></span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb44-29"><a href="#cb44-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>),</span>
+<span id="cb44-30"><a href="#cb44-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">25</span>),</span>
+<span id="cb44-31"><a href="#cb44-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"%"</span>),</span>
+<span id="cb44-32"><a href="#cb44-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.14</span>))</span>
+<span id="cb44-33"><a href="#cb44-33" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb44-34"><a href="#cb44-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="fu">guide_legend</span>(<span class="at">reverse =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span></span>
+<span id="cb44-35"><a href="#cb44-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb44-36"><a href="#cb44-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb44-37"><a href="#cb44-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Share of Workers"</span>,</span>
+<span id="cb44-38"><a href="#cb44-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="cn">NULL</span></span>
+<span id="cb44-39"><a href="#cb44-39" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb44-40"><a href="#cb44-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb44-41"><a href="#cb44-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb44-42"><a href="#cb44-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb44-43"><a href="#cb44-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb44-44"><a href="#cb44-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb44-45"><a href="#cb44-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb44-46"><a href="#cb44-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"bottom"</span></span>
+<span id="cb44-47"><a href="#cb44-47" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1082,43 +1091,50 @@ Other                  406.1268</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"fig6.png"</span>, <span class="at">width =</span> <span class="fl">9.5</span>, <span class="at">height =</span> <span class="fl">3.5</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"fig6.png"</span>, <span class="at">width =</span> <span class="fl">6.5</span>, <span class="at">height =</span> <span class="fl">3.5</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Race/Ethnicity Composition by Occupation</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>race_comp_long <span class="ot">&lt;-</span> race_comp <span class="sc">|&gt;</span></span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_white     =</span>  race_catWhite    <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_black     =</span>  race_catBlack    <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_hispanic  =</span>  race_catHispanic <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_asian     =</span> <span class="st">`</span><span class="at">race_catAsian/Pacific Islander</span><span class="st">`</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_native    =</span> <span class="st">`</span><span class="at">race_catNative American</span><span class="st">`</span>   <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_other     =</span> <span class="st">`</span><span class="at">race_catOther/Multiracial</span><span class="st">`</span> <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">White                    =</span> race_catWhite <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Black                    =</span> race_catBlack <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Hispanic                 =</span> race_catHispanic <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Asian/Pacific Islander</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">race_catAsian/Pacific Islander</span><span class="st">`</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Native American</span><span class="st">`</span>        <span class="ot">=</span> <span class="st">`</span><span class="at">race_catNative American</span><span class="st">`</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Other/Multiracial</span><span class="st">`</span>      <span class="ot">=</span> <span class="st">`</span><span class="at">race_catOther/Multiracial</span><span class="st">`</span> <span class="sc">*</span> <span class="dv">100</span></span>
 <span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(occ_group, <span class="fu">starts_with</span>(<span class="st">"pct_"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(occ_group, <span class="fu">all_of</span>(race_levels)) <span class="sc">|&gt;</span></span>
 <span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols      =</span> <span class="fu">starts_with</span>(<span class="st">"pct_"</span>),</span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols      =</span> <span class="fu">all_of</span>(race_levels),</span>
 <span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to  =</span> <span class="st">"race"</span>,</span>
 <span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"pct"</span></span>
-<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(race_comp_long, <span class="fu">aes</span>(<span class="at">x =</span> occ_group, <span class="at">y =</span> pct, <span class="at">fill =</span> race))<span class="sc">+</span></span>
-<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
-<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>(<span class="at">scale =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Occupation Group"</span>,</span>
-<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Composition"</span>,</span>
-<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Racial/Ethnicity Composition of Childcare and Care Occupation"</span></span>
-<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">20</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
-<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),   </span>
-<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
-<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
-<span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"bottom"</span></span>
-<span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">race =</span> <span class="fu">factor</span>(race, <span class="at">levels =</span> race_levels))</span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(race_comp_long, <span class="fu">aes</span>(<span class="at">x =</span> occ_group, <span class="at">y =</span> pct, <span class="at">fill =</span> race)) <span class="sc">+</span></span>
+<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">reverse =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>, <span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> race_palette, <span class="at">name =</span> <span class="st">"Race/Ethnicity"</span>) <span class="sc">+</span></span>
+<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_wrap</span>(<span class="dv">14</span>)) <span class="sc">+</span></span>
+<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>(<span class="at">scale =</span> <span class="dv">1</span>),</span>
+<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.02</span>))) <span class="sc">+</span></span>
+<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="fu">guide_legend</span>(<span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">title.position =</span> <span class="st">"top"</span>)) <span class="sc">+</span></span>
+<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Share of Workers"</span></span>
+<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb46-35"><a href="#cb46-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb46-37"><a href="#cb46-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title       =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb46-38"><a href="#cb46-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text        =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb46-39"><a href="#cb46-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.key.size    =</span> <span class="fu">unit</span>(<span class="fl">0.4</span>, <span class="st">"cm"</span>)</span>
+<span id="cb46-40"><a href="#cb46-40" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1145,17 +1161,17 @@ Other                  406.1268</code></pre>
 <pre><code>                                         occ_group sex_category wage_annual
 Childcare Workers.Female         Childcare Workers       Female    21356.84
 Preschool/ K Teachers.Female Preschool/ K Teachers       Female    34211.19
-Other.Female                                 Other       Female    59558.44
+All Other Occupations.Female All Other Occupations       Female    59558.44
 Childcare Workers.Male           Childcare Workers         Male    33010.09
 Preschool/ K Teachers.Male   Preschool/ K Teachers         Male    54869.46
-Other.Male                                   Other         Male    79515.05
+All Other Occupations.Male   All Other Occupations         Male    79515.05
                                      se mean_wage    se_wage
 Childcare Workers.Female      1000.4425  21356.84  1000.4425
 Preschool/ K Teachers.Female  1642.0683  34211.19  1642.0683
-Other.Female                   513.1627  59558.44   513.1627
+All Other Occupations.Female   513.1627  59558.44   513.1627
 Childcare Workers.Male        6350.9194  33010.09  6350.9194
 Preschool/ K Teachers.Male   10948.2859  54869.46 10948.2859
-Other.Male                     582.1990  79515.05   582.1990</code></pre>
+All Other Occupations.Male     582.1990  79515.05   582.1990</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mean_wage_sex, <span class="fu">aes</span>(<span class="at">x =</span> occ_group, <span class="at">y =</span> mean_wage, <span class="at">fill =</span> sex_category)) <span class="sc">+</span></span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>, <span class="at">col =</span> <span class="st">"grey40"</span>) <span class="sc">+</span></span>
@@ -1163,21 +1179,22 @@ Other.Male                     582.1990  79515.05   582.1990</code></pre>
 <span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax =</span> mean_wage <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se_wage),</span>
 <span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>),</span>
 <span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Female"</span> <span class="ot">=</span> <span class="st">"#6C4B9E"</span>, <span class="st">"Male"</span> <span class="ot">=</span> <span class="st">"grey40"</span>)) <span class="sc">+</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Female"</span> <span class="ot">=</span> <span class="st">"#2E3F50"</span>, <span class="st">"Male"</span> <span class="ot">=</span> <span class="st">"#0E7C6B"</span>)) <span class="sc">+</span></span>
 <span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
 <span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Occupation Group"</span>,</span>
 <span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Mean Annual Wage (USD)"</span>,</span>
-<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Gender Wage Differences by Occupation"</span></span>
-<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">20</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
-<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),   </span>
-<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
-<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
-<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"bottom"</span></span>
-<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Gender Wage Differences by Occupation"</span>,</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Sex"</span></span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">20</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),   </span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"bottom"</span></span>
+<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1211,8 +1228,8 @@ Other.Male                     582.1990  79515.05   582.1990</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(mean_wage_occ<span class="sc">$</span>occ_group)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] Childcare Workers     Preschool/ K Teachers Other                
-Levels: Childcare Workers Preschool/ K Teachers Other</code></pre>
+<pre><code>[1] Childcare Workers     Preschool/ K Teachers All Other Occupations
+Levels: Childcare Workers Preschool/ K Teachers All Other Occupations</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Implied annual value of unpaid childcare</span></span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>unpaid_val_annual <span class="ot">&lt;-</span> mean_cc_hrs_post <span class="sc">*</span> childcare_rate <span class="sc">*</span> <span class="dv">365</span></span>
@@ -1222,27 +1239,27 @@ Levels: Childcare Workers Preschool/ K Teachers Other</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>childcare_annual  <span class="ot">&lt;-</span> mean_wage_occ<span class="sc">$</span>mean_wage[mean_wage_occ<span class="sc">$</span>occ_group <span class="sc">==</span> <span class="st">"Childcare Workers"</span>]</span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>prek_annual       <span class="ot">&lt;-</span> mean_wage_occ<span class="sc">$</span>mean_wage[mean_wage_occ<span class="sc">$</span>occ_group <span class="sc">==</span> <span class="st">"Preschool/ K Teachers"</span>]</span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>homehealth_annual <span class="ot">&lt;-</span> mean_wage_occ<span class="sc">$</span>mean_wage[mean_wage_occ<span class="sc">$</span>occ_group <span class="sc">==</span> <span class="st">"Other"</span>] </span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>all_other_occ     <span class="ot">&lt;-</span> mean_wage_occ<span class="sc">$</span>mean_wage[mean_wage_occ<span class="sc">$</span>occ_group <span class="sc">==</span> <span class="st">"All Other Occupations"</span>] </span>
 <span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(mean_wage_occ<span class="sc">$</span>occ_group)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] Childcare Workers     Preschool/ K Teachers Other                
-Levels: Childcare Workers Preschool/ K Teachers Other</code></pre>
+<pre><code>[1] Childcare Workers     Preschool/ K Teachers All Other Occupations
+Levels: Childcare Workers Preschool/ K Teachers All Other Occupations</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>valuation_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">c</span>(</span>
 <span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Unpaid Primary Caregiver (implied)"</span>,</span>
 <span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Childcare Workers (paid)"</span>,</span>
 <span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Preschool/ K Teachers (paid)"</span>,</span>
-<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Other (paid)"</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"All Other Occupations (paid)"</span></span>
 <span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>  ),</span>
 <span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">annual_value =</span> <span class="fu">c</span>(</span>
 <span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>    unpaid_val_annual,</span>
 <span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>    childcare_annual,</span>
 <span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>    prek_annual,</span>
-<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>    homehealth_annual</span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>    all_other_occ</span>
 <span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a></span>
@@ -1259,63 +1276,67 @@ Levels: Childcare Workers Preschool/ K Teachers Other</code></pre>
 1 Unpaid Primary Caregiver (implied)       69098.           69.1
 2 Childcare Workers (paid)                 22168.           22.2
 3 Preschool/ K Teachers (paid)             34626.           34.6
-4 Other (paid)                             70137.           70.1</code></pre>
+4 All Other Occupations (paid)             70137.           70.1</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Color palette: unpaid highlighted, paid uniform</span></span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>val_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
 <span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Unpaid Primary Caregiver (implied)"</span> <span class="ot">=</span> <span class="st">"#6C4B9E"</span>,   <span class="co"># highlight purple</span></span>
 <span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Childcare Workers (paid)"</span>           <span class="ot">=</span> <span class="st">"#8FB3D9"</span>,   <span class="co"># uniform blue</span></span>
 <span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Preschool/ K Teachers (paid)"</span>       <span class="ot">=</span> <span class="st">"#8FB3D9"</span>,   <span class="co"># uniform blue</span></span>
-<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Other (paid)"</span>                       <span class="ot">=</span> <span class="st">"#8FB3D9"</span>    <span class="co"># uniform blue</span></span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"All Other Occupations (paid)"</span>       <span class="ot">=</span> <span class="st">"#8FB3D9"</span>    <span class="co"># uniform blue</span></span>
 <span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Implied Annual Value of Unpaid Care</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Color palette: unpaid highlighted, paid uniform</span></span>
 <span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>val_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Unpaid Primary Caregiver (implied)"</span> <span class="ot">=</span> <span class="st">"#0E7C6B"</span>,   <span class="co"># teal</span></span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Childcare Workers (paid)"</span>           <span class="ot">=</span> <span class="st">"#2E3F50"</span>,   <span class="co"># uniform blue</span></span>
-<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Preschool/ K Teachers (paid)"</span>       <span class="ot">=</span> <span class="st">"#2E3F50"</span>,   <span class="co"># uniform blue</span></span>
-<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Other (paid)"</span>                       <span class="ot">=</span> <span class="st">"#2E3F50"</span>    <span class="co"># uniform blue</span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Unpaid Primary Caregiver (implied)"</span> <span class="ot">=</span> <span class="st">"#0E7C6B"</span>,</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Childcare Workers (paid)"</span>           <span class="ot">=</span> <span class="st">"#2E3F50"</span>,</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Preschool/ K Teachers (paid)"</span>       <span class="ot">=</span> <span class="st">"#2E3F50"</span>,</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"All Other Occupations (paid)"</span>       <span class="ot">=</span> <span class="st">"#2E3F50"</span></span>
 <span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure ordering</span></span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure ordering (reversed so the unpaid bar is on top after coord_flip)</span></span>
 <span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>valuation_df<span class="sc">$</span>group <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
 <span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a>  valuation_df<span class="sc">$</span>group,</span>
-<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(</span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">rev</span>(<span class="fu">c</span>(</span>
 <span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Unpaid Primary Caregiver (implied)"</span>,</span>
 <span id="cb61-14"><a href="#cb61-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Childcare Workers (paid)"</span>,</span>
 <span id="cb61-15"><a href="#cb61-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Preschool/ K Teachers (paid)"</span>,</span>
-<span id="cb61-16"><a href="#cb61-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Other (paid)"</span></span>
-<span id="cb61-17"><a href="#cb61-17" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb61-16"><a href="#cb61-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"All Other Occupations (paid)"</span></span>
+<span id="cb61-17"><a href="#cb61-17" aria-hidden="true" tabindex="-1"></a>  ))</span>
 <span id="cb61-18"><a href="#cb61-18" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb61-19"><a href="#cb61-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb61-20"><a href="#cb61-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
 <span id="cb61-21"><a href="#cb61-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(valuation_df, <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> annual_value_k, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
-<span id="cb61-22"><a href="#cb61-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">color =</span> <span class="st">"grey40"</span>) <span class="sc">+</span></span>
+<span id="cb61-22"><a href="#cb61-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">color =</span> <span class="st">"grey40"</span>, <span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
 <span id="cb61-23"><a href="#cb61-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb61-24"><a href="#cb61-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"$"</span>, <span class="fu">round</span>(annual_value_k, <span class="dv">1</span>), <span class="st">"k"</span>)),</span>
-<span id="cb61-25"><a href="#cb61-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">hjust =</span> <span class="fl">1.2</span>,</span>
+<span id="cb61-24"><a href="#cb61-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"$%.1fk"</span>, annual_value_k)),</span>
+<span id="cb61-25"><a href="#cb61-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.15</span>,</span>
 <span id="cb61-26"><a href="#cb61-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontface =</span> <span class="st">"bold"</span>,</span>
-<span id="cb61-27"><a href="#cb61-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
-<span id="cb61-28"><a href="#cb61-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">3.2</span></span>
+<span id="cb61-27"><a href="#cb61-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"gray20"</span>,</span>
+<span id="cb61-28"><a href="#cb61-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">3.5</span></span>
 <span id="cb61-29"><a href="#cb61-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb61-30"><a href="#cb61-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> val_colors) <span class="sc">+</span></span>
-<span id="cb61-31"><a href="#cb61-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb61-32"><a href="#cb61-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Implied Annual Value of Unpaid Care"</span>,</span>
-<span id="cb61-33"><a href="#cb61-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb61-34"><a href="#cb61-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Annual Value (in thousands USD)"</span></span>
-<span id="cb61-35"><a href="#cb61-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb61-36"><a href="#cb61-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb61-37"><a href="#cb61-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb61-38"><a href="#cb61-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb61-39"><a href="#cb61-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb61-40"><a href="#cb61-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),   </span>
-<span id="cb61-41"><a href="#cb61-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),    </span>
-<span id="cb61-42"><a href="#cb61-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
-<span id="cb61-43"><a href="#cb61-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb61-44"><a href="#cb61-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"none"</span></span>
-<span id="cb61-45"><a href="#cb61-45" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb61-31"><a href="#cb61-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_wrap</span>(<span class="dv">22</span>)) <span class="sc">+</span></span>
+<span id="cb61-32"><a href="#cb61-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb61-33"><a href="#cb61-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">90</span>),</span>
+<span id="cb61-34"><a href="#cb61-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">80</span>, <span class="dv">20</span>),</span>
+<span id="cb61-35"><a href="#cb61-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(<span class="st">"$"</span>, x, <span class="st">"k"</span>)</span>
+<span id="cb61-36"><a href="#cb61-36" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb61-37"><a href="#cb61-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb61-38"><a href="#cb61-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb61-39"><a href="#cb61-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Annual Value (USD)"</span></span>
+<span id="cb61-40"><a href="#cb61-40" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb61-41"><a href="#cb61-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb61-42"><a href="#cb61-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb61-43"><a href="#cb61-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb61-44"><a href="#cb61-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb61-45"><a href="#cb61-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb61-46"><a href="#cb61-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb61-47"><a href="#cb61-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb61-48"><a href="#cb61-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position    =</span> <span class="st">"none"</span></span>
+<span id="cb61-49"><a href="#cb61-49" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1323,7 +1344,7 @@ Levels: Childcare Workers Preschool/ K Teachers Other</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"fig7.png"</span>, <span class="at">width =</span> <span class="fl">11.5</span>, <span class="at">height =</span> <span class="fl">3.5</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"fig7.png"</span>, <span class="at">width =</span> <span class="fl">6.5</span>, <span class="at">height =</span> <span class="fl">3.5</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 
