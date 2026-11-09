@@ -1494,7 +1494,7 @@ ggplot(plot_df, aes(x = pct_under5, y = race, fill = race)) +
   ) +
   coord_cartesian(xlim = c(0, max(plot_df$upper) + 4))
 
-ggsave("fig3.png", width = 6.5, height = 3.5, dpi = 300)
+ggsave("fig3.png", width = 6.5, height = 3.2, dpi = 300)
 
 ```
 
@@ -1539,7 +1539,7 @@ ggplot(plot_df, aes(x = pct_primary, y = race, fill = race)) +
   ) +
   coord_cartesian(xlim = c(0, max(plot_df$upper) + 4))
 
-ggsave("fig4.png", width = 6.5, height = 3.5, dpi = 300)
+ggsave("fig4.png", width = 6.5, height = 3.2, dpi = 300)
 
 ```
 
@@ -1667,7 +1667,7 @@ ggplot(avg_hr_df, aes(x = gender, y = childcare_hrs, fill = gender)) +
     legend.position    = "none"
   )
 
-ggsave("fig1.png", width = 6.5, height = 3.5, dpi = 300)
+ggsave("fig1.png", width = 6.5, height = 3.0, dpi = 300)
 ```
 
 **Distribution of Primary Caregivers by Sex, Worked Today, and Employed**

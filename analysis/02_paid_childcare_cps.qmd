@@ -551,7 +551,7 @@ ggplot(sex_comp_long, aes(x = occ_group, y = share_pct, fill = sex)) +
     legend.position    = "bottom"
   )
 
-ggsave("fig6.png", width = 6.5, height = 3.5, dpi = 300)
+ggsave("fig6.png", width = 6.5, height = 3.0, dpi = 300)
 ```
 
 **Race/Ethnicity Composition by Occupation**
@@ -766,5 +766,5 @@ ggplot(valuation_df, aes(x = group, y = annual_value_k, fill = group)) +
     legend.position    = "none"
   )
 
-ggsave("fig7.png", width = 6.5, height = 3.5, dpi = 300)
+ggsave("fig7.png", width = 6.5, height = 3.0, dpi = 300)
 ```
