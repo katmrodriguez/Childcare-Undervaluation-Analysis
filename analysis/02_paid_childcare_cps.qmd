@@ -477,12 +477,13 @@ mean_wage_occ <- svyby(
     se_wage   = se
   )
 mean_wage_occ
-ggplot(mean_wage_occ, aes(x = occ_group, y = mean_wage)) +
-  geom_col(fill = "#6C4B9E") +
-  #coord_flip() +
+
+ggplot(mean_wage_occ, aes(x = occ_group, y = mean_wage, fill = occ_group)) +
+  geom_col(width = 0.7, col = "gray40") +
   geom_errorbar(aes(ymin = mean_wage - 1.96 * se_wage, 
                     ymax = mean_wage + 1.96 * se_wage),
                 width = 0.2) +
+scale_fill_manual(values = c("Childcare Workers" = "#2E3F50", "Preschool/ K Teachers" = "#0E7C6B", "Other" = "#E69F00")) +
   labs(
     x = "Occupation Group",
     y = "Mean Annual Wage (USD)",
@@ -495,7 +496,7 @@ ggplot(mean_wage_occ, aes(x = occ_group, y = mean_wage)) +
     panel.grid.major.y = element_blank(),    
     panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
     axis.title         = element_text(face = "bold"),
-    legend.position    = "bottom"
+    legend.position    = "none"
   )
 ```
 
@@ -510,75 +511,93 @@ sex_comp_long <- sex_comp |>
     values_to = "share"
   ) |>
   mutate(
-    sex = ifelse(grepl("Female", sex), "Female", "Male"),
+    sex       = ifelse(grepl("Female", sex), "Female", "Male"),
+    sex       = factor(sex, levels = c("Male", "Female")),          # see note below
+    occ_group = factor(occ_group, levels = rev(levels(occ_group))), # Childcare Workers on top
     share_pct = share * 100
   )
 
 ggplot(sex_comp_long, aes(x = occ_group, y = share_pct, fill = sex)) +
-  geom_col(position = "dodge", col = "grey40") +
-  coord_flip() +
-  scale_fill_manual(values = c("Female" = "#2E3F50", "Male" = "#0E7C6B"))+
+  geom_col(position = position_dodge(width = 0.7), width = 0.7, col = "grey40") +
   geom_text(
-    aes(label = paste0(round(share_pct, 1), "%")),
+    aes(label = sprintf("%.1f%%", share_pct)),
     position = position_dodge(width = 0.7),
-    hjust = -0.16,
+    hjust = -0.15,
     fontface = "bold",
     color = "gray30",
-    size = 3.2
+    size = 3.5
   ) +
+  coord_flip() +
+  scale_fill_manual(values = c("Female" = "#2E3F50", "Male" = "#0E7C6B")) +
+  scale_x_discrete(labels = scales::label_wrap(16)) +
+  scale_y_continuous(
+    limits = c(0, 100),
+    breaks = seq(0, 100, 25),
+    labels = function(x) paste0(x, "%"),
+    expand = expansion(mult = c(0, 0.14))
+  ) +
+  guides(fill = guide_legend(reverse = TRUE)) +
   labs(
     x = NULL,
-    y = "Share of workers",
+    y = "Share of Workers",
     fill = NULL
   ) +
   theme_minimal(base_size = 12) +
   theme(
-    plot.title = element_text(hjust = 0.5),
-    panel.grid.minor   = element_blank(),   
-    panel.grid.major.y = element_blank(),    
+    panel.grid.minor   = element_blank(),
+    panel.grid.major.y = element_blank(),
     panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
     axis.title         = element_text(face = "bold"),
     legend.position    = "bottom"
   )
-ggsave("fig6.png", width = 9.5, height = 3.5, dpi = 300)
+
+ggsave("fig6.png", width = 6.5, height = 3.5, dpi = 300)
 ```
 
 **Race/Ethnicity Composition by Occupation**
 
 ```{r}
+
 race_comp_long <- race_comp |>
   mutate(
-    pct_white     =  race_catWhite    * 100,
-    pct_black     =  race_catBlack    * 100,
-    pct_hispanic  =  race_catHispanic * 100,
-    pct_asian     = `race_catAsian/Pacific Islander` * 100,
-    pct_native    = `race_catNative American`   * 100,
-    pct_other     = `race_catOther/Multiracial` * 100
+    White                    = race_catWhite * 100,
+    Black                    = race_catBlack * 100,
+    Hispanic                 = race_catHispanic * 100,
+    `Asian/Pacific Islander` = `race_catAsian/Pacific Islander` * 100,
+    `Native American`        = `race_catNative American` * 100,
+    `Other/Multiracial`      = `race_catOther/Multiracial` * 100
   ) |>
-  select(occ_group, starts_with("pct_")) |>
+  select(occ_group, all_of(race_levels)) |>
   pivot_longer(
-    cols      = starts_with("pct_"),
+    cols      = all_of(race_levels),
     names_to  = "race",
     values_to = "pct"
-  )
+  ) |>
+  mutate(race = factor(race, levels = race_levels))
 
-ggplot(race_comp_long, aes(x = occ_group, y = pct, fill = race))+
-  geom_col(position = "fill") +
-  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+ggplot(race_comp_long, aes(x = occ_group, y = pct, fill = race)) +
+  geom_col(position = position_stack(reverse = TRUE),
+           color = "white", linewidth = 0.3, width = 0.7) +
+  scale_fill_manual(values = race_palette, name = "Race/Ethnicity") +
+  scale_x_discrete(labels = scales::label_wrap(14)) +
+  scale_y_continuous(labels = scales::percent_format(scale = 1),
+                     expand = expansion(mult = c(0, 0.02))) +
+  guides(fill = guide_legend(nrow = 2, byrow = TRUE, title.position = "top")) +
   labs(
-    x = "Occupation Group",
-    y = "Composition",
-    title = "Racial/Ethnicity Composition of Childcare and Care Occupation"
-  )+
+    x = NULL,
+    y = "Share of Workers"
+  ) +
   theme_minimal(base_size = 12) +
-  theme(axis.text.x = element_text(angle = 20, hjust = 1),
-    plot.title = element_text(hjust = 0.5),
-    panel.grid.minor   = element_blank(),   
-    panel.grid.major.y = element_blank(),    
-    panel.grid.major.x = element_line(color = "grey90", linewidth = 0.3),
+  theme(
+    panel.grid.minor   = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = "grey90", linewidth = 0.3),
     axis.title         = element_text(face = "bold"),
-    legend.position    = "bottom"
-  ) 
+    legend.position    = "bottom",
+    legend.title       = element_text(size = 10, face = "bold"),
+    legend.text        = element_text(size = 9),
+    legend.key.size    = unit(0.4, "cm")
+  )
 
 ```
 
@@ -603,11 +622,12 @@ ggplot(mean_wage_sex, aes(x = occ_group, y = mean_wage, fill = sex_category)) +
                     ymax = mean_wage + 1.96 * se_wage),
                 position = position_dodge(width = 0.9),
                 width = 0.2) +
-  scale_fill_manual(values = c("Female" = "#6C4B9E", "Male" = "grey40")) +
+scale_fill_manual(values = c("Female" = "#2E3F50", "Male" = "#0E7C6B")) +
   labs(
     x = "Occupation Group",
     y = "Mean Annual Wage (USD)",
-    title = "Gender Wage Differences by Occupation"
+    title = "Gender Wage Differences by Occupation",
+    fill = "Sex"
   ) +
 theme_minimal(base_size = 12) +
   theme(axis.text.x = element_text(angle = 20, hjust = 1),
@@ -727,7 +747,6 @@ ggplot(valuation_df, aes(x = group, y = annual_value_k, fill = group)) +
   ) +
   scale_fill_manual(values = val_colors) +
   labs(
-    title = "Implied Annual Value of Unpaid Care",
     x = NULL,
     y = "Annual Value (in thousands USD)"
   ) +
@@ -742,5 +761,5 @@ ggplot(valuation_df, aes(x = group, y = annual_value_k, fill = group)) +
     legend.position    = "none"
   )
 
-ggsave("fig7.png", width = 11.5, height = 3.5, dpi = 300)
+ggsave("fig7.png", width = 6.5, height = 3.5, dpi = 300)
 ```

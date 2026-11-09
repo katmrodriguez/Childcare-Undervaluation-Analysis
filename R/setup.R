@@ -35,3 +35,18 @@ options(survey.lonely.psu = "adjust", scipen = 999)
 BLS_WAGE_CHILDCARE_WORKER <- 15.93  # OCC 39-9011  Childcare workers
 BLS_WAGE_PRESCHOOL_K      <- 22.44  # OCC 25-2010  Preschool & kindergarten teachers
 BLS_WAGE_HOME_HEALTH_AIDE <- 16.32  # OCC 31-1120  Home health & personal care aides
+
+# -----Race/Ethnicity Color Code
+# ---- Shared race/ethnicity order and colors (used in all figures) ----
+race_levels <- c("White", "Black", "Hispanic",
+                 "Asian/Pacific Islander", "Native American",
+                 "Other/Multiracial")
+
+race_palette <- c(
+  "White"                  = "#2E3F50",
+  "Black"                  = "#0E7C6B",
+  "Hispanic"               = "#E69F00",
+  "Asian/Pacific Islander" = "#56B4E9",
+  "Native American"        = "#CC79A7",
+  "Other/Multiracial"      = "#A0A7AD"
+)
