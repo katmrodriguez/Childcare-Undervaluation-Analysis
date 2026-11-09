@@ -524,7 +524,7 @@ ggplot(sex_comp_long, aes(x = occ_group, y = share_pct, fill = sex)) +
     position = position_dodge(width = 0.7),
     hjust = -0.15,
     fontface = "bold",
-    color = "gray30",
+    color = "gray20",
     size = 3.5
   ) +
   coord_flip() +
