@@ -540,7 +540,7 @@ ggplot(sex_comp_long, aes(x = occ_group, y = share_pct, fill = sex)) +
   labs(
     x = NULL,
     y = "Share of Workers",
-    fill = NULL
+    fill = "Sex"
   ) +
   theme_minimal(base_size = 12) +
   theme(
