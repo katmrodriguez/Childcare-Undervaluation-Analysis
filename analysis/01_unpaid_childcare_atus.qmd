@@ -1479,6 +1479,12 @@ ggplot(plot_df, aes(x = pct_under5, y = race, fill = race)) +
     color = "gray20",
     size = 3.5
   ) +
+    scale_x_continuous(
+    limits = c(0, 100),
+    breaks = seq(0, 100, 5),
+    labels = function(x) paste0(x, "%"),
+    expand = expansion(mult = c(0, 0.14))
+  ) +
   scale_fill_manual(values = race_palette) +
   labs(
     x = "Share Living in Under-Five Household",
@@ -1525,6 +1531,12 @@ ggplot(plot_df, aes(x = pct_primary, y = race, fill = race)) +
     size = 3.5
   ) +
   scale_fill_manual(values = race_palette) +
+  scale_x_continuous(
+    limits = c(0, 100),
+    breaks = seq(0, 100, 20),
+    labels = function(x) paste0(x, "%"),
+    expand = expansion(mult = c(0, 0.14))
+  ) +
   labs(
     x = "Share Who Are Primary Caregivers",
     y = "Race/Ethnicity"
@@ -1653,7 +1665,7 @@ ggplot(avg_hr_df, aes(x = gender, y = childcare_hrs, fill = gender)) +
     size = 3.5
   ) +
   scale_fill_manual(values = c("Female" = "#2E3F50", "Male" = "#0E7C6B")) +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.12))) +
+  scale_y_continuous(breaks = seq(0,10,2), expand = expansion(mult = c(0, 0.12))) +
   labs(
     x = "Sex",
     y = "Childcare Hours (per day)"
