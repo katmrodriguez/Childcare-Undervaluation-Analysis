@@ -754,7 +754,7 @@ ggplot(valuation_df, aes(x = group, y = annual_value_k, fill = group)) +
   ) +
   labs(
     x = NULL,
-    y = "Annual Value (USD)"
+    y = "Annual Value or Wages"
   ) +
   coord_flip() +
   theme_minimal(base_size = 12) +
